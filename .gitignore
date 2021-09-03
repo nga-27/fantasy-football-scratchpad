@@ -130,3 +130,5 @@ dmypy.json
 
 # User-specific
 secrets/
+output/
+content/*.xlsx
