@@ -9,6 +9,7 @@ from espn_api.football import League
 from .config import CONFIG_SETTINGS
 
 LAST_UPDATED = "Last Updated:"
+SKIP_ROWS = (LAST_UPDATED, "")
 
 def load_schedule(xlsx_dict: dict, LEAGUE, schedule: dict) -> dict:
     LEAGUE.load_teams_from_espn(xlsx_dict['Teams'])
@@ -48,7 +49,7 @@ def update_loaded_schedule(xlsx_dict: dict, LEAGUE) -> dict:
     for tab in xlsx_dict.keys():
         if 'Week' in tab:
             for i, team in enumerate(xlsx_dict[tab]["Team"]):
-                if team not in (LAST_UPDATED, ""):
+                if team not in SKIP_ROWS:
                     team_name = team_map[team_map["__team_names__"][team]["map_id"]]["name"]
                     if team != team_name:
                         xlsx_dict[tab]["Team"][i] = team_name
@@ -82,11 +83,105 @@ def update_scores(xlsx_dict: dict, LEAGUE) -> dict:
         if 'Week' in tab:
             week = int(tab.split(' ')[1])-1
             for i, team in enumerate(xlsx_dict[tab]["Team"]):
-                if team not in (LAST_UPDATED, ""):
+                if team not in SKIP_ROWS:
                     score = scores[week][team]
                     xlsx_dict[tab]["Score"][i] = score
 
     return xlsx_dict
+
+
+def update_standings(xlsx_dict: dict, LEAGUE) -> dict:
+    standings = load_league_object_records(xlsx_dict, LEAGUE)
+    overall_row = 0
+    ne_row = 0
+    sw_row = 0
+    while overall_row < len(xlsx_dict["Standings"]["Region Rank"]) and \
+        xlsx_dict["Standings"]["Region Rank"][overall_row] != "OVERALL":
+        if xlsx_dict["Standings"]["Region Rank"][overall_row] == "NORTHEAST":
+            ne_row = overall_row + 1
+        if xlsx_dict["Standings"]["Region Rank"][overall_row] == "SOUTHWEST":
+            sw_row = overall_row + 1
+        overall_row += 1
+
+    overall_row += 1
+    for _, (team_id, pct, pf_) in enumerate(standings):
+        xlsx_dict["Standings"]["Team"][overall_row] = LEAGUE.teams[team_id]["name"]
+        xlsx_dict["Standings"]["Overall Record"][overall_row] = \
+            f"{LEAGUE.teams[team_id]['stats']['wins']}-{LEAGUE.teams[team_id]['stats']['losses']}"
+        xlsx_dict["Standings"]["Pct"][overall_row] = pct
+        xlsx_dict["Standings"]["PF"][overall_row] = pf_
+        xlsx_dict["Standings"]["PA"][overall_row] = LEAGUE.teams[team_id]['stats']['pa']
+        overall_row += 1
+
+    for _, (team_id, pct, pf_) in enumerate(standings):
+        region = LEAGUE.teams[team_id]["region"]
+        if region == 'NE':
+            xlsx_dict["Standings"]["Team"][ne_row] = LEAGUE.teams[team_id]["name"]
+            xlsx_dict["Standings"]["Overall Record"][ne_row] = \
+                f"{LEAGUE.teams[team_id]['stats']['wins']}-{LEAGUE.teams[team_id]['stats']['losses']}"
+            xlsx_dict["Standings"]["Pct"][ne_row] = pct
+            xlsx_dict["Standings"]["PF"][ne_row] = pf_
+            xlsx_dict["Standings"]["PA"][ne_row] = LEAGUE.teams[team_id]['stats']['pa']
+            ne_row += 1
+
+        else:
+            xlsx_dict["Standings"]["Team"][sw_row] = LEAGUE.teams[team_id]["name"]
+            xlsx_dict["Standings"]["Overall Record"][sw_row] = \
+                f"{LEAGUE.teams[team_id]['stats']['wins']}-{LEAGUE.teams[team_id]['stats']['losses']}"
+            xlsx_dict["Standings"]["Pct"][sw_row] = pct
+            xlsx_dict["Standings"]["PF"][sw_row] = pf_
+            xlsx_dict["Standings"]["PA"][sw_row] = LEAGUE.teams[team_id]['stats']['pa']
+            sw_row += 1
+
+    return xlsx_dict
+
+
+def load_league_object_records(xlsx_dict: dict, LEAGUE):
+    current_week = LEAGUE.get_NE().current_week
+    for tab in xlsx_dict.keys():
+        if 'Week' in tab:
+            week_num = int(tab.split(' ')[1])
+            for i, team in enumerate(xlsx_dict[tab]["Team"]):
+                if team not in SKIP_ROWS:
+                    map_id = LEAGUE.teams["__team_names__"][team]["map_id"]
+                    score = float(xlsx_dict[tab]["Score"][i])
+                    LEAGUE.teams[map_id]['stats']['pf'] += score
+
+                    if week_num < current_week:
+                        if xlsx_dict[tab]["Team"][i-1] not in SKIP_ROWS:
+                            # 2nd team in the pairing
+                            team2 = xlsx_dict[tab]["Team"][i-1]
+                            map_id2 = LEAGUE.teams["__team_names__"][team2]["map_id"]
+                            if score > float(xlsx_dict[tab]["Score"][i-1]):
+                                LEAGUE.teams[map_id]['stats']['wins'] += 1
+                                LEAGUE.teams[map_id2]['stats']['losses'] += 1
+                                LEAGUE.teams[map_id]['stats']['pa'] += \
+                                    float(xlsx_dict[tab]["Score"][i-1])
+                                LEAGUE.teams[map_id2]['stats']['pa'] += score
+                            else:
+                                LEAGUE.teams[map_id2]['stats']['wins'] += 1
+                                LEAGUE.teams[map_id]['stats']['losses'] += 1
+                                LEAGUE.teams[map_id]['stats']['pa'] += \
+                                    float(xlsx_dict[tab]["Score"][i-1])
+                                LEAGUE.teams[map_id2]['stats']['pa'] += score
+
+    standings = []
+    for team_id in LEAGUE.teams:
+        if 'NE-' in team_id or 'SW-' in team_id:
+            wins = LEAGUE.teams[team_id]["stats"]["wins"]
+            losses = LEAGUE.teams[team_id]["stats"]["losses"]
+            if sum([wins, losses]) > 0:
+                LEAGUE.teams[team_id]["stats"]["pct"] = float(wins) / float(sum([wins, losses]))
+            standings.append(
+                (
+                    team_id,
+                    LEAGUE.teams[team_id]["stats"]["pct"],
+                    LEAGUE.teams[team_id]["stats"]["pf"]
+                )
+            )
+    standings = sorted(standings, key=lambda x: (x[1], x[2]), reverse=True)
+    return standings
+
 
 
 class FFLeague():
@@ -117,7 +212,14 @@ class FFLeague():
                     "name": team_data["Team Name"][i],
                     "owner": team_data["Owner"][i],
                     "region": 'NE' if 'NE' in _id else 'SW',
-                    "team number": team_data["Team Number"][i]
+                    "team number": team_data["Team Number"][i],
+                    "stats": {
+                        "wins": 0,
+                        "losses": 0,
+                        "pf": 0.0,
+                        "pa": 0.0,
+                        "pct": 0.0
+                    }
                 }
                 region_id = int(_id.split('-')[1])
                 if self.teams[_id]["region"] == 'NE':
@@ -147,6 +249,7 @@ class FFLeague():
         self.teams.update(temp_dict)
 
     def update_teams_df(self, team_data: pd.DataFrame) -> pd.DataFrame:
+        # pprint.pprint(self.teams)
         for i, team_id in enumerate(team_data["MAP ID"]):
             if team_id == "":
                 continue
