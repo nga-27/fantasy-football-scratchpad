@@ -56,6 +56,39 @@ def update_loaded_schedule(xlsx_dict: dict, LEAGUE) -> dict:
     return xlsx_dict
 
 
+def update_scores(xlsx_dict: dict, LEAGUE) -> dict:
+    # https://github.com/cwendt94/espn-api/wiki/Football-Intro#get-box-score-of-currentspecific-week
+    scores = {"weeks": []}
+    current_week = LEAGUE.get_NE().current_week
+
+    # may need to loop to update all scores each week every time?
+    for week in range(current_week):
+        ne_box_scores = LEAGUE.get_NE().box_scores(week)
+        sw_box_scores = LEAGUE.get_SW().box_scores(week)
+
+        for game in ne_box_scores:
+            home_team = game.home_team.team_name
+            away_team = game.away_team.team_name
+            scores[week][home_team] = game.home_score
+            scores[week][away_team] = game.away_score
+
+        for game in sw_box_scores:
+            home_team = game.home_team.team_name
+            away_team = game.away_team.team_name
+            scores[week][home_team] = game.home_score
+            scores[week][away_team] = game.away_score
+
+    for tab in xlsx_dict.keys():
+        if 'Week' in tab:
+            week = int(tab.split(' ')[1])-1
+            for i, team in enumerate(xlsx_dict[tab]["Team"]):
+                if team not in (LAST_UPDATED, ""):
+                    score = scores[week][team]
+                    xlsx_dict[tab]["Score"][i] = score
+
+    return xlsx_dict
+
+
 class FFLeague():
 
     def __init__(self):
@@ -123,4 +156,10 @@ class FFLeague():
 
     def get_teams(self):
         return self.teams
+
+    def get_NE(self):
+        return self.NE
+
+    def get_SW(self):
+        return self.SW
         
