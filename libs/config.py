@@ -14,5 +14,7 @@ CONFIG_SETTINGS = {
     'swid': os.getenv('ESPN_SWID', ''),
     'year': int(os.getenv('YEAR', 2021)),
     'league_id_ne': int(os.getenv('LEAGUE_ID_NE', 0)),
-    'league_id_sw': int(os.getenv('LEAGUE_ID_SW', 0))
+    'league_id_sw': int(os.getenv('LEAGUE_ID_SW', 0)),
+    'spreadsheet_id': os.getenv('SPREADSHEET_ID', ''),
+    'spreadsheet_scopes': os.getenv('SPREADSHEET_SCOPES', [])
 }
