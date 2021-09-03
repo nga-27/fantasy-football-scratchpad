@@ -8,7 +8,9 @@ from espn_api.football import League
 
 from .config import CONFIG_SETTINGS
 
-def load_schedule(xlsx_dict: dict, schedule: dict, LEAGUE) -> dict:
+LAST_UPDATED = "Last Updated:"
+
+def load_schedule(xlsx_dict: dict, LEAGUE, schedule: dict) -> dict:
     LEAGUE.load_teams_from_espn(xlsx_dict['Teams'])
     xlsx_dict['Teams'] = LEAGUE.update_teams_df(xlsx_dict['Teams'])
     team_map = LEAGUE.get_teams()
@@ -19,7 +21,7 @@ def load_schedule(xlsx_dict: dict, schedule: dict, LEAGUE) -> dict:
         xlsx_dict[key] = {"Team": [], "Score": []}
         xlsx_dict[key]["Team"].append("")
         xlsx_dict[key]["Score"].append("")
-        xlsx_dict[key]["Team"].append("Last Updated:")
+        xlsx_dict[key]["Team"].append(LAST_UPDATED)
         xlsx_dict[key]["Score"].append(date_now)
         xlsx_dict[key]["Team"].append("")
         xlsx_dict[key]["Score"].append("")
@@ -36,7 +38,21 @@ def load_schedule(xlsx_dict: dict, schedule: dict, LEAGUE) -> dict:
             xlsx_dict[key]["Team"].extend(["", ""])
             xlsx_dict[key]["Score"].extend(["", ""])
 
+    return xlsx_dict
 
+
+def update_loaded_schedule(xlsx_dict: dict, LEAGUE) -> dict:
+    LEAGUE.load_teams_from_espn(xlsx_dict['Teams'])
+    xlsx_dict['Teams'] = LEAGUE.update_teams_df(xlsx_dict['Teams'])
+    team_map = LEAGUE.get_teams()
+    for tab in xlsx_dict.keys():
+        if 'Week' in tab:
+            for i, team in enumerate(xlsx_dict[tab]["Team"]):
+                if team not in (LAST_UPDATED, ""):
+                    team_name = team_map[team_map["__team_names__"][team]["map_id"]]["name"]
+                    if team != team_name:
+                        xlsx_dict[tab]["Team"][i] = team_name
+    
     return xlsx_dict
 
 
@@ -85,6 +101,16 @@ class FFLeague():
             temp_dict[new_key] = {
                 "map_id": team_id
             }
+        self.teams.update(temp_dict)
+
+        # One more reverse search: team_name to map_id
+        temp_dict = {"__team_names__": {}}
+        for team_id in self.teams:
+            if 'Team' not in team_id:
+                new_key = self.teams[team_id]["name"]
+                temp_dict["__team_names__"][new_key] = {
+                    "map_id": team_id
+                }
         self.teams.update(temp_dict)
 
     def update_teams_df(self, team_data: pd.DataFrame) -> pd.DataFrame:
