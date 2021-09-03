@@ -32,10 +32,7 @@ REQUIRES = [
     "xlrd==1.2.0",
     "XlsxWriter==1.2.6",
     "python-pptx==0.6.18",
-    "espn-api==0.18.0",
-    "google-api-python-client",
-    "google-auth-httplib2",
-    "google-auth-oauthlib"
+    "espn-api==0.18.0"
 ]
 
 REQUIRES_DEV = [
