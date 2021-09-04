@@ -8,7 +8,7 @@ Solution: this repo. Being commissioner in both leagues, I'm using the [ESPN API
 
 # How to Run
 
-## Configure the API
+## Configure the [API](https://github.com/cwendt94/espn-api/wiki/Football-Intro)
 
 You'll need a few configuration things first.
 
