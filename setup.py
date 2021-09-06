@@ -26,6 +26,7 @@ VERSION = '0.0.2'
 
 # What packages are required for this module to be executed?
 REQUIRES = [
+    "python-dotenv",
     "numpy==1.20.2",
     "pandas==1.2.4",
     "requests==2.25",
