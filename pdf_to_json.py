@@ -1,6 +1,10 @@
+"""pdf_to_json.py
+
+Converts the generic pdf of 14-team schedule to a more utilizable schedule.json
+"""
+
 import os
 import json
-import re
 import PyPDF2
 
 from libs.str_utils import split_string, substring_to_lists

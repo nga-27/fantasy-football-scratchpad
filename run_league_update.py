@@ -3,9 +3,11 @@
 This will be the primary script run to update all scores, rosters, etc. for the "league".
 """
 from libs.xlsx_utils import load_league_spreadsheet, save_spreadsheet_to_file
-from libs.league_functions import (
-    FFLeague, update_loaded_schedule, update_scores, update_standings, create_rosters
-)
+from libs.league import FFLeague
+from libs.league_functions.schedule import update_loaded_schedule
+from libs.league_functions.roster import create_rosters
+from libs.league_functions.standings import update_standings
+from libs.league_functions.scoring import update_scores
 
 LEAGUE = FFLeague()
 
