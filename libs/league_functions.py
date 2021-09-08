@@ -19,13 +19,14 @@ def load_schedule(xlsx_dict: dict, LEAGUE, schedule: dict) -> dict:
     date_now = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
     for week in schedule["weeks"]:
         key = f"Week {week}"
-        xlsx_dict[key] = {"Team": [], "Score": []}
+        xlsx_dict[key] = {"Team": [], "Score": [], "Projected": []}
         xlsx_dict[key]["Team"].append("")
         xlsx_dict[key]["Score"].append("")
         xlsx_dict[key]["Team"].append(LAST_UPDATED)
         xlsx_dict[key]["Score"].append(date_now)
         xlsx_dict[key]["Team"].append("")
         xlsx_dict[key]["Score"].append("")
+        xlsx_dict[key]["Projected"].extend(["", "", ""])
 
         for game in schedule["weeks"][week]:
             team1_key = f"Team {game[0]}"
@@ -34,10 +35,13 @@ def load_schedule(xlsx_dict: dict, LEAGUE, schedule: dict) -> dict:
             team2_name = team_map[team_map[team2_key]["map_id"]]["name"]
             xlsx_dict[key]["Team"].append(team1_name)
             xlsx_dict[key]["Score"].append(0)
+            xlsx_dict[key]["Projected"].append(0)
             xlsx_dict[key]["Team"].append(team2_name)
             xlsx_dict[key]["Score"].append(0)
+            xlsx_dict[key]["Projected"].append(0)
             xlsx_dict[key]["Team"].extend(["", ""])
             xlsx_dict[key]["Score"].extend(["", ""])
+            xlsx_dict[key]["Projected"].extend(["", ""])
 
     return xlsx_dict
 
@@ -59,33 +63,67 @@ def update_loaded_schedule(xlsx_dict: dict, LEAGUE) -> dict:
 
 def update_scores(xlsx_dict: dict, LEAGUE) -> dict:
     # https://github.com/cwendt94/espn-api/wiki/Football-Intro#get-box-score-of-currentspecific-week
-    scores = {"weeks": []}
+    scores = dict()
+    projected = dict()
     current_week = LEAGUE.get_NE().current_week
 
     # may need to loop to update all scores each week every time?
-    for week in range(current_week):
+    for week in range(1, current_week+1):
+        str_week = str(week)
+        scores[str_week] = dict()
+        projected[str_week] = dict()
         ne_box_scores = LEAGUE.get_NE().box_scores(week)
         sw_box_scores = LEAGUE.get_SW().box_scores(week)
+        # print(ne_box_scores[0].home_lineup[14].position)
+        
 
         for game in ne_box_scores:
             home_team = game.home_team.team_name
             away_team = game.away_team.team_name
-            scores[week][home_team] = game.home_score
-            scores[week][away_team] = game.away_score
+            scores[str_week][home_team] = game.home_score
+            scores[str_week][away_team] = game.away_score
+
+            proj_points = 0.0
+            for pos in game.home_lineup:
+                if pos.slot_position not in ("BE"):
+                    proj_points += pos.projected_points
+            projected[str_week][home_team] = proj_points
+            proj_points = 0.0
+            for pos in game.away_lineup:
+                if pos.slot_position not in ("BE"):
+                    proj_points += pos.projected_points
+            projected[str_week][away_team] = proj_points
+
 
         for game in sw_box_scores:
             home_team = game.home_team.team_name
             away_team = game.away_team.team_name
-            scores[week][home_team] = game.home_score
-            scores[week][away_team] = game.away_score
+            scores[str_week][home_team] = game.home_score
+            scores[str_week][away_team] = game.away_score
+
+            proj_points = 0.0
+            for pos in game.home_lineup:
+                if pos.slot_position not in ("BE"):
+                    proj_points += pos.projected_points
+            projected[str_week][home_team] = proj_points
+            proj_points = 0.0
+            for pos in game.away_lineup:
+                if pos.slot_position not in ("BE"):
+                    proj_points += pos.projected_points
+            projected[str_week][away_team] = proj_points
 
     for tab in xlsx_dict.keys():
         if 'Week' in tab:
-            week = int(tab.split(' ')[1])-1
-            for i, team in enumerate(xlsx_dict[tab]["Team"]):
-                if team not in SKIP_ROWS:
-                    score = scores[week][team]
-                    xlsx_dict[tab]["Score"][i] = score
+            str_week = tab.split(' ')[1]
+            if str_week in scores:
+                for i, team in enumerate(xlsx_dict[tab]["Team"]):
+                    if team not in SKIP_ROWS:
+                        score = scores[str_week][team]
+                        xlsx_dict[tab]["Score"][i] = score
+                        xlsx_dict[tab]["Projected"][i] = projected[str_week][team]
+                    if team == LAST_UPDATED:
+                        xlsx_dict[tab]["Score"][i] = \
+                            datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
 
     return xlsx_dict
 

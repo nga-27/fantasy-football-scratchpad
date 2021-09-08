@@ -13,7 +13,7 @@ def run_league_update():
     league_xlsx = load_league_spreadsheet()
     LEAGUE.load_teams_from_espn()
     league_xlsx = update_loaded_schedule(league_xlsx, LEAGUE)
-    # league_xlsx = update_scores(league_xlsx, LEAGUE)
+    league_xlsx = update_scores(league_xlsx, LEAGUE)
     league_xlsx = update_standings(league_xlsx, LEAGUE)
 
 
