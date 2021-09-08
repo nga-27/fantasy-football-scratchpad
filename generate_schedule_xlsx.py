@@ -1,3 +1,9 @@
+"""generate_schedule_xlsx.py
+
+Function used to reset schedule (for renamed team) and generate schedule for first time in 
+xlsx spreadsheet
+"""
+
 import os
 import json
 
@@ -12,6 +18,10 @@ SCHEDULE_PATH = os.path.join('output', 'schedule.json')
 LEAGUE = FFLeague()
 
 def generate_schedule_xlsx():
+    """generate_schedule_xlsx
+
+    Imports the spreadsheet and schedule.json, loads the spreadsheet with the schedule
+    """
     if os.path.exists(SCHEDULE_PATH):
         league_xlsx = load_league_spreadsheet()
 
