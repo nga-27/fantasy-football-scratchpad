@@ -20,9 +20,9 @@ Once you have these pieces, it's a good time to run `python explore_api.py`. Thi
 
 ## Configure the Schedule JSON
 
-Once you've established connections to the ESPN API, it's time to start building the schedule. (Note, a sample "league spreadsheet" will be provided later and stored in the `content` directory.) In the `content` directory, there is a random 14-team league schedule for... billiards. It's crude, and it's a PDF, but it was enough to parse to not have to manually create a schedule for 13 weeks (each team plays every other team _once_). I will admit that there is a typo in the PDF that causes a weird bug in the week 13 matchups, but just go ahead and fix that manually, and you should be good.
+Once you've established connections to the ESPN API, it's time to start building the schedule. (Note, a sample "league spreadsheet" will be provided later and stored in the `content` directory.) In the `content` directory, there is a random 14-team league schedule. It's crude, but it was enough to parse to not have to manually create a schedule for 13 weeks (each team plays every other team _once_).
 
-To generate the schedule as a .json file (way easier than a gross PDF), simply run `python pdf_to_json.py`. Again, you'll have to fix Week 13 in the JSON file, but that's pretty minimal. (Use the PDF as reference to what the fixed matchup should be, if needed.)
+To generate the schedule as a .json file, simply run `python schedule_json_generator.py`.
 
 ## Generate the Schedule
 
