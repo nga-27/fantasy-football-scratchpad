@@ -4,7 +4,8 @@ import json
 from libs.xlsx_utils import (
     save_spreadsheet_to_file, load_league_spreadsheet
 )
-from libs.league_functions import load_schedule, FFLeague
+from libs.league import FFLeague
+from libs.league_functions.schedule import load_schedule
 
 SCHEDULE_PATH = os.path.join('output', 'schedule.json')
 
