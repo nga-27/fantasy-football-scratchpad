@@ -132,3 +132,6 @@ dmypy.json
 secrets/
 output/
 content/*.xlsx
+
+libs/__pycache__
+libs/league_functions/__pycache__
