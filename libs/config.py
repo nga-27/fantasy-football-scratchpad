@@ -1,3 +1,7 @@
+"""config.py
+
+Converts values stored in the .env file to an object referenced by the ESPN API class FFLeague
+"""
 import os
 from dotenv import load_dotenv
 

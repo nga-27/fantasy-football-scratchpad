@@ -1,12 +1,32 @@
+"""schedule.py
+
+Handles scheduling functionality
+"""
 import datetime
 
 from libs.league import LAST_UPDATED, SKIP_ROWS
 
+
 def load_schedule(xlsx_dict: dict, LEAGUE, schedule: dict) -> dict:
+    """load_schedule
+
+    Primarily utilized when calling 'generate_schedule_xlsx.py' as it converts the schedule json
+    object to the spreadsheet content.
+
+    Args:
+        xlsx_dict (dict): spreadsheet object
+        LEAGUE (FFLeague): League object from ESPN API with hooks
+        schedule (dict): dict of schedule.json
+
+    Returns:
+        dict: xlsx_dict spreadsheet object
+    """
     LEAGUE.load_teams_from_espn(xlsx_dict['Teams'])
     xlsx_dict['Teams'] = LEAGUE.update_teams_df(xlsx_dict['Teams'])
     team_map = LEAGUE.get_teams()
 
+    # There are 3 columns to each week: "Team", "Score", and "Projected". This function will provide
+    # the required spacing between rows to make this exportable in human-readable format to xlsx.
     date_now = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
     for week in schedule["weeks"]:
         key = f"Week {week}"
@@ -19,6 +39,8 @@ def load_schedule(xlsx_dict: dict, LEAGUE, schedule: dict) -> dict:
         xlsx_dict[key]["Score"].append("")
         xlsx_dict[key]["Projected"].extend(["", "", ""])
 
+        # The schedule is split up by weeks/tabs of the spreadsheet. For each game in it, format
+        # the rows and columns accordingly.
         for game in schedule["weeks"][week]:
             team1_key = f"Team {game[0]}"
             team2_key = f"Team {game[1]}"
@@ -38,6 +60,18 @@ def load_schedule(xlsx_dict: dict, LEAGUE, schedule: dict) -> dict:
 
 
 def update_loaded_schedule(xlsx_dict: dict, LEAGUE) -> dict:
+    """update_loaded_schedule
+
+    Primarily used in 'run_league_update.py' to update team names as they change over time, since
+    that mapping can be difficult.
+
+    Args:
+        xlsx_dict (dict): league spreadsheet object
+        LEAGUE (FFLeague): League object from ESPN API with hooks
+
+    Returns:
+        dict: xlsx_dict spreadsheet object
+    """
     LEAGUE.load_teams_from_espn(xlsx_dict['Teams'])
     xlsx_dict['Teams'] = LEAGUE.update_teams_df(xlsx_dict['Teams'])
     team_map = LEAGUE.get_teams()

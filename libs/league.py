@@ -1,6 +1,7 @@
-import datetime
-import pprint
+"""league.py
 
+Primarily housing FFLeague Class as well as some constants related to the league spreadsheet
+"""
 import pandas as pd
 
 # Detailed API notes: https://github.com/cwendt94/espn-api/wiki/Football-Intro
@@ -8,11 +9,16 @@ from espn_api.football import League
 
 from .config import CONFIG_SETTINGS
 
+
 LAST_UPDATED = "Last Updated:"
 SKIP_ROWS = (LAST_UPDATED, "")
 
 
 class FFLeague():
+    """FFLeague Class
+
+    League object that houses activity of both leagues and all teams
+    """
 
     def __init__(self):
         self.NE = League(

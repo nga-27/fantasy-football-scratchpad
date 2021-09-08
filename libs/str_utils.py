@@ -1,4 +1,20 @@
+"""str_utils.py
+
+Functions to manage the pdf-to-json conversion of string mapping
+"""
+
 def split_string(line: str) -> list:
+    """split_string
+
+    Function that parses through character by character to pull out matchups from the imported
+    PDF object
+
+    Args:
+        line (str): line to evaluate and parse
+
+    Returns:
+        list: list of team matchups (ex: [["5", "2]] )
+    """
     groups = []
     flags = 0
     temp_str = []
