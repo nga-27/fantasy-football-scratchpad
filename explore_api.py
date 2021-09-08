@@ -1,3 +1,8 @@
+"""explore_api.py
+
+Simple "get an understanding" of the ESPN API
+"""
+
 import pprint
 from espn_api.football import League
 
