@@ -4,6 +4,7 @@ Handler for updating scores and projected scores for each week. Referenced API:
 https://github.com/cwendt94/espn-api/wiki/Football-Intro#get-box-score-of-currentspecific-week
 """
 import datetime
+import pprint
 from typing import Tuple
 
 from libs.league import SKIP_ROWS, LAST_UPDATED
@@ -28,13 +29,11 @@ def update_scores(xlsx_dict: dict, LEAGUE) -> dict:
     for week in range(1, current_week+1):
         str_week = str(week)
         scores[str_week] = dict()
-        projected[str_week] = dict()
-        ne_box_scores = LEAGUE.get_NE().box_scores(week)
-        sw_box_scores = LEAGUE.get_SW().box_scores(week)       
+        projected[str_week] = dict()     
 
         # Game-by-game, load the current scores [for all weeks] and projected for applicable weeks.
-        scores, projected = load_scores(ne_box_scores, scores, projected, str_week)
-        scores, projected = load_scores(sw_box_scores, scores, projected, str_week)
+        scores, projected = load_scores(LEAGUE.get_NE(), scores, projected, week)
+        scores, projected = load_scores(LEAGUE.get_SW(), scores, projected, week)
 
     # Update the league spreadsheet object by mapping the score objects to it.
     for tab in xlsx_dict.keys():
@@ -54,7 +53,7 @@ def update_scores(xlsx_dict: dict, LEAGUE) -> dict:
     return xlsx_dict
 
 
-def load_scores(box_score: list, scores: dict, projected: dict, week) -> Tuple[dict,dict]:
+def load_scores(league, scores: dict, projected: dict, week) -> Tuple[dict,dict]:
     """load_scores
 
     For each game in a given week, load current/past scores as well as applicable projected scores.
@@ -72,6 +71,8 @@ def load_scores(box_score: list, scores: dict, projected: dict, week) -> Tuple[d
     if not isinstance(str_week, str):
         str_week = str(str_week)
 
+    box_score = league.box_scores(week)
+
     for game in box_score:
         home_team = game.home_team.team_name
         away_team = game.away_team.team_name
@@ -82,13 +83,19 @@ def load_scores(box_score: list, scores: dict, projected: dict, week) -> Tuple[d
         proj_points = 0.0
         for pos in game.home_lineup:
             if pos.slot_position not in ("BE"):
-                proj_points += pos.projected_points
+                if pos.game_played > 0:
+                    proj_points += pos.points
+                else:
+                    proj_points += pos.projected_points
         projected[str_week][home_team] = proj_points
 
         proj_points = 0.0
         for pos in game.away_lineup:
             if pos.slot_position not in ("BE"):
-                proj_points += pos.projected_points
+                if pos.game_played > 0:
+                    proj_points += pos.points
+                else:
+                    proj_points += pos.projected_points
         projected[str_week][away_team] = proj_points
 
     return scores, projected
