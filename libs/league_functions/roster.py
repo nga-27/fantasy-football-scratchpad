@@ -80,47 +80,48 @@ def generate_roster_data(box_score: list, roster_data: dict, region: str) -> dic
         roster_data[region][away_team] = []
 
         # Load the player positions based off POSITION_ORDER as lists of lists (to be mapped later).
-        roster_data[region][home_team] = [[]] * (len(POSITION_ORDER) + len(BENCH_ORDER))
-        print(len(roster_data[region][home_team]))
+        for pos in POSITION_ORDER:
+            roster_data[region][home_team].append([pos, "", "", ""])
+            roster_data[region][away_team].append([pos, "", "", ""])
+        for pos in BENCH_ORDER:
+            roster_data[region][home_team].append([pos, "", "", ""])
+            roster_data[region][away_team].append([pos, "", "", ""])
+
         for player in game.home_lineup:
             pos = player.slot_position
             name = player.name
             points = player.points
             proj = player.projected_points
             if pos in POSITION_ORDER:
-                if roster_data[region][home_team][POSITION_ORDER.index(pos)] != []:
-                    roster_data[region][home_team][POSITION_ORDER.index(pos) + 1] = \
+                if roster_data[region][home_team][POSITION_ORDER.index(pos)][1] != "":
+                    roster_data[region][home_team][POSITION_ORDER.index(pos)+1] = \
                         [pos, name, points, proj]
                 else:
                     roster_data[region][home_team][POSITION_ORDER.index(pos)] = \
                         [pos, name, points, proj]
             else:
-                for i in range(6):
-                    if len(roster_data[region][home_team][BENCH_ORDER.index(pos)+len(POSITION_ORDER)+i]) == 0:
+                for i in range(len(BENCH_ORDER)-1):
+                    if roster_data[region][home_team][BENCH_ORDER.index(pos)+len(POSITION_ORDER)+i][1] == "":
                         roster_data[region][home_team][BENCH_ORDER.index(pos)+len(POSITION_ORDER)+i] = \
                             [pos, name, points, proj]
                         break
 
-                roster_data[region][home_team].append([pos, name, points, proj])
-
         # Load the player positions based off POSITION_ORDER as lists of lists (to be mapped later).
-        roster_data[region][away_team] = [[]] * (len(POSITION_ORDER) + len(BENCH_ORDER))
-        print(len(roster_data[region][away_team]))
         for player in game.away_lineup:
             pos = player.slot_position
             name = player.name
             points = player.points
             proj = player.projected_points
             if pos in POSITION_ORDER:
-                if roster_data[region][away_team][POSITION_ORDER.index(pos)] != []:
-                    roster_data[region][away_team][POSITION_ORDER.index(pos) + 1] = \
+                if roster_data[region][away_team][POSITION_ORDER.index(pos)][1] != "":
+                    roster_data[region][away_team][POSITION_ORDER.index(pos)+1] = \
                         [pos, name, points, proj]
                 else:
                     roster_data[region][away_team][POSITION_ORDER.index(pos)] = \
                         [pos, name, points, proj]
             else:
                 for i in range(6):
-                    if len(roster_data[region][away_team][BENCH_ORDER.index(pos)+len(POSITION_ORDER)+i]) == 0:
+                    if roster_data[region][away_team][BENCH_ORDER.index(pos)+len(POSITION_ORDER)+i][1] == "":
                         roster_data[region][away_team][BENCH_ORDER.index(pos)+len(POSITION_ORDER)+i] = \
                             [pos, name, points, proj]
                         break
