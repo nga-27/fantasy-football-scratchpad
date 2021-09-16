@@ -9,6 +9,7 @@ import pandas as pd
 
 
 POSITION_ORDER = ["QB", "RB", "RB", "WR", "WR", "TE", "RB/WR/TE", "D/ST", "K"]
+BENCH_ORDER = ["BE", "BE", "BE", "BE", "BE", "BE", "IR"]
 ROSTER = {
         "NE Position": ["", "Date Updated:", "", ""],
         "NE Name": ["", datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S"), "", ""],
@@ -79,38 +80,51 @@ def generate_roster_data(box_score: list, roster_data: dict, region: str) -> dic
         roster_data[region][away_team] = []
 
         # Load the player positions based off POSITION_ORDER as lists of lists (to be mapped later).
-        roster_data[region][home_team] = [[]] * len(POSITION_ORDER)
+        for pos in POSITION_ORDER:
+            roster_data[region][home_team].append([pos, "", "", ""])
+            roster_data[region][away_team].append([pos, "", "", ""])
+        for pos in BENCH_ORDER:
+            roster_data[region][home_team].append([pos, "", "", ""])
+            roster_data[region][away_team].append([pos, "", "", ""])
+
         for player in game.home_lineup:
             pos = player.slot_position
             name = player.name
             points = player.points
             proj = player.projected_points
             if pos in POSITION_ORDER:
-                if roster_data[region][home_team][POSITION_ORDER.index(pos)] != []:
-                    roster_data[region][home_team][POSITION_ORDER.index(pos) + 1] = \
+                if roster_data[region][home_team][POSITION_ORDER.index(pos)][1] != "":
+                    roster_data[region][home_team][POSITION_ORDER.index(pos)+1] = \
                         [pos, name, points, proj]
                 else:
                     roster_data[region][home_team][POSITION_ORDER.index(pos)] = \
                         [pos, name, points, proj]
             else:
-                roster_data[region][home_team].append([pos, name, points, proj])
+                for i in range(len(BENCH_ORDER)-1):
+                    if roster_data[region][home_team][BENCH_ORDER.index(pos)+len(POSITION_ORDER)+i][1] == "":
+                        roster_data[region][home_team][BENCH_ORDER.index(pos)+len(POSITION_ORDER)+i] = \
+                            [pos, name, points, proj]
+                        break
 
         # Load the player positions based off POSITION_ORDER as lists of lists (to be mapped later).
-        roster_data[region][away_team] = [[]] * len(POSITION_ORDER)
         for player in game.away_lineup:
             pos = player.slot_position
             name = player.name
             points = player.points
             proj = player.projected_points
             if pos in POSITION_ORDER:
-                if roster_data[region][away_team][POSITION_ORDER.index(pos)] != []:
-                    roster_data[region][away_team][POSITION_ORDER.index(pos) + 1] = \
+                if roster_data[region][away_team][POSITION_ORDER.index(pos)][1] != "":
+                    roster_data[region][away_team][POSITION_ORDER.index(pos)+1] = \
                         [pos, name, points, proj]
                 else:
                     roster_data[region][away_team][POSITION_ORDER.index(pos)] = \
                         [pos, name, points, proj]
             else:
-                roster_data[region][away_team].append([pos, name, points, proj])
+                for i in range(6):
+                    if roster_data[region][away_team][BENCH_ORDER.index(pos)+len(POSITION_ORDER)+i][1] == "":
+                        roster_data[region][away_team][BENCH_ORDER.index(pos)+len(POSITION_ORDER)+i] = \
+                            [pos, name, points, proj]
+                        break
 
     return roster_data
 
@@ -146,7 +160,10 @@ def load_rosters(rosters: dict, roster_data: dict, region: str, team: str, LEAGU
         if region == "NE":
             rosters["X"].append("")
 
-        for player in roster_data[region][team]:
+        for _, player in enumerate(roster_data[region][team]):
+            if len(player) == 0:
+                # Case where a lineup position is empty
+                player = ["", "", 0.0, 0.0]
             rosters[f"{region} Position"].append(player[0])
             rosters[f"{region} Name"].append(player[1])
             rosters[f"{region} Score"].append(player[2])
