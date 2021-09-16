@@ -81,6 +81,7 @@ def generate_roster_data(box_score: list, roster_data: dict, region: str) -> dic
 
         # Load the player positions based off POSITION_ORDER as lists of lists (to be mapped later).
         roster_data[region][home_team] = [[]] * (len(POSITION_ORDER) + len(BENCH_ORDER))
+        print(len(roster_data[region][home_team]))
         for player in game.home_lineup:
             pos = player.slot_position
             name = player.name
@@ -95,8 +96,8 @@ def generate_roster_data(box_score: list, roster_data: dict, region: str) -> dic
                         [pos, name, points, proj]
             else:
                 for i in range(6):
-                    if roster_data[region][home_team][BENCH_ORDER.index(pos)+i] == []:
-                        roster_data[region][home_team][BENCH_ORDER.index(pos)+i] = \
+                    if len(roster_data[region][home_team][BENCH_ORDER.index(pos)+len(POSITION_ORDER)+i]) == 0:
+                        roster_data[region][home_team][BENCH_ORDER.index(pos)+len(POSITION_ORDER)+i] = \
                             [pos, name, points, proj]
                         break
 
@@ -104,6 +105,7 @@ def generate_roster_data(box_score: list, roster_data: dict, region: str) -> dic
 
         # Load the player positions based off POSITION_ORDER as lists of lists (to be mapped later).
         roster_data[region][away_team] = [[]] * (len(POSITION_ORDER) + len(BENCH_ORDER))
+        print(len(roster_data[region][away_team]))
         for player in game.away_lineup:
             pos = player.slot_position
             name = player.name
@@ -118,8 +120,8 @@ def generate_roster_data(box_score: list, roster_data: dict, region: str) -> dic
                         [pos, name, points, proj]
             else:
                 for i in range(6):
-                    if roster_data[region][away_team][BENCH_ORDER.index(pos)+i] == []:
-                        roster_data[region][away_team][BENCH_ORDER.index(pos)+i] = \
+                    if len(roster_data[region][away_team][BENCH_ORDER.index(pos)+len(POSITION_ORDER)+i]) == 0:
+                        roster_data[region][away_team][BENCH_ORDER.index(pos)+len(POSITION_ORDER)+i] = \
                             [pos, name, points, proj]
                         break
 
