@@ -33,7 +33,8 @@ REQUIRES = [
     "xlrd==1.2.0",
     "XlsxWriter==1.2.6",
     "python-pptx==0.6.18",
-    "espn-api==0.18.0"
+    "espn-api==0.18.0",
+    "argparse==1.4.0"
 ]
 
 REQUIRES_DEV = [
