@@ -36,7 +36,7 @@ def generate_schedule_xlsx(schedule_path: Path, league_spreadsheet_path: Path):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("update the league schedule")
     parser.add_argument("--schedule_path", "-s", required=False, default="output/schedule.json")
-    parser.add_argument("--league_spreadsheet_path", "-l", required=False,
+    parser.add_argument("--output_path", "-l", required=False,
                         default="output/Mixed-14 Fantasy Football League.xlsx")
     args = parser.parse_args()
 
