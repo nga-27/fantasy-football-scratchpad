@@ -2,24 +2,22 @@
 
 Functions for importing and exporting the league spreadsheet
 """
-import os
+from pathlib import Path
 
 import pandas as pd
 import numpy as np
 
-LEAGUE_XLSX_PATH = os.path.join('content', 'Mixed-14 Fantasy Football League.xlsx')
-LEAGUE_OUTPUT_PATH = os.path.join('output', 'Mixed-14 Fantasy Football League.xlsx')
 
-def save_spreadsheet_to_file(data: dict, filename: str=LEAGUE_OUTPUT_PATH):
+def save_spreadsheet_to_file(data: dict, output_file_path: Path):
     """save_spreadsheet_to_file
 
     Saves the spreadsheet object to the xlsx file
 
     Args:
         data (dict): spreadsheet file object
-        filename (str, optional): file path to output. Defaults to LEAGUE_OUTPUT_PATH.
+        output_file_path (Path): file path to output.
     """
-    with pd.ExcelWriter(filename) as writer:
+    with pd.ExcelWriter(output_file_path) as writer:
         for key in data:
             data2 = data[key]
             if isinstance(data[key], dict):
@@ -47,18 +45,20 @@ def cleanse_import_sheets(data_sheet: pd.DataFrame) -> pd.DataFrame:
     return data_sheet
 
 
-def load_league_spreadsheet() -> dict:
+def load_league_spreadsheet(spreadsheet_path: Path) -> dict:
     """load_league_spreadsheet
 
     Opens and imports league spreadsheet into a dictionary object
+
+    Args:
+        spreadsheet_path (Path): file path to the spreadsheet
 
     Returns:
         dict: league spreadsheet object
     """
     league_xlsx = dict()
-    if os.path.exists(LEAGUE_XLSX_PATH):
-        xlsx = pd.ExcelFile(LEAGUE_XLSX_PATH)
+    if spreadsheet_path.exists():
+        xlsx = pd.ExcelFile(spreadsheet_path)
         for sheet in xlsx.sheet_names:
-            league_xlsx[sheet] = xlsx.parse(sheet)
-            league_xlsx[sheet] = cleanse_import_sheets(league_xlsx[sheet])
+            league_xlsx[sheet] = cleanse_import_sheets(xlsx.parse(sheet))
     return league_xlsx
