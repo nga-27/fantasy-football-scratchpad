@@ -8,7 +8,7 @@ def generate_schedule(schedule_path: Path, output_path: Path):
 
     with schedule_path.open('r') as inputFile:
         for i, line in enumerate(inputFile.read().splitlines()):
-            matchups = [[matchup.split("-")[0], matchup.split("-")[1]] for matchup in line.split()]
+            matchups = [matchup.split("-") for matchup in line.split()]
             schedule["weeks"][str(i + 1)] = matchups
 
     with output_path.open('w') as json_f:
