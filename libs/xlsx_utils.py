@@ -60,6 +60,5 @@ def load_league_spreadsheet(spreadsheet_path: Path) -> dict:
     if spreadsheet_path.exists():
         xlsx = pd.ExcelFile(spreadsheet_path)
         for sheet in xlsx.sheet_names:
-            league_xlsx[sheet] = xlsx.parse(sheet)
-            league_xlsx[sheet] = cleanse_import_sheets(league_xlsx[sheet])
+            league_xlsx[sheet] = cleanse_import_sheets(xlsx.parse(sheet))
     return league_xlsx

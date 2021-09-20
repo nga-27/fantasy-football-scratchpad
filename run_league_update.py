@@ -16,6 +16,14 @@ LEAGUE = FFLeague()
 
 
 def run_league_update(input_path: Path, output_path: Path):
+    """run_league_update
+
+    Primary script run to update the league spreadsheet using ESPN's API calls
+
+    Args:
+        input_path (Path): input spreadsheet xlsx path
+        output_path (Path): output spreadsheet xlsx path
+    """
     league_xlsx = load_league_spreadsheet(input_path)
     league_xlsx = update_loaded_schedule(league_xlsx, LEAGUE)
     league_xlsx = update_scores(league_xlsx, LEAGUE)

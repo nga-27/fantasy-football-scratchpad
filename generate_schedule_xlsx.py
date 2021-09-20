@@ -21,6 +21,10 @@ def generate_schedule_xlsx(schedule_path: Path, league_spreadsheet_path: Path):
     """generate_schedule_xlsx
 
     Imports the spreadsheet and schedule.json, loads the spreadsheet with the schedule
+
+    Args:
+        schedule_path (Path): POSIX-Path to passed-in schedule json
+        league_spreadsheet_path (Path): POSIX-path to passed-in league spreadsheet
     """
     if schedule_path.exists():
         league_xlsx = load_league_spreadsheet(league_spreadsheet_path)
