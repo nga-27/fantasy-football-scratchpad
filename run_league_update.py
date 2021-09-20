@@ -14,6 +14,7 @@ import argparse
 
 LEAGUE = FFLeague()
 
+
 def run_league_update(input_path: Path, output_path: Path):
     league_xlsx = load_league_spreadsheet(input_path)
     league_xlsx = update_loaded_schedule(league_xlsx, LEAGUE)
