@@ -10,6 +10,8 @@ Solution: this repo. Being commissioner in both leagues, I'm using the [ESPN API
 
 ## Configure the [API](https://github.com/cwendt94/espn-api/wiki/Football-Intro)
 
+First, a huge shout out to [cwendt94](https://github.com/cwendt94) for making this possible with his wrapped APIs, above.
+
 You'll need a few configuration things first.
 
 1) Copy-paste your own copy of `.env.example` and save it as `.env`. 
