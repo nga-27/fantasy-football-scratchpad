@@ -7,9 +7,11 @@ import copy
 
 import pandas as pd
 
+from libs.config import CONFIG_SETTINGS
 
-POSITION_ORDER = ["QB", "RB", "RB", "WR", "WR", "TE", "RB/WR/TE", "D/ST", "K"]
-BENCH_ORDER = ["BE", "BE", "BE", "BE", "BE", "BE", "IR"]
+
+POSITION_ORDER = CONFIG_SETTINGS.get('position_order')
+BENCH_ORDER = CONFIG_SETTINGS.get('bench_order')
 ROSTER = {
         "NE Position": ["", "Date Updated:", "", ""],
         "NE Name": ["", datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S"), "", ""],
