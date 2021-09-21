@@ -50,6 +50,7 @@ class FFLeague():
                     "stats": {
                         "wins": 0,
                         "losses": 0,
+                        "ties": 0,
                         "pf": 0.0,
                         "pa": 0.0,
                         "pct": 0.0

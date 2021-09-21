@@ -40,7 +40,9 @@ def update_standings(xlsx_dict: dict, LEAGUE) -> dict:
     for _, (team_id, pct, pf_) in enumerate(standings):
         xlsx_dict["Standings"]["Team"][overall_row] = LEAGUE.teams[team_id]["name"]
         xlsx_dict["Standings"]["Overall Record"][overall_row] = \
-            f"{LEAGUE.teams[team_id]['stats']['wins']}-{LEAGUE.teams[team_id]['stats']['losses']}"
+            f"{LEAGUE.teams[team_id]['stats']['wins']}-" + \
+            f"{LEAGUE.teams[team_id]['stats']['losses']}-" + \
+            f"{LEAGUE.teams[team_id]['stats']['ties']}"
         xlsx_dict["Standings"]["Pct"][overall_row] = pct
         xlsx_dict["Standings"]["PF"][overall_row] = pf_
         xlsx_dict["Standings"]["PA"][overall_row] = LEAGUE.teams[team_id]['stats']['pa']
@@ -51,7 +53,9 @@ def update_standings(xlsx_dict: dict, LEAGUE) -> dict:
         if region == 'NE':
             xlsx_dict["Standings"]["Team"][ne_row] = LEAGUE.teams[team_id]["name"]
             xlsx_dict["Standings"]["Overall Record"][ne_row] = \
-                f"{LEAGUE.teams[team_id]['stats']['wins']}-{LEAGUE.teams[team_id]['stats']['losses']}"
+                f"{LEAGUE.teams[team_id]['stats']['wins']}-" + \
+                f"{LEAGUE.teams[team_id]['stats']['losses']}-" + \
+                f"{LEAGUE.teams[team_id]['stats']['ties']}"
             xlsx_dict["Standings"]["Pct"][ne_row] = pct
             xlsx_dict["Standings"]["PF"][ne_row] = pf_
             xlsx_dict["Standings"]["PA"][ne_row] = LEAGUE.teams[team_id]['stats']['pa']
@@ -60,7 +64,9 @@ def update_standings(xlsx_dict: dict, LEAGUE) -> dict:
         else:
             xlsx_dict["Standings"]["Team"][sw_row] = LEAGUE.teams[team_id]["name"]
             xlsx_dict["Standings"]["Overall Record"][sw_row] = \
-                f"{LEAGUE.teams[team_id]['stats']['wins']}-{LEAGUE.teams[team_id]['stats']['losses']}"
+                f"{LEAGUE.teams[team_id]['stats']['wins']}-" + \
+                f"{LEAGUE.teams[team_id]['stats']['losses']}-" + \
+                f"{LEAGUE.teams[team_id]['stats']['ties']}"
             xlsx_dict["Standings"]["Pct"][sw_row] = pct
             xlsx_dict["Standings"]["PF"][sw_row] = pf_
             xlsx_dict["Standings"]["PA"][sw_row] = LEAGUE.teams[team_id]['stats']['pa']
@@ -92,7 +98,7 @@ def load_league_object_records(xlsx_dict: dict, LEAGUE):
                     score = float(xlsx_dict[tab]["Score"][i])
                     LEAGUE.teams[map_id]['stats']['pf'] += score
 
-                    # For games played in the past week(s), trigger wins/losses.
+                    # For games played in the past week(s), trigger wins/losses/ties.
                     if week_num < current_week:
                         if xlsx_dict[tab]["Team"][i-1] not in SKIP_ROWS:
                             # 2nd team in the pairing
@@ -102,6 +108,13 @@ def load_league_object_records(xlsx_dict: dict, LEAGUE):
                             if score > float(xlsx_dict[tab]["Score"][i-1]):
                                 LEAGUE.teams[map_id]['stats']['wins'] += 1
                                 LEAGUE.teams[map_id2]['stats']['losses'] += 1
+                                LEAGUE.teams[map_id]['stats']['pa'] += \
+                                    float(xlsx_dict[tab]["Score"][i-1])
+                                LEAGUE.teams[map_id2]['stats']['pa'] += score
+
+                            elif score == float(xlsx_dict[tab]["Score"][i-1]):
+                                LEAGUE.teams[map_id]['stats']['ties'] += 1
+                                LEAGUE.teams[map_id2]['stats']['ties'] += 1
                                 LEAGUE.teams[map_id]['stats']['pa'] += \
                                     float(xlsx_dict[tab]["Score"][i-1])
                                 LEAGUE.teams[map_id2]['stats']['pa'] += score
@@ -119,8 +132,11 @@ def load_league_object_records(xlsx_dict: dict, LEAGUE):
         if 'NE-' in team_id or 'SW-' in team_id:
             wins = LEAGUE.teams[team_id]["stats"]["wins"]
             losses = LEAGUE.teams[team_id]["stats"]["losses"]
-            if sum([wins, losses]) > 0:
-                LEAGUE.teams[team_id]["stats"]["pct"] = float(wins) / float(sum([wins, losses]))
+            ties = LEAGUE.teams[team_id]["stats"]["ties"]
+            if sum([wins, losses, ties]) > 0:
+                win_sum = (1.0 * wins) + (0.5 * ties) + (0.0 * losses) 
+                LEAGUE.teams[team_id]["stats"]["pct"] = \
+                    float(win_sum) / float(sum([wins, losses, ties]))
             standings.append(
                 (
                     team_id,

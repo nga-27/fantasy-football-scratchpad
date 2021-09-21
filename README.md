@@ -13,7 +13,7 @@ Solution: this repo. Being commissioner in both leagues, I'm using the [ESPN API
 You'll need a few configuration things first.
 
 1) Copy-paste your own copy of `.env.example` and save it as `.env`. 
-2) You'll need to fill out the keys in the `.env` file. `ESPN_SWID` and `ESPN_S2` are found by [inspecting the ESPN site](https://github.com/cwendt94/espn-api/discussions/150). 
+2) You'll need to fill out the keys in the `.env` file. `ESPN_SWID` and `ESPN_S2` are found by [inspecting the ESPN site](https://github.com/cwendt94/espn-api/discussions/150). You optionally will have the opportunity to set the playing and bench position your league offers.
 3) The other keys are found by one's own league sites. Note, since I'm managing two leagues simultaneously (i.e. the point of this repo), I have two keys for league IDs. I randomly named them "regions" of NE and SW. You can have w/e you want, but for this work, keep the key names as they are.
 
 Once you have these pieces, it's a good time to run `python explore_api.py`. This will ensure you have proper connection to the ESPN API.
