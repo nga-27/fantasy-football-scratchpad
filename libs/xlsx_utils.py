@@ -32,10 +32,10 @@ def save_spreadsheet_to_file(data: dict, output_file_path: Path):
             # pretty and readable. Start with index (which is technically column 0, but it doesn't
             # show up on "columns").
             worksheet = writer.sheets[key]
-            max_len = find_max_column_width(data2.index)
+            max_len = find_max_column_width(data2.index, column_name=data2.index.name)
             worksheet.set_column(0, 0, max_len)
             for idx, col in enumerate(data2):
-                max_len = find_max_column_width(data2[col])
+                max_len = find_max_column_width(data2[col], column_name=col)
                 # Add one since the index column is technically column 0 and is already done above.
                 worksheet.set_column(idx+1, idx+1, max_len)
         
@@ -77,19 +77,20 @@ def load_league_spreadsheet(spreadsheet_path: Path) -> dict:
     return league_xlsx
 
 
-def find_max_column_width(column: list) -> int:
+def find_max_column_width(column: list, column_name: str='') -> int:
     """find_max_column_width
 
     Of all items in a given column list, find the "longest" item (when casted to a string) so we
     can format the column widths appropriately.
 
     Args:
-        column (list): column to evaluate each item for width by casting item to str and measuring        
+        column (list): column to evaluate each item for width by casting item to str and measuring
+        column_name (str): name of the column (Default: '')     
 
     Returns:
         int: max length of column + 2
     """
-    max_len = 0
+    max_len = len(column_name)
     for item in column:
         if len(str(item)) > max_len:
             max_len = len(str(item))
