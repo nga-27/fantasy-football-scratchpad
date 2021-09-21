@@ -3,6 +3,7 @@
 Converts values stored in the .env file to an object referenced by the ESPN API class FFLeague
 """
 import os
+import json
 from dotenv import load_dotenv
 
 PWD = os.path.dirname(__file__)
@@ -22,6 +23,6 @@ CONFIG_SETTINGS = {
     'year': int(os.getenv('YEAR', 2021)),
     'league_id_ne': int(os.getenv('LEAGUE_ID_NE', 0)),
     'league_id_sw': int(os.getenv('LEAGUE_ID_SW', 0)),
-    'position_order': os.getenv('PLAYING_POSITIONS', DEFAULT_POSITIONS),
-    'bench_order': os.getenv('BENCH_POSITIONS', DEFAULT_BENCH)
+    'position_order': json.loads(os.getenv('PLAYING_POSITIONS', DEFAULT_POSITIONS)),
+    'bench_order': json.loads(os.getenv('BENCH_POSITIONS', DEFAULT_BENCH))
 }
