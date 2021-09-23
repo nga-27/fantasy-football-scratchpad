@@ -36,6 +36,8 @@ def generate_schedule_xlsx(schedule_path: Path, league_spreadsheet_path: Path):
 
         save_spreadsheet_to_file(league_xlsx, league_spreadsheet_path)
 
+    print("*** Done! ***")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("update the league schedule")
