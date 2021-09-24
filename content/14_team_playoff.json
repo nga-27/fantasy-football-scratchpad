@@ -1,0 +1,203 @@
+{
+    "week1": {
+        "byes": [
+            1,
+            2
+        ],
+        "g1": [
+            8,
+            9
+        ],
+        "g2": [
+            4,
+            13
+        ],
+        "g3": [
+            5,
+            12
+        ],
+        "g4": [
+            6,
+            11
+        ],
+        "g5": [
+            3,
+            14
+        ],
+        "g6": [
+            7,
+            10
+        ]
+    },
+    "week2": {
+        "byes": [
+            {
+                "game": "g1",
+                "type": "loser"
+            },
+            {
+                "game": "g6",
+                "type": "loser"
+            }
+        ],
+        "g7": [
+            1,
+            {
+                "game": "g1",
+                "type": "winner"
+            }
+        ],
+        "g8": [
+            {
+                "game": "g2",
+                "type": "winner"
+            },
+            {
+                "game": "g3",
+                "type": "winner"
+            }
+        ],
+        "g9": [
+            {
+                "game": "g4",
+                "type": "winner"
+            },
+            {
+                "game": "g5",
+                "type": "winner"
+            }
+        ],
+        "g10": [
+            {
+                "game": "g6",
+                "type": "winner"
+            },
+            2
+        ],
+        "g11": [
+            {
+                "game": "g2",
+                "type": "loser"
+            },
+            {
+                "game": "g3",
+                "type": "loser"
+            }
+        ],
+        "g12": [
+            {
+                "game": "g4",
+                "type": "loser"
+            },
+            {
+                "game": "g5",
+                "type": "loser"
+            }
+        ]
+    },
+    "week3": {
+        "byes": [],
+        "g13": [
+            {
+                "game": "g7",
+                "type": "winner"
+            },
+            {
+                "game": "g8",
+                "type": "winner"
+            }
+        ],
+        "g14": [
+            {
+                "game": "g9",
+                "type": "winner"
+            },
+            {
+                "game": "g10",
+                "type": "winner"
+            }
+        ],
+        "g15": [
+            {
+                "game": "g11",
+                "type": "winner"
+            },
+            {
+                "game": "g7",
+                "type": "loser"
+            }
+        ],
+        "g16": [
+            {
+                "game": "g12",
+                "type": "winner"
+            },
+            {
+                "game": "g8",
+                "type": "loser"
+            }
+        ],
+        "g17": [
+            {
+                "game": "g7",
+                "type": "loser"
+            },
+            {
+                "game": "g8",
+                "type": "loser"
+            }
+        ],
+        "g18": [
+            {
+                "game": "g9",
+                "type": "loser"
+            },
+            {
+                "game": "g10",
+                "type": "loser"
+            }
+        ]
+    },
+    "week4": {
+        "g19": [
+            {
+                "game": "g13",
+                "type": "winner"
+            },
+            {
+                "game": "g14",
+                "type": "winner"
+            }
+        ],
+        "g20": [
+            {
+                "game": "g15",
+                "type": "winner"
+            },
+            {
+                "game": "g16",
+                "type": "winner"
+            }
+        ],
+        "g21": [
+            {
+                "game": "g17",
+                "type": "winner"
+            },
+            {
+                "game": "g18",
+                "type": "winner"
+            }
+        ],
+        "g22": [
+            {
+                "game": "g13",
+                "type": "loser"
+            },
+            {
+                "game": "g14",
+                "type": "loser"
+            }
+        ]
+    }
+}
