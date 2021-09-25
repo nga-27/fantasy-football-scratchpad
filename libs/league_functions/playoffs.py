@@ -1,28 +1,28 @@
 import copy
+import json
+from pathlib import Path
 import pprint
 
 from libs.xlsx_utils import xlsx_patch_rows
 
 
 FORMAT = {
-    "Matchup": ["", "", "Bye", ""],
-    "Points": ["", "", "", ""],
-    "Projected": ["", "", "", ""]
+    "Matchup": ["", "", "Byes"],
+    "Points": ["", "", ""],
+    "Projected": ["", "", ""]
 }
 
-def load_playoffs(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
-    xlsx_dict["Playoffs-Wk1"] = copy.deepcopy(FORMAT)
-    xlsx_dict = load_round_one(xlsx_dict, playoff_data, LEAGUE)
 
-    xlsx_dict["Playoffs-Wk2"] = copy.deepcopy(FORMAT)
-    xlsx_dict["Playoffs-Wk3"] = copy.deepcopy(FORMAT)
-    xlsx_dict["Playoffs-Wk4"] = copy.deepcopy(FORMAT)
+def manage_playoffs(xlsx_dict: dict, playoff_path: Path, LEAGUE) -> dict:
+    if playoff_path.exists():
+        with playoff_path.open("r") as playoff_f:
+            playoff_data = json.load(playoff_f)
+            xlsx_dict["Playoffs-Wk1"] = copy.deepcopy(FORMAT)
+            xlsx_dict = load_round_one(xlsx_dict, playoff_data, LEAGUE)
 
-    return xlsx_dict
-
-
-def update_playoffs(xlsx_dict: dict, LEAGUE) -> dict:
-    pprint.pprint(LEAGUE.get_rankings())
+            xlsx_dict["Playoffs-Wk2"] = copy.deepcopy(FORMAT)
+            xlsx_dict["Playoffs-Wk3"] = copy.deepcopy(FORMAT)
+            xlsx_dict["Playoffs-Wk4"] = copy.deepcopy(FORMAT)
     return xlsx_dict
 
 
@@ -42,4 +42,13 @@ def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
 
     dataset = xlsx_patch_rows(dataset, {}, 2)
 
+    for game in playoff_data['round1']:
+        if game != 'byes':
+            for rank in playoff_data['round1'][game]:
+                team_name = rankings['by_rank'][rank-1]['name']
+                obj_to_patch = {"Matchup": team_name, "Points": 0, "Projected": 0}
+                dataset = xlsx_patch_rows(dataset, obj_to_patch, 1)
+            dataset = xlsx_patch_rows(dataset, {}, 2)
+
+    xlsx_dict['Playoffs-Wk1'] = dataset
     return xlsx_dict

@@ -13,7 +13,7 @@ from libs.xlsx_utils import (
 )
 from libs.league import FFLeague
 from libs.league_functions.schedule import load_schedule
-from libs.league_functions.playoffs import load_playoffs
+from libs.league_functions.playoffs import manage_playoffs
 
 LEAGUE = FFLeague()
 
@@ -39,11 +39,7 @@ def generate_schedule_xlsx(schedule_path: Path,
             schedule_json = json.load(sch_f)
 
         league_xlsx = load_schedule(league_xlsx, LEAGUE, schedule_json)
-
-        if playoff_path.exists():
-            with playoff_path.open("r") as playoff_f:
-                playoff_json = json.load(playoff_f)
-                league_xlsx = load_playoffs(league_xlsx, playoff_json, LEAGUE)
+        league_xlsx = manage_playoffs(league_xlsx, playoff_path, LEAGUE)
 
         save_spreadsheet_to_file(league_xlsx, output_path)
 

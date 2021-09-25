@@ -110,7 +110,7 @@ class FFLeague():
             team_id = team_tuple[0]
             obj = {
                 "team_id": team_id,
-                "team_name": self.teams[team_id]['name'],
+                "name": self.teams[team_id]['name'],
                 "owner": self.teams[team_id]['owner'],
                 "rank": i+1
             }
