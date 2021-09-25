@@ -33,65 +33,77 @@
         "byes": [
             {
                 "game": "g1",
-                "type": "loser"
+                "type": "loser",
+                "default": 9
             },
             {
                 "game": "g6",
-                "type": "loser"
+                "type": "loser",
+                "default": 10
             }
         ],
         "g7": [
             1,
             {
                 "game": "g1",
-                "type": "winner"
+                "type": "winner",
+                "default": 8
             }
         ],
         "g8": [
             {
                 "game": "g2",
-                "type": "winner"
+                "type": "winner",
+                "default": 4
             },
             {
                 "game": "g3",
-                "type": "winner"
+                "type": "winner",
+                "default": 5
             }
         ],
         "g9": [
             {
                 "game": "g4",
-                "type": "winner"
+                "type": "winner",
+                "default": 6
             },
             {
                 "game": "g5",
-                "type": "winner"
+                "type": "winner",
+                "default": 3
             }
         ],
         "g10": [
             {
                 "game": "g6",
-                "type": "winner"
+                "type": "winner",
+                "default": 7
             },
             2
         ],
         "g11": [
             {
                 "game": "g2",
-                "type": "loser"
+                "type": "loser",
+                "default": 12
             },
             {
                 "game": "g3",
-                "type": "loser"
+                "type": "loser",
+                "default": 13
             }
         ],
         "g12": [
             {
                 "game": "g4",
-                "type": "loser"
+                "type": "loser",
+                "default": 11
             },
             {
                 "game": "g5",
-                "type": "loser"
+                "type": "loser",
+                "default": 14
             }
         ]
     },
@@ -100,61 +112,73 @@
         "g13": [
             {
                 "game": "g7",
-                "type": "winner"
+                "type": "winner",
+                "default": 1
             },
             {
                 "game": "g8",
-                "type": "winner"
+                "type": "winner",
+                "default": 4
             }
         ],
         "g14": [
             {
                 "game": "g9",
-                "type": "winner"
+                "type": "winner",
+                "default": 3
             },
             {
                 "game": "g10",
-                "type": "winner"
+                "type": "winner",
+                "default": 2
             }
         ],
         "g15": [
             {
                 "game": "g11",
-                "type": "winner"
+                "type": "winner",
+                "default": 12
             },
             {
                 "game": "g1",
-                "type": "loser"
+                "type": "loser",
+                "default": 9
             }
         ],
         "g16": [
             {
                 "game": "g12",
-                "type": "winner"
+                "type": "winner",
+                "default": 11
             },
             {
                 "game": "g6",
-                "type": "loser"
+                "type": "loser",
+                "default": 10
             }
         ],
         "g17": [
             {
                 "game": "g7",
-                "type": "loser"
+                "type": "loser",
+                "default": 8
             },
             {
                 "game": "g8",
-                "type": "loser"
+                "type": "loser",
+                "default": 5
             }
         ],
         "g18": [
             {
                 "game": "g9",
-                "type": "loser"
+                "type": "loser",
+                "default": 6
             },
             {
                 "game": "g10",
-                "type": "loser"
+                "type": "loser",
+                "default": 7
             }
         ]
     },
@@ -162,41 +186,49 @@
         "g19": [
             {
                 "game": "g13",
-                "type": "winner"
+                "type": "winner",
+                "default": 1
             },
             {
                 "game": "g14",
-                "type": "winner"
+                "type": "winner",
+                "default": 2
             }
         ],
         "g20": [
             {
                 "game": "g15",
-                "type": "winner"
+                "type": "winner",
+                "default": 9
             },
             {
                 "game": "g16",
-                "type": "winner"
+                "type": "winner",
+                "default": 10
             }
         ],
         "g21": [
             {
                 "game": "g17",
-                "type": "winner"
+                "type": "winner",
+                "default": 5
             },
             {
                 "game": "g18",
-                "type": "winner"
+                "type": "winner",
+                "default": 6
             }
         ],
         "g22": [
             {
                 "game": "g13",
-                "type": "loser"
+                "type": "loser",
+                "default": 4
             },
             {
                 "game": "g14",
-                "type": "loser"
+                "type": "loser",
+                "default": 3
             }
         ]
     }

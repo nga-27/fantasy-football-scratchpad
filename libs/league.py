@@ -35,10 +35,14 @@ class FFLeague():
         )
         self.teams = dict()
         self.rankings = dict()
+        self.info = dict()
+        self.playoffs = {"games": {}}
 
     def load_teams_from_espn(self, team_data=None):
         if team_data is None:
             return {}
+
+        self.info['number_of_teams'] = len(team_data["MAP ID"])
 
         # To map nicely with ESPN's order, we'll use the "MAP ID"
         for i, _id in enumerate(team_data["MAP ID"]):
@@ -105,6 +109,9 @@ class FFLeague():
     def get_SW(self):
         return self.SW
 
+    def get_info(self):
+        return self.info
+
     def set_final_rankings(self, standings_data):
         self.rankings['by_rank'] = list()
         self.rankings['by_team'] = dict()
@@ -131,3 +138,47 @@ class FFLeague():
 
     def get_current_week_scores(self, team_id) -> dict:
         return self.teams[team_id]['current_week']
+
+    def set_playoff_game(self, game_id: str, game_object: list):
+        self.playoffs[game_id] = {"winner": "", "loser": ""}
+        if 'TEAM-RANK' not in game_object[0]['team_name'] and \
+            'TEAM-RANK' not in game_object[1]['team_name']:
+            team1_id = self.teams["__team_names__"][game_object[0]['team_name']]['map_id']
+            team2_id = self.teams["__team_names__"][game_object[1]['team_name']]['map_id']
+
+            if game_object[0]['score'] > game_object[1]['score']:
+                self.playoffs[game_id]['winner'] = team1_id
+                self.playoffs[game_id]['loser'] = team2_id
+            elif game_object[0]['score'] < game_object[1]['score']:
+                self.playoffs[game_id]['winner'] = team2_id
+                self.playoffs[game_id]['loser'] = team1_id
+            else:
+                # Tie breaker scenarios begin :O
+                content = self.unmanaged_game_tiebreaker(team1_id, team2_id)
+                self.playoffs[game_id]['winner'] = content['winner']
+                self.playoffs[game_id]['loser'] = content['loser']
+
+    def unmanaged_game_tiebreaker(self, team1_id, team2_id) -> dict:
+        # Start with PF
+        team1_pf = self.teams[team1_id]['stats']['pf']
+        team2_pf = self.teams[team2_id]['stats']['pf']
+        if team1_pf > team2_pf:
+            return {"winner": team1_id, "loser": team2_id}
+        elif team1_pf < team2_pf:
+            return {"winner": team2_id, "loser": team1_id}
+        
+        else:
+            # Secondary tiebreaker: PA
+            team1_pa = self.teams[team1_id]['stats']['pa']
+            team2_pa = self.teams[team2_id]['stats']['pa']
+            if team1_pa > team2_pa:
+                return {"winner": team1_id, "loser": team2_id}
+            elif team1_pa < team2_pa:
+                return {"winner": team2_id, "loser": team1_id}
+            else:
+                print(f"ERROR IN TIEBREAKER!! Teams '{team1_id}' and '{team2_id}' tied through PF/PA")
+
+        return {"winner": team1_id, "loser": team2_id}
+
+    def get_playoffs(self):
+        return self.playoffs
