@@ -37,7 +37,9 @@ def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
     for bye in round_one['byes']:
         # First round will only have int rankings
         team_name = rankings['by_rank'][bye-1]['name']
-        obj_to_patch = {"Matchup": team_name}
+        obj_to_patch = {
+            "Matchup": team_name
+        }
         dataset = xlsx_patch_rows(dataset, obj_to_patch, 1)
 
     dataset = xlsx_patch_rows(dataset, {}, 2)
@@ -46,7 +48,16 @@ def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
         if game != 'byes':
             for rank in playoff_data['round1'][game]:
                 team_name = rankings['by_rank'][rank-1]['name']
-                obj_to_patch = {"Matchup": team_name, "Points": 0, "Projected": 0}
+                if 'team_id' in rankings['by_rank'][rank-1]:
+                    scoring = LEAGUE.get_current_week_scores(rankings['by_rank'][rank-1]['team_id'])
+                else:
+                    scoring = {"points": 0.0, "projected": 0.0}
+
+                obj_to_patch = {
+                    "Matchup": team_name,
+                    "Points": scoring["points"],
+                    "Projected": scoring["projected"]
+                }
                 dataset = xlsx_patch_rows(dataset, obj_to_patch, 1)
             dataset = xlsx_patch_rows(dataset, {}, 2)
 

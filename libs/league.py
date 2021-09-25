@@ -55,6 +55,10 @@ class FFLeague():
                         "pf": 0.0,
                         "pa": 0.0,
                         "pct": 0.0
+                    },
+                    "current_week": {
+                        "points": 0.0,
+                        "projected": 0.0
                     }
                 }
                 region_id = int(_id.split('-')[1])
@@ -85,7 +89,6 @@ class FFLeague():
         self.teams.update(temp_dict)
 
     def update_teams_df(self, team_data: pd.DataFrame) -> pd.DataFrame:
-        # pprint.pprint(self.teams)
         for i, team_id in enumerate(team_data["MAP ID"]):
             if team_id == "":
                 continue
@@ -119,4 +122,12 @@ class FFLeague():
 
     def get_rankings(self):
         return self.rankings
-        
+
+    def set_team_scores(self, scoring_obj: dict, scoring_type: str = 'points'):
+        for team_id in self.teams['__team_names__']:
+            if team_id in scoring_obj.keys():
+                map_id = self.teams['__team_names__'][team_id]['map_id']
+                self.teams[map_id]['current_week'][scoring_type] = scoring_obj[team_id]
+
+    def get_current_week_scores(self, team_id) -> dict:
+        return self.teams[team_id]['current_week']
