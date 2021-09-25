@@ -13,11 +13,15 @@ from libs.xlsx_utils import (
 )
 from libs.league import FFLeague
 from libs.league_functions.schedule import load_schedule
+from libs.league_functions.playoffs import load_playoffs
 
 LEAGUE = FFLeague()
 
 
-def generate_schedule_xlsx(schedule_path: Path, league_spreadsheet_path: Path):
+def generate_schedule_xlsx(schedule_path: Path,
+                           league_spreadsheet_path: Path,
+                           playoff_path: Path,
+                           output_path: Path):
     """generate_schedule_xlsx
 
     Imports the spreadsheet and schedule.json, loads the spreadsheet with the schedule
@@ -25,6 +29,8 @@ def generate_schedule_xlsx(schedule_path: Path, league_spreadsheet_path: Path):
     Args:
         schedule_path (Path): POSIX-Path to passed-in schedule json
         league_spreadsheet_path (Path): POSIX-path to passed-in league spreadsheet
+        playoff_path (Path): POSIX-Path to passed-in playoff json
+        output_path (Path): POSIX-path to passed-in generated league spreadsheet
     """
     if schedule_path.exists():
         league_xlsx = load_league_spreadsheet(league_spreadsheet_path)
@@ -34,7 +40,12 @@ def generate_schedule_xlsx(schedule_path: Path, league_spreadsheet_path: Path):
 
         league_xlsx = load_schedule(league_xlsx, LEAGUE, schedule_json)
 
-        save_spreadsheet_to_file(league_xlsx, league_spreadsheet_path)
+        if playoff_path.exists():
+            with playoff_path.open("r") as playoff_f:
+                playoff_json = json.load(playoff_f)
+                league_xlsx = load_playoffs(league_xlsx, playoff_json, LEAGUE)
+
+        save_spreadsheet_to_file(league_xlsx, output_path)
 
     print("*** Done! ***")
 
@@ -43,11 +54,17 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser("update the league schedule")
     parser.add_argument("--schedule_path", "-s", required=False, default="output/schedule.json")
     parser.add_argument("--league_spreadsheet_path", "-l", required=False,
+                        default="content/Mixed-14 Fantasy Football League.xlsx")
+    parser.add_argument("--league_spreadsheet_output_path", "-o", required=False,
                         default="output/Mixed-14 Fantasy Football League.xlsx")
+    parser.add_argument("--playoff_path", "-p", required=False,
+                        default="content/14_team_playoff.json")
     args = parser.parse_args()
 
     SCHEDULE_PATH = Path(args.schedule_path).resolve()
     SPREADSHEET_PATH = Path(args.league_spreadsheet_path).resolve()
+    PLAYOFF_PATH = Path(args.playoff_path).resolve()
+    OUTPUT_FILE_PATH = Path(args.league_spreadsheet_output_path).resolve()
 
-    generate_schedule_xlsx(SCHEDULE_PATH, SPREADSHEET_PATH)
+    generate_schedule_xlsx(SCHEDULE_PATH, SPREADSHEET_PATH, PLAYOFF_PATH, OUTPUT_FILE_PATH)
 

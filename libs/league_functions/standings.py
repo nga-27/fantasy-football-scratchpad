@@ -145,4 +145,7 @@ def load_league_object_records(xlsx_dict: dict, LEAGUE):
                 )
             )
     standings = sorted(standings, key=lambda x: (x[1], x[2]), reverse=True)
+
+    # Yes, this will happen every week during the regular season, but why not?
+    LEAGUE.set_final_rankings(standings)
     return standings

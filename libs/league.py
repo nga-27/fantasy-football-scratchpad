@@ -34,6 +34,7 @@ class FFLeague():
             swid=CONFIG_SETTINGS["swid"]
         )
         self.teams = dict()
+        self.rankings = dict()
 
     def load_teams_from_espn(self, team_data=None):
         if team_data is None:
@@ -100,4 +101,22 @@ class FFLeague():
 
     def get_SW(self):
         return self.SW
+
+    def set_final_rankings(self, standings_data):
+        self.rankings['by_rank'] = list()
+        self.rankings['by_team'] = dict()
+
+        for i, team_tuple in enumerate(standings_data):
+            team_id = team_tuple[0]
+            obj = {
+                "team_id": team_id,
+                "team_name": self.teams[team_id]['name'],
+                "owner": self.teams[team_id]['owner'],
+                "rank": i+1
+            }
+            self.rankings['by_rank'].append(obj)
+            self.rankings['by_team'][team_id] = obj
+
+    def get_rankings(self):
+        return self.rankings
         
