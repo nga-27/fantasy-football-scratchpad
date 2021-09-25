@@ -64,7 +64,9 @@
                     "default": 10
                 }
             ],
-            "info": {}
+            "info": {
+                "name": "Consolation B-1"
+            }
         },
         "g7": {
             "matchup": [
@@ -131,7 +133,9 @@
                     "default": 13
                 }
             ],
-            "info": {}
+            "info": {
+                "name": "Consolation B-2"
+            }
         },
         "g12": {
             "matchup": [
@@ -146,7 +150,9 @@
                     "default": 14
                 }
             ],
-            "info": {}
+            "info": {
+                "name": "Consolation B-3"
+            }
         }
     },
     "round3": {
@@ -167,7 +173,9 @@
                     "default": 4
                 }
             ],
-            "info": {}
+            "info": {
+                "name": "Semifinals 1"
+            }
         },
         "g14": {
             "matchup": [
@@ -182,7 +190,9 @@
                     "default": 2
                 }
             ],
-            "info": {}
+            "info": {
+                "name": "Semifinals 2"
+            }
         },
         "g15": {
             "matchup": [
@@ -197,7 +207,9 @@
                     "default": 9
                 }
             ],
-            "info": {}
+            "info": {
+                "name": "Consolation B-4"
+            }
         },
         "g16": {
             "matchup": [
@@ -212,7 +224,9 @@
                     "default": 10
                 }
             ],
-            "info": {}
+            "info": {
+                "name": "Consolation B-5"
+            }
         },
         "g17": {
             "matchup": [
@@ -227,7 +241,9 @@
                     "default": 5
                 }
             ],
-            "info": {}
+            "info": {
+                "name": "Consolation A-1"
+            }
         },
         "g18": {
             "matchup": [
@@ -242,7 +258,9 @@
                     "default": 7
                 }
             ],
-            "info": {}
+            "info": {
+                "name": "Consolation A-2"
+            }
         }
     },
     "round4": {
@@ -263,7 +281,9 @@
                     "default": 2
                 }
             ],
-            "info": {}
+            "info": {
+                "name": "League Championship"
+            }
         },
         "g20": {
             "matchup": [
@@ -278,7 +298,9 @@
                     "default": 10
                 }
             ],
-            "info": {}
+            "info": {
+                "name": "Consolation B-Championship"
+            }
         },
         "g21": {
             "matchup": [
@@ -293,7 +315,9 @@
                     "default": 6
                 }
             ],
-            "info": {}
+            "info": {
+                "name": "Consolation A-Championship"
+            }
         },
         "g22": {
             "matchup": [
@@ -308,7 +332,9 @@
                     "default": 3
                 }
             ],
-            "info": {}
+            "info": {
+                "name": "3rd Place Game"
+            }
         }
     }
 }

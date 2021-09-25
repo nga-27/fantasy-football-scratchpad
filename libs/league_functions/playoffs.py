@@ -69,6 +69,9 @@ def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
     for game in playoff_data['round1']:
         if game != 'byes':
             game_objects = []
+            title = playoff_data['round1'][game]['info'].get('name')
+            has_titled = False
+
             for rank in playoff_data['round1'][game]['matchup']:
                 team_name = rankings['by_rank'][rank-1]['name']
                 if 'team_id' in rankings['by_rank'][rank-1]:
@@ -84,6 +87,12 @@ def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
                     "Points": scoring["points"],
                     "Projected": scoring["projected"]
                 }
+
+                if title and not has_titled:
+                    title = f"*** {title} ***"
+                    dataset = xlsx_patch_rows(dataset, {"Points": title}, 1)
+                    has_titled = True
+
                 dataset = xlsx_patch_rows(dataset, obj_to_patch, 1)
             dataset = xlsx_patch_rows(dataset, {}, 2)
             LEAGUE.set_playoff_game(game, game_objects)
@@ -101,6 +110,8 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
         obj_to_patch = {"Matchup": "(none)"}
         dataset = xlsx_patch_rows(dataset, obj_to_patch, 1)
 
+    title = round_info['byes']['info'].get('name')
+    has_titled = False
     for bye in round_info['byes']['teams']:
         # Later round byes are only previous games
         team_id = fetch_team_from_playoff_object(bye, LEAGUE)
@@ -112,6 +123,12 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
         obj_to_patch = {
             "Matchup": team_name
         }
+
+        if title and not has_titled:
+            title = f"*** {title} ***"
+            dataset['Points'][BYE_ROW] = title
+            has_titled = True
+
         dataset = xlsx_patch_rows(dataset, obj_to_patch, 1)
 
     dataset = xlsx_patch_rows(dataset, {}, 2)
@@ -119,6 +136,9 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
     for game in round_info:
         if game != "byes":
             game_objects = []
+            title = round_info[game]['info'].get('name')
+            has_titled = False
+
             for rank in round_info[game]['matchup']:
                 team_id = fetch_team_from_playoff_object(rank, LEAGUE)
                 if team_id in LEAGUE.get_teams():
@@ -136,6 +156,12 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
                     "Points": scoring["points"],
                     "Projected": scoring["projected"]
                 }
+
+                if title and not has_titled:
+                    title = f"*** {title} ***"
+                    dataset = xlsx_patch_rows(dataset, {"Points": title}, 1)
+                    has_titled = True
+
                 dataset = xlsx_patch_rows(dataset, obj_to_patch, 1)
             dataset = xlsx_patch_rows(dataset, {}, 2)
             LEAGUE.set_playoff_game(game, game_objects)
