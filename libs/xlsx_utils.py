@@ -96,3 +96,18 @@ def find_max_column_width(column: list, column_name: str='') -> int:
             max_len = len(str(item))
 
     return max_len + 2
+
+
+def xlsx_patch_rows(dataset: dict, patch_obj: dict, num_added_rows: int) -> dict:
+    # num_added_rows > 1 only for adding in blank space after content, else one row at a time
+    is_first_row = True
+    for _ in range(num_added_rows):
+        add_spaces = [key for key in dataset]
+        if is_first_row:
+            for key in patch_obj:
+                dataset[key].append(patch_obj[key])
+                add_spaces.remove(key)
+            is_first_row = False
+        for unused_key in add_spaces:
+            dataset[unused_key].append("")
+    return dataset

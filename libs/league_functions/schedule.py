@@ -5,6 +5,7 @@ Handles scheduling functionality
 import datetime
 
 from libs.league import LAST_UPDATED, SKIP_ROWS
+from libs.xlsx_utils import xlsx_patch_rows
 
 
 def load_schedule(xlsx_dict: dict, LEAGUE, schedule: dict) -> dict:
@@ -31,13 +32,12 @@ def load_schedule(xlsx_dict: dict, LEAGUE, schedule: dict) -> dict:
     for week in schedule["weeks"]:
         key = f"Week {week}"
         xlsx_dict[key] = {"Team": [], "Score": [], "Projected": []}
-        xlsx_dict[key]["Team"].append("")
-        xlsx_dict[key]["Score"].append("")
-        xlsx_dict[key]["Team"].append(LAST_UPDATED)
-        xlsx_dict[key]["Score"].append(date_now)
-        xlsx_dict[key]["Team"].append("")
-        xlsx_dict[key]["Score"].append("")
-        xlsx_dict[key]["Projected"].extend(["", "", ""])
+        xlsx_dict[key] = xlsx_patch_rows(xlsx_dict[key], {}, 1)
+        xlsx_dict[key] = xlsx_patch_rows(
+            xlsx_dict[key],
+            {"Team": LAST_UPDATED, "Score": date_now},
+            2
+        )
 
         # The schedule is split up by weeks/tabs of the spreadsheet. For each game in it, format
         # the rows and columns accordingly.
@@ -46,15 +46,11 @@ def load_schedule(xlsx_dict: dict, LEAGUE, schedule: dict) -> dict:
             team2_key = f"Team {game[1]}"
             team1_name = team_map[team_map[team1_key]["map_id"]]["name"]
             team2_name = team_map[team_map[team2_key]["map_id"]]["name"]
-            xlsx_dict[key]["Team"].append(team1_name)
-            xlsx_dict[key]["Score"].append(0)
-            xlsx_dict[key]["Projected"].append(0)
-            xlsx_dict[key]["Team"].append(team2_name)
-            xlsx_dict[key]["Score"].append(0)
-            xlsx_dict[key]["Projected"].append(0)
-            xlsx_dict[key]["Team"].extend(["", ""])
-            xlsx_dict[key]["Score"].extend(["", ""])
-            xlsx_dict[key]["Projected"].extend(["", ""])
+
+            patch_obj = {"Team": team1_name, "Score": 0, "Projected": 0}
+            xlsx_dict[key] = xlsx_patch_rows(xlsx_dict[key], patch_obj, 1)
+            patch_obj["Team"] = team2_name
+            xlsx_dict[key] = xlsx_patch_rows(xlsx_dict[key], patch_obj, 3)
 
     return xlsx_dict
 
