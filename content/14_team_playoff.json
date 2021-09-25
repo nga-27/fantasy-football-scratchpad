@@ -1,235 +1,314 @@
 {
     "round1": {
-        "byes": [
-            1,
-            2
-        ],
-        "g1": [
-            8,
-            9
-        ],
-        "g2": [
-            4,
-            13
-        ],
-        "g3": [
-            5,
-            12
-        ],
-        "g4": [
-            6,
-            11
-        ],
-        "g5": [
-            3,
-            14
-        ],
-        "g6": [
-            7,
-            10
-        ]
+        "byes": {
+            "teams": [
+                1,
+                2
+            ],
+            "info": {}
+        },
+        "g1": {
+            "matchup": [
+                8,
+                9
+            ],
+            "info": {}
+        },
+        "g2": {
+            "matchup": [
+                4,
+                13
+            ],
+            "info": {}
+        },
+        "g3": {
+            "matchup": [
+                5,
+                12
+            ],
+            "info": {}
+        },
+        "g4": {
+            "matchup": [
+                6,
+                11
+            ],
+            "info": {}
+        },
+        "g5": {
+            "matchup": [
+                3,
+                14
+            ],
+            "info": {}
+        },
+        "g6": {
+            "matchup": [
+                7,
+                10
+            ],
+            "info": {}
+        }
     },
     "round2": {
-        "byes": [
-            {
-                "game": "g1",
-                "type": "loser",
-                "default": 9
-            },
-            {
-                "game": "g6",
-                "type": "loser",
-                "default": 10
-            }
-        ],
-        "g7": [
-            1,
-            {
-                "game": "g1",
-                "type": "winner",
-                "default": 8
-            }
-        ],
-        "g8": [
-            {
-                "game": "g2",
-                "type": "winner",
-                "default": 4
-            },
-            {
-                "game": "g3",
-                "type": "winner",
-                "default": 5
-            }
-        ],
-        "g9": [
-            {
-                "game": "g4",
-                "type": "winner",
-                "default": 6
-            },
-            {
-                "game": "g5",
-                "type": "winner",
-                "default": 3
-            }
-        ],
-        "g10": [
-            {
-                "game": "g6",
-                "type": "winner",
-                "default": 7
-            },
-            2
-        ],
-        "g11": [
-            {
-                "game": "g2",
-                "type": "loser",
-                "default": 12
-            },
-            {
-                "game": "g3",
-                "type": "loser",
-                "default": 13
-            }
-        ],
-        "g12": [
-            {
-                "game": "g4",
-                "type": "loser",
-                "default": 11
-            },
-            {
-                "game": "g5",
-                "type": "loser",
-                "default": 14
-            }
-        ]
+        "byes": {
+            "teams": [
+                {
+                    "game": "g1",
+                    "type": "loser",
+                    "default": 9
+                },
+                {
+                    "game": "g6",
+                    "type": "loser",
+                    "default": 10
+                }
+            ],
+            "info": {}
+        },
+        "g7": {
+            "matchup": [
+                1,
+                {
+                    "game": "g1",
+                    "type": "winner",
+                    "default": 8
+                }
+            ],
+            "info": {}
+        },
+        "g8": {
+            "matchup": [
+                {
+                    "game": "g2",
+                    "type": "winner",
+                    "default": 4
+                },
+                {
+                    "game": "g3",
+                    "type": "winner",
+                    "default": 5
+                }
+            ],
+            "info": {}
+        },
+        "g9": {
+            "matchup": [
+                {
+                    "game": "g4",
+                    "type": "winner",
+                    "default": 6
+                },
+                {
+                    "game": "g5",
+                    "type": "winner",
+                    "default": 3
+                }
+            ],
+            "info": {}
+        },
+        "g10": {
+            "matchup": [
+                {
+                    "game": "g6",
+                    "type": "winner",
+                    "default": 7
+                },
+                2
+            ],
+            "info": {}
+        },
+        "g11": {
+            "matchup": [
+                {
+                    "game": "g2",
+                    "type": "loser",
+                    "default": 12
+                },
+                {
+                    "game": "g3",
+                    "type": "loser",
+                    "default": 13
+                }
+            ],
+            "info": {}
+        },
+        "g12": {
+            "matchup": [
+                {
+                    "game": "g4",
+                    "type": "loser",
+                    "default": 11
+                },
+                {
+                    "game": "g5",
+                    "type": "loser",
+                    "default": 14
+                }
+            ],
+            "info": {}
+        }
     },
     "round3": {
-        "byes": [],
-        "g13": [
-            {
-                "game": "g7",
-                "type": "winner",
-                "default": 1
-            },
-            {
-                "game": "g8",
-                "type": "winner",
-                "default": 4
-            }
-        ],
-        "g14": [
-            {
-                "game": "g9",
-                "type": "winner",
-                "default": 3
-            },
-            {
-                "game": "g10",
-                "type": "winner",
-                "default": 2
-            }
-        ],
-        "g15": [
-            {
-                "game": "g11",
-                "type": "winner",
-                "default": 12
-            },
-            {
-                "game": "g1",
-                "type": "loser",
-                "default": 9
-            }
-        ],
-        "g16": [
-            {
-                "game": "g12",
-                "type": "winner",
-                "default": 11
-            },
-            {
-                "game": "g6",
-                "type": "loser",
-                "default": 10
-            }
-        ],
-        "g17": [
-            {
-                "game": "g7",
-                "type": "loser",
-                "default": 8
-            },
-            {
-                "game": "g8",
-                "type": "loser",
-                "default": 5
-            }
-        ],
-        "g18": [
-            {
-                "game": "g9",
-                "type": "loser",
-                "default": 6
-            },
-            {
-                "game": "g10",
-                "type": "loser",
-                "default": 7
-            }
-        ]
+        "byes": {
+            "teams": [],
+            "info": {}
+        },
+        "g13": {
+            "matchup": [
+                {
+                    "game": "g7",
+                    "type": "winner",
+                    "default": 1
+                },
+                {
+                    "game": "g8",
+                    "type": "winner",
+                    "default": 4
+                }
+            ],
+            "info": {}
+        },
+        "g14": {
+            "matchup": [
+                {
+                    "game": "g9",
+                    "type": "winner",
+                    "default": 3
+                },
+                {
+                    "game": "g10",
+                    "type": "winner",
+                    "default": 2
+                }
+            ],
+            "info": {}
+        },
+        "g15": {
+            "matchup": [
+                {
+                    "game": "g11",
+                    "type": "winner",
+                    "default": 12
+                },
+                {
+                    "game": "g1",
+                    "type": "loser",
+                    "default": 9
+                }
+            ],
+            "info": {}
+        },
+        "g16": {
+            "matchup": [
+                {
+                    "game": "g12",
+                    "type": "winner",
+                    "default": 11
+                },
+                {
+                    "game": "g6",
+                    "type": "loser",
+                    "default": 10
+                }
+            ],
+            "info": {}
+        },
+        "g17": {
+            "matchup": [
+                {
+                    "game": "g7",
+                    "type": "loser",
+                    "default": 8
+                },
+                {
+                    "game": "g8",
+                    "type": "loser",
+                    "default": 5
+                }
+            ],
+            "info": {}
+        },
+        "g18": {
+            "matchup": [
+                {
+                    "game": "g9",
+                    "type": "loser",
+                    "default": 6
+                },
+                {
+                    "game": "g10",
+                    "type": "loser",
+                    "default": 7
+                }
+            ],
+            "info": {}
+        }
     },
     "round4": {
-        "g19": [
-            {
-                "game": "g13",
-                "type": "winner",
-                "default": 1
-            },
-            {
-                "game": "g14",
-                "type": "winner",
-                "default": 2
-            }
-        ],
-        "g20": [
-            {
-                "game": "g15",
-                "type": "winner",
-                "default": 9
-            },
-            {
-                "game": "g16",
-                "type": "winner",
-                "default": 10
-            }
-        ],
-        "g21": [
-            {
-                "game": "g17",
-                "type": "winner",
-                "default": 5
-            },
-            {
-                "game": "g18",
-                "type": "winner",
-                "default": 6
-            }
-        ],
-        "g22": [
-            {
-                "game": "g13",
-                "type": "loser",
-                "default": 4
-            },
-            {
-                "game": "g14",
-                "type": "loser",
-                "default": 3
-            }
-        ]
+        "byes": {
+            "teams": [],
+            "info": {}
+        },
+        "g19": {
+            "matchup": [
+                {
+                    "game": "g13",
+                    "type": "winner",
+                    "default": 1
+                },
+                {
+                    "game": "g14",
+                    "type": "winner",
+                    "default": 2
+                }
+            ],
+            "info": {}
+        },
+        "g20": {
+            "matchup": [
+                {
+                    "game": "g15",
+                    "type": "winner",
+                    "default": 9
+                },
+                {
+                    "game": "g16",
+                    "type": "winner",
+                    "default": 10
+                }
+            ],
+            "info": {}
+        },
+        "g21": {
+            "matchup": [
+                {
+                    "game": "g17",
+                    "type": "winner",
+                    "default": 5
+                },
+                {
+                    "game": "g18",
+                    "type": "winner",
+                    "default": 6
+                }
+            ],
+            "info": {}
+        },
+        "g22": {
+            "matchup": [
+                {
+                    "game": "g13",
+                    "type": "loser",
+                    "default": 4
+                },
+                {
+                    "game": "g14",
+                    "type": "loser",
+                    "default": 3
+                }
+            ],
+            "info": {}
+        }
     }
 }

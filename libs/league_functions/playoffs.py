@@ -56,7 +56,7 @@ def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
         num_teams = LEAGUE.get_info().get('number_of_teams')
         rankings['by_rank'] = [{'name': f"TEAM-RANK {i}"} for i in range(1, num_teams+1)]
 
-    for bye in round_one['byes']:
+    for bye in round_one['byes']['teams']:
         # First round will only have int rankings
         team_name = rankings['by_rank'][bye-1]['name']
         obj_to_patch = {
@@ -69,7 +69,7 @@ def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
     for game in playoff_data['round1']:
         if game != 'byes':
             game_objects = []
-            for rank in playoff_data['round1'][game]:
+            for rank in playoff_data['round1'][game]['matchup']:
                 team_name = rankings['by_rank'][rank-1]['name']
                 if 'team_id' in rankings['by_rank'][rank-1]:
                     scoring = LEAGUE.get_current_week_scores(rankings['by_rank'][rank-1]['team_id'])
@@ -97,11 +97,11 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
     round_info = playoff_data[f"round{round_num}"]
     dataset = xlsx_dict[f"Playoffs-Wk{round_num}"]
 
-    if len(round_info.get('byes', [])) == 0:
+    if len(round_info['byes']['teams']) == 0:
         obj_to_patch = {"Matchup": "(none)"}
         dataset = xlsx_patch_rows(dataset, obj_to_patch, 1)
 
-    for bye in round_info.get('byes', []):
+    for bye in round_info['byes']['teams']:
         # Later round byes are only previous games
         team_id = fetch_team_from_playoff_object(bye, LEAGUE)
         if team_id in LEAGUE.get_teams():
@@ -119,7 +119,7 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
     for game in round_info:
         if game != "byes":
             game_objects = []
-            for rank in round_info[game]:
+            for rank in round_info[game]['matchup']:
                 team_id = fetch_team_from_playoff_object(rank, LEAGUE)
                 if team_id in LEAGUE.get_teams():
                     team_name = LEAGUE.get_teams()[team_id]['name']
