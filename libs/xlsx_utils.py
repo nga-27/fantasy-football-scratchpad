@@ -81,6 +81,7 @@ def load_league_spreadsheet(spreadsheet_path: Path) -> dict:
     Returns:
         dict: league spreadsheet object
     """
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
     league_xlsx = dict()
     if spreadsheet_path.exists():
         xlsx = pd.ExcelFile(spreadsheet_path)
