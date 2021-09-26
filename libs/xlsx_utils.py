@@ -11,6 +11,7 @@ import pandas as pd
 import numpy as np
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 def save_spreadsheet_to_file(data: dict, output_file_path: Path, config_dict: dict):
     """save_spreadsheet_to_file
