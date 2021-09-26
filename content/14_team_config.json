@@ -602,5 +602,74 @@
             ]
         }
     },
-    "config": {}
+    "config": {
+        "format": {
+            "Rosters": {
+                "B6": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "C6": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B25": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "C25": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B44": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "C44": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B63": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "C63": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "G6": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "H6": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "G25": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "H25": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "G44": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "H44": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "G63": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "H63": {
+                    "bold": true,
+                    "font_color": "blue"
+                }
+            }
+        }
+    }
 }

@@ -43,7 +43,7 @@ def generate_schedule_xlsx(schedule_path: Path,
         config_dict = extract_config_data(config_path)
         league_xlsx = manage_playoffs(league_xlsx, config_dict['playoffs'], LEAGUE)
 
-        save_spreadsheet_to_file(league_xlsx, output_path)
+        save_spreadsheet_to_file(league_xlsx, output_path, config_dict['config'])
 
     print("\r\n*** Done! ***")
 

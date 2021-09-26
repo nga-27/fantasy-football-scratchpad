@@ -2,13 +2,16 @@
 
 Functions for importing and exporting the league spreadsheet
 """
+import re
+import warnings
 from pathlib import Path
+from typing import Tuple
 
 import pandas as pd
 import numpy as np
 
 
-def save_spreadsheet_to_file(data: dict, output_file_path: Path):
+def save_spreadsheet_to_file(data: dict, output_file_path: Path, config_dict: dict):
     """save_spreadsheet_to_file
 
     Saves the spreadsheet object to the xlsx file
@@ -17,6 +20,7 @@ def save_spreadsheet_to_file(data: dict, output_file_path: Path):
         data (dict): spreadsheet file object
         output_file_path (Path): file path to output.
     """
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
     with pd.ExcelWriter(output_file_path) as writer:
         for key in data:
             data2 = data[key]
@@ -38,6 +42,13 @@ def save_spreadsheet_to_file(data: dict, output_file_path: Path):
                 max_len = find_max_column_width(data2[col], column_name=col)
                 # Add one since the index column is technically column 0 and is already done above.
                 worksheet.set_column(idx+1, idx+1, max_len)
+
+            if key in config_dict['format']:
+                workbook = writer.book
+                for cell in config_dict['format'][key]:
+                    cell_format = workbook.add_format(config_dict['format'][key][cell])
+                    value = get_data_from_cell(cell, data2)
+                    worksheet.write(cell, value, cell_format)
         
         writer.save()
 
@@ -111,3 +122,24 @@ def xlsx_patch_rows(dataset: dict, patch_obj: dict, num_added_rows: int) -> dict
         for unused_key in add_spaces:
             dataset[unused_key].append("")
     return dataset
+
+
+def get_data_from_cell(cell: str, dataframe: pd.DataFrame) -> Tuple[int, float, str]:
+    xlsx_column_key = "".join(re.findall("[a-zA-Z]+", cell)).upper()
+    column_total = 0
+
+    # "A" should be index in columns, "B" is technically first actual 'column' after restructure
+    # with set_index in df.
+    for char in xlsx_column_key:
+        column_total += char.encode('ascii')[0] - 66
+
+    # "A2" is technically dataset index, row 0. "1" is the column header
+    xlsx_row_key = int("".join(re.findall("[0-9]+", cell))) - 2
+    value = ''
+    if column_total == -1:
+        return dataframe.index[xlsx_row_key]
+    for i, column in enumerate(dataframe.columns):
+        if i == column_total:
+            return  dataframe[column][xlsx_row_key]
+
+    return value
