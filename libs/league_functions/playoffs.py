@@ -79,7 +79,10 @@ def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
 
             for rank in playoff_data['round1'][game]['matchup']:
                 team_name = rankings['by_rank'][rank-1]['name']
-                if 'team_id' in rankings['by_rank'][rank-1]:
+                if LEAGUE.get_info()['current_week'] <= \
+                    LEAGUE.get_info()['regular_season']['number_of_weeks']:
+                    scoring = {"points": 0.0, "projected": 0.0}
+                elif 'team_id' in rankings['by_rank'][rank-1]:
                     scoring = LEAGUE.get_current_week_scores(rankings['by_rank'][rank-1]['team_id'])
                 else:
                     scoring = {"points": 0.0, "projected": 0.0}

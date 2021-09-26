@@ -43,6 +43,9 @@ class FFLeague():
             return {}
 
         self.info['number_of_teams'] = len(team_data["MAP ID"])
+        self.info['current_week'] = self.NE.current_week
+        self.info['regular_season'] = {"number_of_weeks": len(team_data["MAP ID"])-1}
+        self.info['playoffs'] = {"number_of_weeks": 4}
 
         # To map nicely with ESPN's order, we'll use the "MAP ID"
         for i, _id in enumerate(team_data["MAP ID"]):
@@ -62,7 +65,8 @@ class FFLeague():
                     },
                     "current_week": {
                         "points": 0.0,
-                        "projected": 0.0
+                        "projected": 0.0,
+                        "week": self.NE.current_week
                     }
                 }
                 region_id = int(_id.split('-')[1])
