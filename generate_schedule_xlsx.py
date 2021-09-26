@@ -30,7 +30,7 @@ def generate_schedule_xlsx(schedule_path: Path,
     Args:
         schedule_path (Path): POSIX-Path to passed-in schedule json
         league_spreadsheet_path (Path): POSIX-path to passed-in league spreadsheet
-        playoff_path (Path): POSIX-Path to passed-in playoff json
+        config_path (Path): POSIX-Path to passed-in config json
         output_path (Path): POSIX-path to passed-in generated league spreadsheet
     """
     if schedule_path.exists():

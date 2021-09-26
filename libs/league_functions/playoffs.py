@@ -1,7 +1,10 @@
+"""playoffs.py
+
+Functions for managing and creating playoffs
+"""
+
 import copy
-import json
-from pathlib import Path
-from typing import Tuple
+from typing import Union
 
 from libs.xlsx_utils import xlsx_patch_rows
 from .bracket import load_bracket
@@ -15,6 +18,18 @@ BYE_ROW = 2
 
 
 def manage_playoffs(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
+    """manage_playoffs
+
+    Main function called to generate all playoff rounds (tabs) as well as the bracket itself
+
+    Args:
+        xlsx_dict (dict): league xlsx data object
+        playoff_data (dict): config data subset of playoff-related content
+        LEAGUE (FFLeague): League object
+
+    Returns:
+        dict: xlsx_dict
+    """
     xlsx_dict["Playoffs-Wk1"] = copy.deepcopy(FORMAT)
     xlsx_dict = load_round_one(xlsx_dict, playoff_data, LEAGUE)
 
@@ -29,7 +44,16 @@ def manage_playoffs(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
 
 
 def determine_remaining_rounds(playoff_data: dict) -> list:
-    # Returns a list of the remaining rounds
+    """determine_remaining_rounds
+
+    Returns a list of the remaining rounds after round 1(e.g. [2, 3, 4])
+
+    Args:
+        playoff_data (dict): config data subset of playoff-related content
+
+    Returns:
+        list: list the remaining rounds of playoffs [after round 1]
+    """
     rounds = []
     for key in playoff_data:
         if 'round' in key and key != "round1":
@@ -43,6 +67,19 @@ def determine_remaining_rounds(playoff_data: dict) -> list:
 
 
 def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
+    """load_round_one
+
+    Similar to the 'load_round_X' function below, but handles special cases for round 1 when
+    nothing is configured yet
+
+    Args:
+        xlsx_dict (dict): league xlsx data object
+        playoff_data (dict): config object subset for playoff-related content
+        LEAGUE (FFLeague): League object
+
+    Returns:
+        dict: xlsx_dict
+    """
     round_one = playoff_data['round1']
     dataset = xlsx_dict['Playoffs-Wk1']
     rankings = LEAGUE.get_rankings()
@@ -104,6 +141,20 @@ def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
 
 
 def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) -> dict:
+    """load_round_X
+
+    Similar to load_round_one, but more generic and assuming other rounds are sequential (2, 3, 4)
+    and data is configured with rankings, etc.
+
+    Args:
+        xlsx_dict (dict): league xlsx data object
+        playoff_data (dict): config object subset of playoff-related content
+        round_num (int): which round of playoffs it is, (e.g. 2)
+        LEAGUE (FFLeague): League object
+
+    Returns:
+        dict: xlsx_dict
+    """
     # Assumption is that playoff rounds will go in order: first, second, ...
     round_info = playoff_data[f"round{round_num}"]
     dataset = xlsx_dict[f"Playoffs-Wk{round_num}"]
@@ -180,8 +231,25 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
     return xlsx_dict
 
 
-def fetch_team_from_playoff_object(game_object: Tuple[dict, int], LEAGUE) -> str:
+def fetch_team_from_playoff_object(game_object: Union[dict, int], LEAGUE) -> str:
+    """fetch_team_from_playoff_object
+
+    Helper function that converts between 'team_name' and 'team_id' as well as manipulates the
+    LEAGUE class to derive wins/losses/tiebreakers for playoff games.
+
+    game_object (when dict): {"game": "g2","type": "winner","default": 4}
+        ("game": basically game ID; "type": winner/loser; "default": when playoff games are not
+        played yet and unavailable, use default [rank] to fill out spreadsheet tabs)
+
+    Args:
+        game_object (Union[dict, int]): either a rank (int) or past game reference (dict)
+        LEAGUE (FFLeague): League object
+
+    Returns:
+        str: returns either the winner or loser or pure rank of a matched game
+    """
     if isinstance(game_object, int):
+        # This case happens in round 1 and part of round 2
         if 'by_rank' not in LEAGUE.get_rankings().keys():
             return f"TEAM-RANK {game_object}"
         elif 'team_id' not in LEAGUE.get_rankings()['by_rank'][game_object-1]:
@@ -190,11 +258,25 @@ def fetch_team_from_playoff_object(game_object: Tuple[dict, int], LEAGUE) -> str
             return LEAGUE.get_rankings()['by_rank'][game_object-1]['team_id']
 
     if LEAGUE.get_playoffs()[game_object['game']][game_object['type']] == '':
+        # Case where we haven't gotten that far in the season or playoffs to have a team to move
+        # forward to the next game.
         return f"TEAM-RANK {game_object['default']}"
     return LEAGUE.get_playoffs()[game_object['game']][game_object['type']]
 
 
 def is_round_current_or_past(round_num: int, LEAGUE) -> bool:
+    """is_round_current_or_past
+
+    Helper check to determine how far we should move teams forward in the playoffs and when to use
+    default values instead of actual teams.
+
+    Args:
+        round_num (int): either 1, 2, 3, 4, etc.
+        LEAGUE (FFLeague): League class object
+
+    Returns:
+        bool: True if is current round or an already played round
+    """
     current_week = LEAGUE.get_NE().current_week
     total_reg_season_games = LEAGUE.get_info()['regular_season']['number_of_weeks']
     return current_week >= round_num + total_reg_season_games

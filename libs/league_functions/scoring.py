@@ -35,6 +35,7 @@ def update_scores(xlsx_dict: dict, LEAGUE) -> dict:
         scores, projected = load_scores(LEAGUE.get_NE(), scores, projected, week)
         scores, projected = load_scores(LEAGUE.get_SW(), scores, projected, week)
 
+    # Store the current scores as needed for playoffs and rankings.
     LEAGUE.set_team_scores(scores[str(current_week)])
     LEAGUE.set_team_scores(projected[str(current_week)], scoring_type='projected')
 

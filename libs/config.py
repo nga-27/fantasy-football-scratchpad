@@ -30,6 +30,17 @@ CONFIG_SETTINGS = {
 
 
 def extract_config_data(config_path: Path) -> dict:
+    """extract_config_data
+
+    Starting in 0.2.0, format and playoff configuration data is stored in a json file. Open the file
+    and extract the data to a dictionary
+
+    Args:
+        config_path (Path): POSIX-Path object to passed-in config path
+
+    Returns:
+        dict: config object containing playoff and formatting info
+    """
     if not config_path.exists():
         return {}
     

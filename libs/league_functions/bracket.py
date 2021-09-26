@@ -1,4 +1,21 @@
+"""bracket.py
+
+Functions for importing and exporting the configured playoff bracket
+"""
+
+
 def load_bracket(xlsx_dict: dict, playoff_data: dict) -> dict:
+    """load_bracket
+
+    Function that converts config playoff bracket data to an xlsx sheet
+
+    Args:
+        xlsx_dict (dict): league xlsx object
+        playoff_data (dict): subset of config data that is playoff-related
+
+    Returns:
+        dict: xlsx_dict
+    """
     xlsx_dict["Playoff Bracket"] = {}
     max_len = 0
     for round_key, round_list in playoff_data['bracket'].items():

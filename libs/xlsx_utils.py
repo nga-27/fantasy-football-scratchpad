@@ -5,7 +5,7 @@ Functions for importing and exporting the league spreadsheet
 import re
 import warnings
 from pathlib import Path
-from typing import Tuple
+from typing import Union
 
 import pandas as pd
 import numpy as np
@@ -19,6 +19,7 @@ def save_spreadsheet_to_file(data: dict, output_file_path: Path, config_dict: di
     Args:
         data (dict): spreadsheet file object
         output_file_path (Path): file path to output.
+        config_dict (dict): config subset of config for formatting league spreadsheet
     """
     warnings.filterwarnings("ignore", category=DeprecationWarning)
     with pd.ExcelWriter(output_file_path) as writer:
@@ -110,6 +111,23 @@ def find_max_column_width(column: list, column_name: str='') -> int:
 
 
 def xlsx_patch_rows(dataset: dict, patch_obj: dict, num_added_rows: int) -> dict:
+    """xlsx_path_rows
+
+    Helper function that fills in empty cells in columns not in patch_obj for num_added_rows. This
+    function is helpful in keeping dataframe columns the same size with out tedious .append("")
+    clauses everywhere in the code.
+
+    NOTE: patch_obj only applies to first row of num_added_rows, so if num_added_rows > 1, then
+    the rest of the rows will be backfilled with empty cells for each column.
+
+    Args:
+        dataset (dict): subset of xlsx_dict
+        patch_obj (dict): columns (keys) and values to be appended to xlsx_dict (dataset)
+        num_added_rows (int): number of empty "" cell rows, typically 1
+
+    Returns:
+        dict: dataset, subset of xlsx_dict
+    """
     # num_added_rows > 1 only for adding in blank space after content, else one row at a time
     is_first_row = True
     for _ in range(num_added_rows):
@@ -124,7 +142,23 @@ def xlsx_patch_rows(dataset: dict, patch_obj: dict, num_added_rows: int) -> dict
     return dataset
 
 
-def get_data_from_cell(cell: str, dataframe: pd.DataFrame) -> Tuple[int, float, str]:
+def get_data_from_cell(cell: str, dataframe: pd.DataFrame) -> Union[int, float, str]:
+    """get_data_from_cell
+
+    This function is primarily to convert an Excel cell name (e.g. 'A1') to a dataframe's column
+    name and row number. A few caveats: column 'A' should be the column associated with 0, but in 
+    fact, the 0th column is df.index, so there's some work with that. 
+
+    NOTE: this has not been tested for columns > 'Z', so 'AA' will need some tweaking for it to
+    work if that is something that is needed later.
+
+    Args:
+        cell (str): 'A1', for example
+        dataframe (pd.DataFrame): dataframe representing the Excel sheet
+
+    Returns:
+        Union[int, float, str]: whatever the value of that cell is
+    """
     xlsx_column_key = "".join(re.findall("[a-zA-Z]+", cell)).upper()
     column_total = 0
 

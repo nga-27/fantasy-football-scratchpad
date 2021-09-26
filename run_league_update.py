@@ -27,6 +27,7 @@ def run_league_update(input_path: Path, output_path: Path, config_path: Path):
     Args:
         input_path (Path): input spreadsheet xlsx path
         output_path (Path): output spreadsheet xlsx path
+        config_path (Path): config .json path
     """
     league_xlsx = load_league_spreadsheet(input_path)
     config_dict = extract_config_data(config_path)
