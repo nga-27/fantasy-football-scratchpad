@@ -10,6 +10,7 @@ from typing import Union
 import pandas as pd
 import numpy as np
 
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 def save_spreadsheet_to_file(data: dict, output_file_path: Path, config_dict: dict):
     """save_spreadsheet_to_file
@@ -81,7 +82,6 @@ def load_league_spreadsheet(spreadsheet_path: Path) -> dict:
     Returns:
         dict: league spreadsheet object
     """
-    warnings.filterwarnings("ignore", category=DeprecationWarning)
     league_xlsx = dict()
     if spreadsheet_path.exists():
         xlsx = pd.ExcelFile(spreadsheet_path)
