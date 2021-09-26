@@ -51,14 +51,19 @@ def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
     round_one = playoff_data['round1']
     dataset = xlsx_dict['Playoffs-Wk1']
     rankings = LEAGUE.get_rankings()
+    has_valid_rankings = True
 
     if len(rankings.get('by_rank', [])) == 0:
         num_teams = LEAGUE.get_info().get('number_of_teams')
         rankings['by_rank'] = [{'name': f"TEAM-RANK {i}"} for i in range(1, num_teams+1)]
+        has_valid_rankings = False
 
     for bye in round_one['byes']['teams']:
         # First round will only have int rankings
         team_name = rankings['by_rank'][bye-1]['name']
+        if has_valid_rankings:
+            team_name = f"({bye}) {team_name}"
+
         obj_to_patch = {
             "Matchup": team_name
         }
@@ -83,7 +88,7 @@ def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
                 game_objects.append(rank_obj)
 
                 obj_to_patch = {
-                    "Matchup": team_name,
+                    "Matchup": f"({rank}) {team_name}",
                     "Points": scoring["points"],
                     "Projected": scoring["projected"]
                 }
@@ -112,11 +117,13 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
 
     title = round_info['byes']['info'].get('name')
     has_titled = False
+    rankings = LEAGUE.get_rankings()
     for bye in round_info['byes']['teams']:
         # Later round byes are only previous games
         team_id = fetch_team_from_playoff_object(bye, LEAGUE)
         if team_id in LEAGUE.get_teams():
             team_name = LEAGUE.get_teams()[team_id]['name']
+            team_name = f"({rankings['by_team'][team_id]['rank']}) {team_name}"
         else:
             team_name = team_id
         
@@ -150,6 +157,9 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
 
                 rank_obj = {"rank": rank, "team_name": team_name, "score": scoring["points"]}
                 game_objects.append(rank_obj)
+
+                if team_id in LEAGUE.get_teams():
+                    team_name = f"({rankings['by_team'][team_id]['rank']}) {team_name}"
 
                 obj_to_patch = {
                     "Matchup": team_name,
