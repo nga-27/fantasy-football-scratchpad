@@ -35,7 +35,7 @@ def run_league_update(input_path: Path, output_path: Path, playoff_path: Path):
 
     save_spreadsheet_to_file(league_xlsx, output_path)
 
-    print("*** Done! ***")
+    print("\r\n*** Done! ***")
 
 
 if __name__ == "__main__":

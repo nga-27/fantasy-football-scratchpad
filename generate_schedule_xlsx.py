@@ -43,7 +43,7 @@ def generate_schedule_xlsx(schedule_path: Path,
 
         save_spreadsheet_to_file(league_xlsx, output_path)
 
-    print("*** Done! ***")
+    print("\r\n*** Done! ***")
 
 
 if __name__ == "__main__":
