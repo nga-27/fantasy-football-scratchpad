@@ -78,7 +78,7 @@
                     }
                 ],
                 "info": {
-                    "name": "Consolation B-1"
+                    "name": "Consolation B"
                 }
             },
             "g7": {
@@ -637,6 +637,30 @@
                     "bold": true,
                     "font_color": "blue"
                 },
+                "B82": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "C82": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B101": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "C101": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B120": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "C120": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
                 "G6": {
                     "bold": true,
                     "font_color": "blue"
@@ -668,6 +692,228 @@
                 "H63": {
                     "bold": true,
                     "font_color": "blue"
+                },
+                "G82": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "H82": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "G101": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "H101": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "G120": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "H120": {
+                    "bold": true,
+                    "font_color": "blue"
+                }
+            },
+            "Playoffs-Wk1": {
+                "B9": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B14": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B19": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B24": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B29": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B34": {
+                    "bold": true,
+                    "font_color": "blue"
+                }
+            },
+            "Playoffs-Wk2": {
+                "B4": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B9": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B14": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B19": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B24": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B29": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B34": {
+                    "bold": true,
+                    "font_color": "blue"
+                }
+            },
+            "Playoffs-Wk3": {
+                "B9": {
+                    "bold": true,
+                    "font_color": "green"
+                },
+                "B14": {
+                    "bold": true,
+                    "font_color": "green"
+                },
+                "B19": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B24": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B29": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B34": {
+                    "bold": true,
+                    "font_color": "blue"
+                }
+            },
+            "Playoffs-Wk4": {
+                "B9": {
+                    "bold": true,
+                    "font_color": "red"
+                },
+                "B14": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B19": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B24": {
+                    "bold": true,
+                    "font_color": "green"
+                }
+            },
+            "Playoff Bracket": {
+                "A8": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "A13": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "A18": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "A23": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "A28": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "A33": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B5": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B15": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B25": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B35": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B41": {
+                    "bold": true,
+                    "font_color": "black"
+                },
+                "B46": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B51": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "C10": {
+                    "bold": true,
+                    "font_color": "green"
+                },
+                "C30": {
+                    "bold": true,
+                    "font_color": "green"
+                },
+                "C43": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "C53": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "C60": {
+                    "bold": true,
+                    "font_color": "black"
+                },
+                "C62": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "C67": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "D20": {
+                    "bold": true,
+                    "font_color": "red"
+                },
+                "D48": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "D64": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "D72": {
+                    "bold": true,
+                    "font_color": "green"
                 }
             }
         }

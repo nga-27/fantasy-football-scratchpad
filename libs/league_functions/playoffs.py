@@ -110,7 +110,7 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
 
     if len(round_info['byes']['teams']) == 0:
         obj_to_patch = {"Matchup": "(none)"}
-        dataset = xlsx_patch_rows(dataset, obj_to_patch, 1)
+        dataset = xlsx_patch_rows(dataset, obj_to_patch, 2)
 
     title = round_info['byes']['info'].get('name')
     has_titled = False
