@@ -4,6 +4,7 @@ Converts values stored in the .env file to an object referenced by the ESPN API 
 """
 import os
 import json
+from pathlib import Path
 from dotenv import load_dotenv
 
 PWD = os.path.dirname(__file__)
@@ -26,3 +27,12 @@ CONFIG_SETTINGS = {
     'position_order': json.loads(os.getenv('PLAYING_POSITIONS', DEFAULT_POSITIONS)),
     'bench_order': json.loads(os.getenv('BENCH_POSITIONS', DEFAULT_BENCH))
 }
+
+
+def extract_config_data(config_path: Path) -> dict:
+    if not config_path.exists():
+        return {}
+    
+    with config_path.open("r") as playoff_f:
+        config_data = json.load(playoff_f)
+    return config_data

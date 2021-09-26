@@ -14,13 +14,7 @@ FORMAT = {
 BYE_ROW = 2
 
 
-def manage_playoffs(xlsx_dict: dict, playoff_path: Path, LEAGUE) -> dict:
-    if not playoff_path.exists():
-        return xlsx_dict
-    
-    with playoff_path.open("r") as playoff_f:
-        playoff_data = json.load(playoff_f)
-
+def manage_playoffs(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
     xlsx_dict["Playoffs-Wk1"] = copy.deepcopy(FORMAT)
     xlsx_dict = load_round_one(xlsx_dict, playoff_data, LEAGUE)
 
