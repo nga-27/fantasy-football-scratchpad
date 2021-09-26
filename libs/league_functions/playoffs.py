@@ -54,7 +54,7 @@ def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
     rankings = LEAGUE.get_rankings()
     has_valid_rankings = True
 
-    if len(rankings.get('by_rank', [])) == 0:
+    if len(rankings.get('by_rank', [])) == 0 or not is_round_current_or_past(1, LEAGUE):
         num_teams = LEAGUE.get_info().get('number_of_teams')
         rankings['by_rank'] = [{'name': f"TEAM-RANK {i}"} for i in range(1, num_teams+1)]
         has_valid_rankings = False
@@ -80,8 +80,7 @@ def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
 
             for rank in playoff_data['round1'][game]['matchup']:
                 team_name = rankings['by_rank'][rank-1]['name']
-                if LEAGUE.get_info()['current_week'] <= \
-                    LEAGUE.get_info()['regular_season']['number_of_weeks']:
+                if not is_round_current_or_past(1, LEAGUE):
                     scoring = {"points": 0.0, "projected": 0.0}
                 elif 'team_id' in rankings['by_rank'][rank-1]:
                     scoring = LEAGUE.get_current_week_scores(rankings['by_rank'][rank-1]['team_id'])
@@ -125,7 +124,9 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
     for bye in round_info['byes']['teams']:
         # Later round byes are only previous games
         team_id = fetch_team_from_playoff_object(bye, LEAGUE)
-        if team_id in LEAGUE.get_teams():
+        if not is_round_current_or_past(round_num, LEAGUE):
+            team_name = team_id
+        elif team_id in LEAGUE.get_teams():
             team_name = LEAGUE.get_teams()[team_id]['name']
             team_name = f"({rankings['by_team'][team_id]['rank']}) {team_name}"
         else:
@@ -198,3 +199,8 @@ def fetch_team_from_playoff_object(game_object: Tuple[dict, int], LEAGUE) -> str
         return f"TEAM-RANK {game_object['default']}"
     return LEAGUE.get_playoffs()[game_object['game']][game_object['type']]
 
+
+def is_round_current_or_past(round_num: int, LEAGUE) -> bool:
+    current_week = LEAGUE.get_NE().current_week
+    total_reg_season_games = LEAGUE.get_info()['regular_season']['number_of_weeks']
+    return current_week >= round_num + total_reg_season_games
