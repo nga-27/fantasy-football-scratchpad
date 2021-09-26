@@ -12,42 +12,54 @@
                 8,
                 9
             ],
-            "info": {}
+            "info": {
+                "name": "Game 1"
+            }
         },
         "g2": {
-            "matchup": [
-                4,
-                13
-            ],
-            "info": {}
-        },
-        "g3": {
             "matchup": [
                 5,
                 12
             ],
-            "info": {}
+            "info": {
+                "name": "Game 2"
+            }
+        },
+        "g3": {
+            "matchup": [
+                4,
+                13
+            ],
+            "info": {
+                "name": "Game 3"
+            }
         },
         "g4": {
             "matchup": [
                 6,
                 11
             ],
-            "info": {}
+            "info": {
+                "name": "Game 4"
+            }
         },
         "g5": {
             "matchup": [
                 3,
                 14
             ],
-            "info": {}
+            "info": {
+                "name": "Game 5"
+            }
         },
         "g6": {
             "matchup": [
                 7,
                 10
             ],
-            "info": {}
+            "info": {
+                "name": "Game 6"
+            }
         }
     },
     "round2": {
@@ -77,7 +89,9 @@
                     "default": 8
                 }
             ],
-            "info": {}
+            "info": {
+                "name": "Game 7"
+            }
         },
         "g8": {
             "matchup": [
@@ -92,7 +106,9 @@
                     "default": 5
                 }
             ],
-            "info": {}
+            "info": {
+                "name": "Game 8"
+            }
         },
         "g9": {
             "matchup": [
@@ -107,7 +123,9 @@
                     "default": 3
                 }
             ],
-            "info": {}
+            "info": {
+                "name": "Game 9"
+            }
         },
         "g10": {
             "matchup": [
@@ -118,7 +136,9 @@
                 },
                 2
             ],
-            "info": {}
+            "info": {
+                "name": "Game 10"
+            }
         },
         "g11": {
             "matchup": [
@@ -134,7 +154,7 @@
                 }
             ],
             "info": {
-                "name": "Consolation B-2"
+                "name": "Game 11 - Consolation B"
             }
         },
         "g12": {
@@ -151,7 +171,7 @@
                 }
             ],
             "info": {
-                "name": "Consolation B-3"
+                "name": "Game 12 - Consolation B"
             }
         }
     },
@@ -174,7 +194,7 @@
                 }
             ],
             "info": {
-                "name": "Semifinals 1"
+                "name": "Game 13 - Semifinals 1"
             }
         },
         "g14": {
@@ -191,7 +211,7 @@
                 }
             ],
             "info": {
-                "name": "Semifinals 2"
+                "name": "Game 14 - Semifinals 2"
             }
         },
         "g15": {
@@ -208,7 +228,7 @@
                 }
             ],
             "info": {
-                "name": "Consolation B-4"
+                "name": "Game 15 - Consolation B"
             }
         },
         "g16": {
@@ -225,7 +245,7 @@
                 }
             ],
             "info": {
-                "name": "Consolation B-5"
+                "name": "Game 16 - Consolation B"
             }
         },
         "g17": {
@@ -242,7 +262,7 @@
                 }
             ],
             "info": {
-                "name": "Consolation A-1"
+                "name": "Game 17 - Consolation A"
             }
         },
         "g18": {
@@ -259,7 +279,7 @@
                 }
             ],
             "info": {
-                "name": "Consolation A-2"
+                "name": "Game 18 - Consolation A"
             }
         }
     },
@@ -282,7 +302,7 @@
                 }
             ],
             "info": {
-                "name": "League Championship"
+                "name": "Game 19 - League Championship"
             }
         },
         "g20": {
@@ -299,7 +319,7 @@
                 }
             ],
             "info": {
-                "name": "Consolation B-Championship"
+                "name": "Game 20 - Consolation B Championship"
             }
         },
         "g21": {
@@ -316,7 +336,7 @@
                 }
             ],
             "info": {
-                "name": "Consolation A-Championship"
+                "name": "Game 21 - Consolation A Championship"
             }
         },
         "g22": {
@@ -333,8 +353,251 @@
                 }
             ],
             "info": {
-                "name": "3rd Place Game"
+                "name": "Game 22 - 3rd Place"
             }
         }
+    },
+    "bracket": {
+        "Round 1": [
+            "",
+            "Main Playoff Bracket",
+            "",
+            "Rank 1 (bye)",
+            "",
+            "",
+            "*** Game 1 ***",
+            "Rank 8",
+            "Rank 9",
+            "",
+            "",
+            "*** Game 2 ***",
+            "Rank 5",
+            "Rank 12",
+            "",
+            "",
+            "*** Game 3 ***",
+            "Rank 4",
+            "Rank 13",
+            "",
+            "",
+            "*** Game 4 ***",
+            "Rank 6",
+            "Rank 11",
+            "",
+            "",
+            "*** Game 5 ***",
+            "Rank 3",
+            "Rank 14",
+            "",
+            "",
+            "*** Game 6 ***",
+            "Rank 7",
+            "Rank 10",
+            "",
+            "",
+            "Rank 2 (bye)"
+        ],
+        "Round 2": [
+            "",
+            "",
+            "",
+            "*** Game 7 ***",
+            "Rank 1",
+            "Game 1 Winner",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "*** Game 8 ***",
+            "Game 2 Winner",
+            "Game 3 Winner",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "*** Game 9 ***",
+            "Game 4 Winner",
+            "Game 5 Winner",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "*** Game 10 ***",
+            "Game 6 Winner",
+            "Rank 2",
+            "",
+            "",
+            "",
+            "Consolation Bracket B",
+            "",
+            "Game 1 Loser (bye)",
+            "",
+            "",
+            "*** Game 11 ***",
+            "Game 2 Loser",
+            "Game 3 Loser",
+            "",
+            "",
+            "*** Game 12 ***",
+            "Game 4 Loser",
+            "Game 5 Loser",
+            "",
+            "",
+            "Game 6 Loser (bye)"
+        ],
+        "Round 3": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "*** Game 13 - Semifinal 1 ***",
+            "Game 7 Winner",
+            "Game 8 Winner",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "*** Game 14 - Semifinal 2 ***",
+            "Game 9 Winner",
+            "Game 10 Winner",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "*** Game 15 ***",
+            "Game 1 Loser",
+            "Game 11 Winner",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "*** Game 16 ***",
+            "Game 12 Winner",
+            "Game 6 Loser",
+            "",
+            "",
+            "",
+            "",
+            "Consolation Bracket A",
+            "",
+            "*** Game 17 ***",
+            "Game 7 Loser",
+            "Game 8 Loser",
+            "",
+            "",
+            "*** Game 18 ***",
+            "Game 9 Loser",
+            "Game 10 Loser"
+        ],
+        "Round 4": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "*** Game 19 - Championship ***",
+            "Game 13 Winner",
+            "Game 14 Winner",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "*** Game 20 - Consolation B Championship ***",
+            "Game 15 Winner",
+            "Game 16 Winner",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "*** Game 21 - Consolation A Championship ***",
+            "Game 17 Winner",
+            "Game 18 Winner",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "*** Game 22 - 3rd Place ***",
+            "Game 13 Loser",
+            "Game 14 Loser"
+        ]
     }
 }

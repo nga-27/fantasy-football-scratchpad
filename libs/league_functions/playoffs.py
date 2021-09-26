@@ -2,10 +2,9 @@ import copy
 import json
 from pathlib import Path
 from typing import Tuple
-import pprint
 
 from libs.xlsx_utils import xlsx_patch_rows
-
+from .bracket import load_bracket
 
 FORMAT = {
     "Matchup": ["", "", "Byes"],
@@ -29,6 +28,8 @@ def manage_playoffs(xlsx_dict: dict, playoff_path: Path, LEAGUE) -> dict:
     for round_num in round_range:
         xlsx_dict[f"Playoffs-Wk{round_num}"] = copy.deepcopy(FORMAT)
         xlsx_dict = load_round_X(xlsx_dict, playoff_data, round_num, LEAGUE)
+
+    xlsx_dict = load_bracket(xlsx_dict, playoff_data)
 
     return xlsx_dict
 
