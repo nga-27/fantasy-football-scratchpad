@@ -16,9 +16,6 @@ from libs.league_functions.scoring import update_scores
 from libs.league_functions.playoffs import manage_playoffs
 
 
-LEAGUE = FFLeague()
-
-
 def run_league_update(input_path: Path, output_path: Path, config_path: Path):
     """run_league_update
 
@@ -29,6 +26,7 @@ def run_league_update(input_path: Path, output_path: Path, config_path: Path):
         output_path (Path): output spreadsheet xlsx path
         config_path (Path): config .json path
     """
+    LEAGUE = FFLeague()
     league_xlsx = load_league_spreadsheet(input_path)
     config_dict = extract_config_data(config_path)
 

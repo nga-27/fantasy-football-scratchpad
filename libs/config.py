@@ -11,12 +11,12 @@ PWD = os.path.dirname(__file__)
 PWD_FUNC, _ = os.path.split(PWD)
 DOTENV_PATH = os.path.join(PWD_FUNC, '.env')
 if os.path.exists(DOTENV_PATH) is False:
-    print(f'WARNING: NO ENVIRONMENT FILE')
+    print(f'WARNING: NO ENVIRONMENT FILE. Current PWD: {DOTENV_PATH}')
 
 load_dotenv(DOTENV_PATH)
 
-DEFAULT_POSITIONS = ["QB", "RB", "RB", "WR", "WR", "TE", "RB/WR/TE", "D/ST", "K"]
-DEFAULT_BENCH = ["BE", "BE", "BE", "BE", "BE", "BE", "IR"]
+DEFAULT_POSITIONS = '["QB", "RB", "RB", "WR", "WR", "TE", "RB/WR/TE", "D/ST", "K"]'
+DEFAULT_BENCH = '["BE", "BE", "BE", "BE", "BE", "BE", "IR"]'
 
 CONFIG_SETTINGS = {
     'espn_s2': os.getenv('ESPN_S2', ''),

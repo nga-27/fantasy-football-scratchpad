@@ -16,8 +16,6 @@ from libs.league import FFLeague
 from libs.league_functions.schedule import load_schedule
 from libs.league_functions.playoffs import manage_playoffs
 
-LEAGUE = FFLeague()
-
 
 def generate_schedule_xlsx(schedule_path: Path,
                            league_spreadsheet_path: Path,
@@ -34,6 +32,7 @@ def generate_schedule_xlsx(schedule_path: Path,
         output_path (Path): POSIX-path to passed-in generated league spreadsheet
     """
     if schedule_path.exists():
+        LEAGUE = FFLeague()
         league_xlsx = load_league_spreadsheet(league_spreadsheet_path)
 
         with schedule_path.open('r') as sch_f:
