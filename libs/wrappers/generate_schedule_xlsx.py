@@ -1,12 +1,11 @@
 """generate_schedule_xlsx.py
 
-Function used to reset schedule (for renamed team) and generate schedule for first time in 
+Function used to reset schedule (for renamed team) and generate schedule for first time in
 xlsx spreadsheet
 """
 
 from pathlib import Path
 import json
-import argparse
 
 from libs.xlsx_utils import (
     save_spreadsheet_to_file, load_league_spreadsheet
@@ -16,6 +15,7 @@ from libs.league import FFLeague
 from ..league_functions.schedule import load_schedule
 from ..league_functions.playoffs import manage_playoffs
 
+# pylint: disable=invalid-name
 
 def generate_schedule_xlsx(schedule_path: Path,
                            league_spreadsheet_path: Path,

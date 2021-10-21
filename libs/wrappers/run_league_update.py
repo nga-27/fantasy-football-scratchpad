@@ -14,6 +14,7 @@ from ..league_functions.standings import update_standings
 from ..league_functions.scoring import update_scores
 from ..league_functions.playoffs import manage_playoffs
 
+# pylint: disable=invalid-name
 
 def run_league_update(input_path: Path, output_path: Path, config_path: Path):
     """run_league_update
