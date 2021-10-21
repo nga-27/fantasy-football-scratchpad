@@ -24,7 +24,7 @@ def save_spreadsheet_to_file(data: dict, output_file_path: Path, config_dict: di
         config_dict (dict): config subset of config for formatting league spreadsheet
     """
     warnings.filterwarnings("ignore", category=DeprecationWarning)
-    with pd.ExcelWriter(output_file_path) as writer:
+    with pd.ExcelWriter(output_file_path) as writer: # pylint: disable=abstract-class-instantiated
         for key in data:
             data2 = data[key]
             if isinstance(data[key], dict):
@@ -35,7 +35,7 @@ def save_spreadsheet_to_file(data: dict, output_file_path: Path, config_dict: di
                 data2.set_index(columns[0], inplace=True)
             data2.to_excel(writer, sheet_name=key)
 
-            # I am sick of formatting this constantly, so let's format this so column widths are 
+            # I am sick of formatting this constantly, so let's format this so column widths are
             # pretty and readable. Start with index (which is technically column 0, but it doesn't
             # show up on "columns").
             worksheet = writer.sheets[key]
@@ -47,12 +47,12 @@ def save_spreadsheet_to_file(data: dict, output_file_path: Path, config_dict: di
                 worksheet.set_column(idx+1, idx+1, max_len)
 
             if key in config_dict['format']:
-                workbook = writer.book
+                workbook = writer.book # pylint: disable=no-member
                 for cell in config_dict['format'][key]:
                     cell_format = workbook.add_format(config_dict['format'][key][cell])
                     value = get_data_from_cell(cell, data2)
                     worksheet.write(cell, value, cell_format)
-        
+
         writer.save()
 
 
@@ -99,7 +99,7 @@ def find_max_column_width(column: list, column_name: str='') -> int:
 
     Args:
         column (list): column to evaluate each item for width by casting item to str and measuring
-        column_name (str): name of the column (Default: '')     
+        column_name (str): name of the column (Default: '')
 
     Returns:
         int: max length of column + 2
@@ -133,7 +133,7 @@ def xlsx_patch_rows(dataset: dict, patch_obj: dict, num_added_rows: int) -> dict
     # num_added_rows > 1 only for adding in blank space after content, else one row at a time
     is_first_row = True
     for _ in range(num_added_rows):
-        add_spaces = [key for key in dataset]
+        add_spaces = list(dataset.keys())
         if is_first_row:
             for key in patch_obj:
                 dataset[key].append(patch_obj[key])
@@ -148,8 +148,8 @@ def get_data_from_cell(cell: str, dataframe: pd.DataFrame) -> Union[int, float, 
     """get_data_from_cell
 
     This function is primarily to convert an Excel cell name (e.g. 'A1') to a dataframe's column
-    name and row number. A few caveats: column 'A' should be the column associated with 0, but in 
-    fact, the 0th column is df.index, so there's some work with that. 
+    name and row number. A few caveats: column 'A' should be the column associated with 0, but in
+    fact, the 0th column is df.index, so there's some work with that.
 
     NOTE: this has not been tested for columns > 'Z', so 'AA' will need some tweaking for it to
     work if that is something that is needed later.

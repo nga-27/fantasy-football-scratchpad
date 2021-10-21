@@ -7,23 +7,25 @@ import json
 from pathlib import Path
 from dotenv import load_dotenv
 
+# pylint: disable=invalid-name
+
 PWD = os.path.dirname(__file__)
 PWD_FUNC, _ = os.path.split(PWD)
 DOTENV_PATH = os.path.join(PWD_FUNC, '.env')
 if os.path.exists(DOTENV_PATH) is False:
-    print(f'WARNING: NO ENVIRONMENT FILE')
+    print(f'WARNING: NO ENVIRONMENT FILE. Current PWD: {DOTENV_PATH}')
 
 load_dotenv(DOTENV_PATH)
 
-DEFAULT_POSITIONS = ["QB", "RB", "RB", "WR", "WR", "TE", "RB/WR/TE", "D/ST", "K"]
-DEFAULT_BENCH = ["BE", "BE", "BE", "BE", "BE", "BE", "IR"]
+DEFAULT_POSITIONS = '["QB", "RB", "RB", "WR", "WR", "TE", "RB/WR/TE", "D/ST", "K"]'
+DEFAULT_BENCH = '["BE", "BE", "BE", "BE", "BE", "BE", "IR"]'
 
 CONFIG_SETTINGS = {
     'espn_s2': os.getenv('ESPN_S2', ''),
     'swid': os.getenv('ESPN_SWID', ''),
-    'year': int(os.getenv('YEAR', 2021)),
-    'league_id_ne': int(os.getenv('LEAGUE_ID_NE', 0)),
-    'league_id_sw': int(os.getenv('LEAGUE_ID_SW', 0)),
+    'year': int(os.getenv('YEAR', '2021')),
+    'league_id_ne': int(os.getenv('LEAGUE_ID_NE', '0')),
+    'league_id_sw': int(os.getenv('LEAGUE_ID_SW', '0')),
     'position_order': json.loads(os.getenv('PLAYING_POSITIONS', DEFAULT_POSITIONS)),
     'bench_order': json.loads(os.getenv('BENCH_POSITIONS', DEFAULT_BENCH))
 }
@@ -43,7 +45,7 @@ def extract_config_data(config_path: Path) -> dict:
     """
     if not config_path.exists():
         return {}
-    
+
     with config_path.open("r") as playoff_f:
         config_data = json.load(playoff_f)
     return config_data

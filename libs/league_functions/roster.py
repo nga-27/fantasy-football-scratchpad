@@ -13,16 +13,16 @@ from libs.config import CONFIG_SETTINGS
 POSITION_ORDER = CONFIG_SETTINGS.get('position_order')
 BENCH_ORDER = CONFIG_SETTINGS.get('bench_order')
 ROSTER = {
-        "NE Position": ["", "Date Updated:", "", ""],
-        "NE Name": ["", datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S"), "", ""],
-        "NE Score": ["", "", "", ""],
-        "NE Projected": ["", "", "", ""],
-        "X": ["", "", "", ""],
-        "SW Position": ["", "", "", ""],
-        "SW Name": ["", "", "", ""],
-        "SW Score": ["", "", "", ""],
-        "SW Projected": ["", "", "", ""]
-    }
+    "NE Position": ["", "Date Updated:", "", ""],
+    "NE Name": ["", datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S"), "", ""],
+    "NE Score": ["", "", "", ""],
+    "NE Projected": ["", "", "", ""],
+    "X": ["", "", "", ""],
+    "SW Position": ["", "", "", ""],
+    "SW Name": ["", "", "", ""],
+    "SW Score": ["", "", "", ""],
+    "SW Projected": ["", "", "", ""]
+}
 
 
 def create_rosters(xlsx_dict: dict, LEAGUE) -> dict:

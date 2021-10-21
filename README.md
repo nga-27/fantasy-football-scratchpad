@@ -8,7 +8,7 @@ Solution: this repo. Being commissioner in both leagues, I'm using the [ESPN API
 
 # How to Run
 
-## Configure the [API](https://github.com/cwendt94/espn-api/wiki/Football-Intro)
+## <a name="configuration"></a>Configure the [API](https://github.com/cwendt94/espn-api/wiki/Football-Intro)
 
 First, a huge shout out to [cwendt94](https://github.com/cwendt94) for making this possible with his wrapped APIs, above.
 
@@ -20,22 +20,24 @@ You'll need a few configuration things first.
 
 Once you have these pieces, it's a good time to run `python explore_api.py`. This will ensure you have proper connection to the ESPN API.
 
-## Configure the Schedule JSON
+## Simplicity in Release 0.3.0+ (`fantasy_football.py`)
 
-Once you've established connections to the ESPN API, it's time to start building the schedule. (Note, a sample "league spreadsheet" will be provided later and stored in the `content` directory.) In the `content` directory, there is a random 14-team league schedule. It's crude, but it was enough to parse to not have to manually create a schedule for 13 weeks (each team plays every other team _once_).
+Starting in release `0.3.0`, the separate managing scripts became high-level wrapper functions. In their place, the function `fantasy_football.py` handles all repo-based functionality. (The documentation for the "old" way is still [here](documentation/release-0_2_0.md#Release2), but deprecated.) That all being said, `0.3.0` and beyond is **not backward compatible**, meaning if you want to run an individual script for reasons unknown, you have to revert your branch back to the `0.2.0` release and then run them.
 
-To generate the schedule as a .json file, simply run `python schedule_json_generator.py`.
+### Why One Script to Rule Them All?
 
-## Generate the Schedule
+Once the repo is configured [above](#configuration), there's not really any reason to use scripts `schedule_json_generator.py` and `generate_schedule_xlsx.py`. The maintainer of the league really will only use `run_league_update.py`. There is a caveat, however:
 
-Once you have `schedule.json` in the `outputs` directory, you're ready to populate the schedule in the master spreadsheet (sample provided later). Once the spreadsheet is in the `content` directory (it is _not_ part of the commits for privacy reasons), simply run `python generate_schedule_xlsx.py`. This is also a handy way to [reset team names](#reset_teams).
+_If someone in your league changes their team name, then you need to ["reset"](documentation/release-0_2_0#reset_teams) the league before running `run_league_update`._
 
-## Update the Spreadsheet (as much as you want!)
+Normally, this wouldn't be a huge issue. However, in my first year doing this, a player loved to spite everyone they played by changing their team's name to mock their opponent. (As I write this, this person is in first place, so I _guess_ the annoyance is merited?) Anyway, it was annoying to have to continually reset the league every Tuesday or Wednesday, so I decided to make a single script to solve the league.
 
-Once the spreadsheet is loaded with the schedule, you're basically only going to be calling one script from now on. That script is run by running `python run_league_update.py`. The only time you might need to run something else is if someone changes their team name. Sadly, the schedule will be off and everything will crash. In that case, simply [reset the team names](#reset_teams) and then run `python run_league_update.py` again.
+### Running the Single Script `fantasy_football.py`
 
-## <a name="reset_teams"></a>Reset Team Names
+This single script operates by first evaluating if the schedule json file exists. If it does, it then tries to update the league using the `run_league_update.py` wrapper function. If that fails due the situation outlined above, it re-runs the `generate_schedule_xlsx.py` script to "reset" the league before retrying `run_league_update.py`. All of this conditional updating can be run with one single script call:
 
-Teams change, people's attitudes toward FF change, and teams' names change throughout the season. This is all part of the FF journey. However, this wreaks havoc on this script, as there becomes a discrepancy between the schedule on the master spreadsheet and the team name in ESPN. Bummer.
+```bash
+python fantasy_football.py
+```
 
-Fortunately, simply re-running `python generate_schedule_xlsx.py` simply overwrites like... everything! You might be thinking... but... it's week 12 - we can't erase everything!! **Wrong**. After resetting everything with `generate_schedule.xlsx`, you simply re-run `python run_league_update.py` and, though it might take some seconds, the league updater script should go through, tediously and tirelessly week-by-week, and update all tabs, scores, records, and the current lineup. It's that easy.
+And that's it! You don't need to worry about running scripts in a particular order or if you need to reset the league or not first. About time this came about, right?
