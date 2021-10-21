@@ -9,6 +9,7 @@ from espn_api.football import League
 
 from .config import CONFIG_SETTINGS
 
+# pylint: disable=invalid-name
 
 LAST_UPDATED = "Last Updated:"
 SKIP_ROWS = (LAST_UPDATED, "")
@@ -38,7 +39,17 @@ class FFLeague():
         self.info = dict()
         self.playoffs = {"games": {}}
 
-    def load_teams_from_espn(self, team_data=None):
+    def load_teams_from_espn(self, team_data: dict = None):
+        """load_teams_from_espn
+
+        loads information from Espn to the league object
+
+        Args:
+            team_data (dict, optional): xlsx data. Defaults to None.
+
+        Returns:
+            None: None
+        """
         if team_data is None:
             return {}
 
@@ -97,6 +108,16 @@ class FFLeague():
         self.teams.update(temp_dict)
 
     def update_teams_df(self, team_data: pd.DataFrame) -> pd.DataFrame:
+        """update_teams_df
+
+        maps team name information to team's MAP_ID
+
+        Args:
+            team_data (pd.DataFrame): [description]
+
+        Returns:
+            pd.DataFrame: [description]
+        """
         for i, team_id in enumerate(team_data["MAP ID"]):
             if team_id == "":
                 continue
@@ -105,15 +126,19 @@ class FFLeague():
         return team_data
 
     def get_teams(self):
+        """ get_teams """
         return self.teams
 
     def get_NE(self):
+        """ get_NE (region) """
         return self.NE
 
     def get_SW(self):
+        """ get_SW (region) """
         return self.SW
 
     def get_info(self):
+        """ get_info """
         return self.info
 
     def set_final_rankings(self, standings_data):

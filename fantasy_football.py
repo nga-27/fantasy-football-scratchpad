@@ -10,6 +10,7 @@ from libs.wrappers.schedule_json_generator import generate_schedule
 from libs.wrappers.generate_schedule_xlsx import generate_schedule_xlsx
 from libs.wrappers.run_league_update import run_league_update
 
+# pylint: disable=invalid-name
 
 def fantasy_football(**kwargs):
     """fantasy_football
@@ -42,7 +43,7 @@ def fantasy_football(**kwargs):
     try:
         run_league_update(SPREADSHEET_INPUT_PATH, SPREADSHEET_OUTPUT_PATH, CONFIG_PATH)
 
-    except:
+    except KeyError:
         print("Trying a rebase with 'generate_schedule'...")
         generate_schedule_xlsx(
             SCHEDULE_OUTPUT_PATH,
@@ -52,7 +53,7 @@ def fantasy_football(**kwargs):
         )
         copyfile(SPREADSHEET_OUTPUT_PATH, SPREADSHEET_INPUT_PATH)
         run_league_update(SPREADSHEET_INPUT_PATH, SPREADSHEET_OUTPUT_PATH, CONFIG_PATH)
-    
+
     print("\r\n*** Done! ***")
 
 
