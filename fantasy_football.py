@@ -1,3 +1,7 @@
+"""fantasy_football
+
+Top-level script that runs conditional wrapper scripts to update the league.
+"""
 from pathlib import Path
 import argparse
 from shutil import copyfile
@@ -8,6 +12,19 @@ from libs.wrappers.run_league_update import run_league_update
 
 
 def fantasy_football(**kwargs):
+    """fantasy_football
+
+    Configures and updates the entire league, conditionally. If the schedule file is missing, it
+    adds it. If the league needs to be reset due to a team name change, it resets it before updating
+    the general part of the league.
+
+    Keyword Args:
+        schedule_input_path (Path): raw team txt schedule
+        schedule_output_path (Path): becomes "schedule.json"
+        league_spreadsheet_input_path (Path): path of sample spreadsheet file for league
+        league_spreadsheet_output_path (Path): path of the "final result" spreadsheet for the league
+        config_path (Path): json file with playoff and league info
+    """
     print("\r\nStarting...")
     SCHEDULE_INPUT_PATH = Path(kwargs.get('schedule_input_path', '')).resolve()
     SCHEDULE_OUTPUT_PATH = Path(kwargs.get('schedule_output_path', '')).resolve()
@@ -27,7 +44,12 @@ def fantasy_football(**kwargs):
 
     except:
         print("Trying a rebase with 'generate_schedule'...")
-        generate_schedule_xlsx(SCHEDULE_OUTPUT_PATH, SPREADSHEET_INPUT_PATH, CONFIG_PATH, SPREADSHEET_OUTPUT_PATH)
+        generate_schedule_xlsx(
+            SCHEDULE_OUTPUT_PATH,
+            SPREADSHEET_INPUT_PATH,
+            CONFIG_PATH,
+            SPREADSHEET_OUTPUT_PATH
+        )
         copyfile(SPREADSHEET_OUTPUT_PATH, SPREADSHEET_INPUT_PATH)
         run_league_update(SPREADSHEET_INPUT_PATH, SPREADSHEET_OUTPUT_PATH, CONFIG_PATH)
     
