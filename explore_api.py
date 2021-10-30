@@ -31,3 +31,12 @@ print(f"Teams: {NE_LEAGUE.teams}")
 print("")
 print(f"SW League: {SW_LEAGUE}")
 print(f"Teams: {SW_LEAGUE.teams}")
+
+print("")
+print(NE_LEAGUE.box_scores(2)[0])
+print(NE_LEAGUE.box_scores(2)[0].home_lineup)
+
+print("")
+# This could be how we determine the "Inverse Managerial Index"
+for player in NE_LEAGUE.box_scores(2)[0].home_lineup:
+    print(player.position, player.slot_position, player.eligibleSlots, player)

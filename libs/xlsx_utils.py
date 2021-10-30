@@ -4,6 +4,8 @@ Functions for importing and exporting the league spreadsheet
 """
 import re
 import warnings
+import datetime
+import shutil
 from pathlib import Path
 from typing import Union
 
@@ -179,3 +181,21 @@ def get_data_from_cell(cell: str, dataframe: pd.DataFrame) -> Union[int, float, 
             return  dataframe[column][xlsx_row_key]
 
     return value
+
+
+def save_archive(output_file_path: Path):
+    """save_archive
+
+    In the chance that we corrupt something, we don't want to accidentally lose the "last good run".
+    This function will be called before trying run_league_update.
+
+    Args:
+        output_file_path (Path): path to the script-run output league spreadsheet file.
+    """
+    print("Archiving previous output run...")
+    date_str = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    archive_dir = Path(output_file_path.parent / "archive" / date_str).resolve()
+    archive_dir.mkdir(exist_ok=True, parents=True)
+    archive_destination = Path(archive_dir / f"{output_file_path.name}").resolve()
+    shutil.copyfile(output_file_path, archive_destination)
+    print("Done.\r\n")

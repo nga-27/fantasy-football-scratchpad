@@ -10,6 +10,8 @@ from libs.wrappers.schedule_json_generator import generate_schedule
 from libs.wrappers.generate_schedule_xlsx import generate_schedule_xlsx
 from libs.wrappers.run_league_update import run_league_update
 
+from libs.xlsx_utils import save_archive
+
 # pylint: disable=invalid-name
 
 def fantasy_football(**kwargs):
@@ -39,6 +41,8 @@ def fantasy_football(**kwargs):
         print("Generating a new 'schedule.json' file...")
         generate_schedule(SCHEDULE_INPUT_PATH, SCHEDULE_OUTPUT_PATH)
         print("*** 'schedule.json' - Created! ***")
+
+    save_archive(SPREADSHEET_OUTPUT_PATH)
 
     try:
         run_league_update(SPREADSHEET_INPUT_PATH, SPREADSHEET_OUTPUT_PATH, CONFIG_PATH)
