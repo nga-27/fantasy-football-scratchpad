@@ -51,40 +51,40 @@ class FFLeague():
             None: None
         """
         if team_data is not None:
-            self.info['number_of_teams'] = len(team_data["MAP ID"])
+            map_teams = [_id for _id in team_data["MAP ID"] if _id != ""]
+            self.info['number_of_teams'] = len(map_teams)
             self.info['current_week'] = self.NE.current_week
-            self.info['regular_season'] = {"number_of_weeks": len(team_data["MAP ID"])-1}
+            self.info['regular_season'] = {"number_of_weeks": len(map_teams)-1}
             self.info['playoffs'] = {"number_of_weeks": 4}
 
             # To map nicely with ESPN's order, we'll use the "MAP ID"
-            for i, _id in enumerate(team_data["MAP ID"]):
-                if _id != "":
-                    self.teams[_id] = {
-                        "name": team_data["Team Name"][i],
-                        "owner": team_data["Owner"][i],
-                        "region": 'NE' if 'NE' in _id else 'SW',
-                        "team number": team_data["Team Number"][i],
-                        "stats": {
-                            "wins": 0,
-                            "losses": 0,
-                            "ties": 0,
-                            "pf": 0.0,
-                            "pa": 0.0,
-                            "pct": 0.0
-                        },
-                        "current_week": {
-                            "points": 0.0,
-                            "projected": 0.0,
-                            "week": self.NE.current_week
-                        }
+            for i, _id in enumerate(map_teams):
+                self.teams[_id] = {
+                    "name": team_data["Team Name"][i],
+                    "owner": team_data["Owner"][i],
+                    "region": 'NE' if 'NE' in _id else 'SW',
+                    "team number": team_data["Team Number"][i],
+                    "stats": {
+                        "wins": 0,
+                        "losses": 0,
+                        "ties": 0,
+                        "pf": 0.0,
+                        "pa": 0.0,
+                        "pct": 0.0
+                    },
+                    "current_week": {
+                        "points": 0.0,
+                        "projected": 0.0,
+                        "week": self.NE.current_week
                     }
-                    region_id = int(_id.split('-')[1])
-                    if self.teams[_id]["region"] == 'NE':
-                        if self.teams[_id]['name'] != self.NE.teams[region_id-1].team_name:
-                            self.teams[_id]['name'] = self.NE.teams[region_id-1].team_name
-                    else:
-                        if self.teams[_id]['name'] != self.SW.teams[region_id-1].team_name:
-                            self.teams[_id]['name'] = self.SW.teams[region_id-1].team_name
+                }
+                region_id = int(_id.split('-')[1])
+                if self.teams[_id]["region"] == 'NE':
+                    if self.teams[_id]['name'] != self.NE.teams[region_id-1].team_name:
+                        self.teams[_id]['name'] = self.NE.teams[region_id-1].team_name
+                else:
+                    if self.teams[_id]['name'] != self.SW.teams[region_id-1].team_name:
+                        self.teams[_id]['name'] = self.SW.teams[region_id-1].team_name
 
             # We need the reverse search to map "Team X" to the different divisions
             temp_dict = dict()
