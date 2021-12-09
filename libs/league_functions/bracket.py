@@ -19,6 +19,7 @@ def load_bracket(xlsx_dict: dict, playoff_data: dict) -> dict:
     xlsx_dict["Playoff Bracket"] = {}
     max_len = 0
     for round_key, round_list in playoff_data['bracket'].items():
+        # print(round_key, round_list)
         xlsx_dict["Playoff Bracket"][round_key] = round_list
         if len(round_list) > max_len:
             max_len = len(round_list)
