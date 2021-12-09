@@ -4,6 +4,7 @@ Functions for managing and creating playoffs
 """
 
 import copy
+import pprint
 from typing import Union
 
 from libs.xlsx_utils import xlsx_patch_rows
@@ -38,6 +39,7 @@ def manage_playoffs(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
         xlsx_dict[f"Playoffs-Wk{round_num}"] = copy.deepcopy(FORMAT)
         xlsx_dict = load_round_X(xlsx_dict, playoff_data, round_num, LEAGUE)
 
+    playoff_data = reload_playoff_object(playoff_data, LEAGUE)
     xlsx_dict = load_bracket(xlsx_dict, playoff_data)
 
     return xlsx_dict
@@ -170,7 +172,7 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
         # Later round byes are only previous games
         team_id = fetch_team_from_playoff_object(bye, LEAGUE)
         if not is_round_current_or_past(round_num, LEAGUE):
-            team_name = team_id
+            team_name = f"{bye['game'].upper()} - {bye['type'].upper()}"
         elif team_id in LEAGUE.get_teams():
             team_name = LEAGUE.get_teams()[team_id]['name']
             team_name = f"({rankings['by_team'][team_id]['rank']}) {team_name}"
@@ -205,6 +207,12 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
                     team_name = team_id
                     scoring = {"points": 0.0, "projected": 0.0}
 
+                team_view = team_name
+                if not is_round_current_or_past(round_num, LEAGUE):
+                    team_view = f"Rank - {rank}"
+                    if isinstance(rank, dict):
+                        team_view = f"{rank['game'].upper()} - {rank['type'].upper()}"
+
                 rank_obj = {"rank": rank, "team_name": team_name, "score": scoring["points"]}
                 game_objects.append(rank_obj)
 
@@ -212,7 +220,7 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
                     team_name = f"({rankings['by_team'][team_id]['rank']}) {team_name}"
 
                 obj_to_patch = {
-                    "Matchup": team_name,
+                    "Matchup": team_view,
                     "Points": scoring["points"],
                     "Projected": scoring["projected"]
                 }
@@ -225,6 +233,7 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
                 dataset = xlsx_patch_rows(dataset, obj_to_patch, 1)
             dataset = xlsx_patch_rows(dataset, {}, 2)
             LEAGUE.set_playoff_game(game, game_objects)
+            # pprint.pprint(game_objects)
 
     xlsx_dict[f'Playoffs-Wk{round_num}'] = dataset
 
@@ -262,6 +271,23 @@ def fetch_team_from_playoff_object(game_object: Union[dict, int], LEAGUE) -> str
         # forward to the next game.
         return f"TEAM-RANK {game_object['default']}"
     return LEAGUE.get_playoffs()[game_object['game']][game_object['type']]
+
+
+def reload_playoff_object(playoff_data: dict, LEAGUE) -> dict:
+    """reload_playoff_object
+
+    Idea: map team id to game team?
+
+    Args:
+        playoff_data (dict): [description]
+        LEAGUE ([type]): [description]
+
+    Returns:
+        dict: [description]
+    """
+    # pprint.pprint(LEAGUE.get_playoffs())
+    # pprint.pprint(playoff_data)
+    return playoff_data
 
 
 def is_round_current_or_past(round_num: int, LEAGUE) -> bool:
