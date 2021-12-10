@@ -285,7 +285,7 @@ def reload_playoff_object(playoff_data: dict, LEAGUE) -> dict:
     Returns:
         dict: [description]
     """
-    # pprint.pprint(LEAGUE.get_playoffs())
+    # pprint.pprint(LEAGUE.get_rankings()['by_rank'])
     # pprint.pprint(playoff_data)
     return playoff_data
 
