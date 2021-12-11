@@ -52,18 +52,23 @@ class FFLeague():
         """
         if team_data is not None:
             map_teams = [_id for _id in team_data["MAP ID"] if _id != ""]
+            map_indexes = [i for i, _id in enumerate(team_data["MAP ID"]) if _id != ""]
             self.info['number_of_teams'] = len(map_teams)
             self.info['current_week'] = self.NE.current_week
             self.info['regular_season'] = {"number_of_weeks": len(map_teams)-1}
             self.info['playoffs'] = {"number_of_weeks": 4}
+            self.info['playoffs']['current_round'] = 0 \
+                if self.info['current_week'] - self.info['regular_season']['number_of_weeks'] < 0 \
+                    else self.info['current_week'] - self.info['regular_season']['number_of_weeks']
 
             # To map nicely with ESPN's order, we'll use the "MAP ID"
             for i, _id in enumerate(map_teams):
+                index = map_indexes[i]
                 self.teams[_id] = {
-                    "name": team_data["Team Name"][i],
-                    "owner": team_data["Owner"][i],
+                    "name": team_data["Team Name"][index],
+                    "owner": team_data["Owner"][index],
                     "region": 'NE' if 'NE' in _id else 'SW',
-                    "team number": team_data["Team Number"][i],
+                    "team number": team_data["Team Number"][index],
                     "stats": {
                         "wins": 0,
                         "losses": 0,
@@ -170,25 +175,47 @@ class FFLeague():
         """ return current week scores """
         return self.teams[team_id]['current_week']
 
+    def get_week_score(self, team_id, week) -> dict:
+        team = self.teams[team_id]
+        if team['region'] == 'NE':
+            boxes = self.NE.box_scores(week)
+        else:
+            boxes = self.SW.box_scores(week)
+        for box in boxes:
+            if self.teams[team_id]['name'] == box.home_team.team_name:
+                return {"score": box.home_score, "projected": box.home_projected}
+
     def set_playoff_game(self, game_id: str, game_object: list):
         """ set playoff game win-loss-tie """
-        self.playoffs[game_id] = {"winner": "", "loser": ""}
+        self.playoffs[game_id] = {"winner": "", "loser": "", "winner_name": "", "loser_name": ""}
         if 'TEAM-RANK' not in game_object[0]['team_name'] and \
             'TEAM-RANK' not in game_object[1]['team_name']:
             team1_id = self.teams["__team_names__"][game_object[0]['team_name']]['map_id']
             team2_id = self.teams["__team_names__"][game_object[1]['team_name']]['map_id']
 
             if game_object[0]['score'] > game_object[1]['score']:
-                self.playoffs[game_id]['winner'] = team1_id
-                self.playoffs[game_id]['loser'] = team2_id
+                self.playoffs[game_id] = {
+                    "winner": team1_id,
+                    "loser": team2_id,
+                    "winner_name": game_object[0]['team_name'],
+                    "loser_name": game_object[1]['team_name']
+                }
             elif game_object[0]['score'] < game_object[1]['score']:
-                self.playoffs[game_id]['winner'] = team2_id
-                self.playoffs[game_id]['loser'] = team1_id
+                self.playoffs[game_id] = {
+                    "winner": team2_id,
+                    "loser": team1_id,
+                    "winner_name": game_object[1]['team_name'],
+                    "loser_name": game_object[0]['team_name']
+                }
             else:
                 # Tie breaker scenarios begin :O
                 content = self.unmanaged_game_tiebreaker(team1_id, team2_id)
                 self.playoffs[game_id]['winner'] = content['winner']
                 self.playoffs[game_id]['loser'] = content['loser']
+                self.playoffs[game_id].update({
+                    "winner_name": self.teams[content['winner']]['name'],
+                    "loser_name": self.teams[content['loser']]['name']
+                })
 
     def unmanaged_game_tiebreaker(self, team1_id, team2_id) -> dict:
         """ determine the tie breaker winner """

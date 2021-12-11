@@ -160,6 +160,8 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
     # Assumption is that playoff rounds will go in order: first, second, ...
     round_info = playoff_data[f"round{round_num}"]
     dataset = xlsx_dict[f"Playoffs-Wk{round_num}"]
+    current_week = LEAGUE.get_info()['current_week']
+    regular_season = LEAGUE.get_info()['regular_season']['number_of_weeks']
 
     if len(round_info['byes']['teams']) == 0:
         obj_to_patch = {"Matchup": "(none)"}
@@ -203,6 +205,7 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
                 if team_id in LEAGUE.get_teams():
                     team_name = LEAGUE.get_teams()[team_id]['name']
                     scoring = LEAGUE.get_current_week_scores(team_id)
+                    # pprint.pprint(LEAGUE.get_week_score(team_id, current_week))
                 else:
                     team_name = team_id
                     scoring = {"points": 0.0, "projected": 0.0}
@@ -212,6 +215,7 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
                     team_view = f"Rank - {rank}"
                     if isinstance(rank, dict):
                         team_view = f"{rank['game'].upper()} - {rank['type'].upper()}"
+                    scoring = {"points": "", "projected": ""}
 
                 rank_obj = {"rank": rank, "team_name": team_name, "score": scoring["points"]}
                 game_objects.append(rank_obj)
@@ -286,6 +290,38 @@ def reload_playoff_object(playoff_data: dict, LEAGUE) -> dict:
         dict: [description]
     """
     # pprint.pprint(LEAGUE.get_playoffs())
+    ranks = LEAGUE.get_rankings()['by_rank']
+    playoff_round = LEAGUE.get_info()['playoffs']['current_round']
+    playoff_data['map'] = {}
+    playoff_score_data = LEAGUE.get_playoffs()
+
+    # Map ranks to rank positions in "bracket" object.
+    for round_name in playoff_data['bracket']:
+        for i, row in enumerate(playoff_data['bracket'][round_name]):
+            if 'Rank' in row:
+                _, row_info = row.split('Rank')
+                row_info = row_info.strip()
+                rank_list = row_info.split(' ')
+                rank_name = ranks[int(rank_list[0]) - 1]['name']
+                if len(rank_list) == 2:
+                    rank_name += f" {rank_list[1]}"
+                playoff_data['bracket'][round_name][i] = rank_name
+
+    # Map round-by-round information for bracket, when necessary (starting at round 2).
+    for round_number in range(2, playoff_round + 1):
+        round_key = f"Round {round_number}"
+        if round_key in playoff_data['bracket']:
+            for i, row in enumerate(playoff_data['bracket'][round_key]):
+                if "Game" in row and not "*** Game" in row:
+                    row_split = row.split(' ')
+                    game_number = int(row_split[1])
+                    game_type = row_split[2].lower()
+                    game_key = f"g{game_number}"
+                    pulled_team = playoff_score_data[game_key][f"{game_type}_name"]
+                    if len(row_split) == 4:
+                        pulled_team += f" {row_split[3]}"
+                    playoff_data['bracket'][round_key][i] = pulled_team
+                    
     # pprint.pprint(playoff_data)
     return playoff_data
 
