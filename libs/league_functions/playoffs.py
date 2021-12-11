@@ -289,13 +289,7 @@ def reload_playoff_object(playoff_data: dict, LEAGUE) -> dict:
     ranks = LEAGUE.get_rankings()['by_rank']
     playoff_round = LEAGUE.get_info()['playoffs']['current_round']
     playoff_data['map'] = {}
-
-    # Let's map games to rounds so that we have a basis to run the map against later.
-    for round_val in playoff_data:
-        if 'round' in round_val:
-            for game in playoff_data[round_val]:
-                if 'g' in game:
-                    playoff_data['map'][game] = round_val
+    playoff_score_data = LEAGUE.get_playoffs()
 
     # Map ranks to rank positions in "bracket" object.
     for round_name in playoff_data['bracket']:
@@ -309,11 +303,23 @@ def reload_playoff_object(playoff_data: dict, LEAGUE) -> dict:
                     rank_name += f" {rank_list[1]}"
                 playoff_data['bracket'][round_name][i] = rank_name
 
-    pprint.pprint(playoff_data)
+    # Map round-by-round information for bracket, when necessary (starting at round 2).
+    for round_number in range(2, playoff_round + 1):
+        round_key = f"Round {round_number}"
+        if round_key in playoff_data['bracket']:
+            for i, row in enumerate(playoff_data['bracket'][round_key]):
+                if "Game" in row and not "*** Game" in row:
+                    row_split = row.split(' ')
+                    game_number = int(row_split[1])
+                    game_type = row_split[2].lower()
+                    game_key = f"g{game_number}"
+                    pulled_team = playoff_score_data[game_key][f"{game_type}_name"]
+                    if len(row_split) == 4:
+                        pulled_team += f" {row_split[3]}"
+                    playoff_data['bracket'][round_key][i] = pulled_team
+                    
+    # pprint.pprint(playoff_data)
     return playoff_data
-
-
-# def previous_matchup_recurse(game_id: str, )
 
 
 def is_round_current_or_past(round_num: int, LEAGUE) -> bool:
