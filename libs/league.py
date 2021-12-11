@@ -175,6 +175,16 @@ class FFLeague():
         """ return current week scores """
         return self.teams[team_id]['current_week']
 
+    def get_week_score(self, team_id, week) -> dict:
+        team = self.teams[team_id]
+        if team['region'] == 'NE':
+            boxes = self.NE.box_scores(week)
+        else:
+            boxes = self.SW.box_scores(week)
+        for box in boxes:
+            if self.teams[team_id]['name'] == box.home_team.team_name:
+                return {"score": box.home_score, "projected": box.home_projected}
+
     def set_playoff_game(self, game_id: str, game_object: list):
         """ set playoff game win-loss-tie """
         self.playoffs[game_id] = {"winner": "", "loser": "", "winner_name": "", "loser_name": ""}

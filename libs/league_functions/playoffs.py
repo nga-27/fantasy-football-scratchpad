@@ -160,6 +160,8 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
     # Assumption is that playoff rounds will go in order: first, second, ...
     round_info = playoff_data[f"round{round_num}"]
     dataset = xlsx_dict[f"Playoffs-Wk{round_num}"]
+    current_week = LEAGUE.get_info()['current_week']
+    regular_season = LEAGUE.get_info()['regular_season']['number_of_weeks']
 
     if len(round_info['byes']['teams']) == 0:
         obj_to_patch = {"Matchup": "(none)"}
@@ -203,6 +205,7 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
                 if team_id in LEAGUE.get_teams():
                     team_name = LEAGUE.get_teams()[team_id]['name']
                     scoring = LEAGUE.get_current_week_scores(team_id)
+                    # pprint.pprint(LEAGUE.get_week_score(team_id, current_week))
                 else:
                     team_name = team_id
                     scoring = {"points": 0.0, "projected": 0.0}
@@ -212,6 +215,7 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
                     team_view = f"Rank - {rank}"
                     if isinstance(rank, dict):
                         team_view = f"{rank['game'].upper()} - {rank['type'].upper()}"
+                    scoring = {"points": "", "projected": ""}
 
                 rank_obj = {"rank": rank, "team_name": team_name, "score": scoring["points"]}
                 game_objects.append(rank_obj)
