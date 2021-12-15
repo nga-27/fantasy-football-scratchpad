@@ -7,9 +7,12 @@ import datetime
 import pprint
 from typing import Tuple
 
-from libs.league import SKIP_ROWS, LAST_UPDATED
+from espn_api.football.league import League
 
-def update_scores(xlsx_dict: dict, LEAGUE) -> dict:
+from libs.league import SKIP_ROWS, LAST_UPDATED
+from libs.db import DB
+
+def update_scores(xlsx_dict: dict, LEAGUE, DB_DATA: DB) -> dict:
     """update_scores
 
     As named, this function updates scores in real-time based off new information from ESPN's API
@@ -32,8 +35,8 @@ def update_scores(xlsx_dict: dict, LEAGUE) -> dict:
         projected[str_week] = dict()     
 
         # Game-by-game, load the current scores [for all weeks] and projected for applicable weeks.
-        scores, projected = load_scores(LEAGUE.get_NE(), scores, projected, week)
-        scores, projected = load_scores(LEAGUE.get_SW(), scores, projected, week)
+        scores, projected = load_scores(LEAGUE, scores, projected, week, DB_DATA, 'NE')
+        scores, projected = load_scores(LEAGUE, scores, projected, week, DB_DATA, 'SW')
 
     # Store the current scores as needed for playoffs and rankings.
     LEAGUE.set_team_scores(scores[str(current_week)])
@@ -57,7 +60,7 @@ def update_scores(xlsx_dict: dict, LEAGUE) -> dict:
     return xlsx_dict
 
 
-def load_scores(league, scores: dict, projected: dict, week) -> Tuple[dict,dict]:
+def load_scores(league, scores: dict, projected: dict, week, DB_DATA: DB, division: str) -> Tuple[dict,dict]:
     """load_scores
 
     For each game in a given week, load current/past scores as well as applicable projected scores.
@@ -75,31 +78,63 @@ def load_scores(league, scores: dict, projected: dict, week) -> Tuple[dict,dict]
     if not isinstance(str_week, str):
         str_week = str(str_week)
 
-    box_score = league.box_scores(week)
+    if division == 'NE':
+        box_score = league.get_NE().box_scores(week)
+    else:
+        box_score = league.get_SW().box_scores(week)
 
     for game in box_score:
         home_team = game.home_team.team_name
         away_team = game.away_team.team_name
-        scores[str_week][home_team] = game.home_score
-        scores[str_week][away_team] = game.away_score
 
-        # For both home and away teams, load projected total points by summing non-bench players.
-        proj_points = 0.0
-        for pos in game.home_lineup:
-            if pos.slot_position not in ("BE"):
-                if pos.game_played > 0:
-                    proj_points += pos.points
-                else:
-                    proj_points += pos.projected_points
-        projected[str_week][home_team] = proj_points
+        home_data = DB_DATA.db_get_game(week, home_team, league)
+        if home_data:
+            scores[str_week][home_team] = home_data['score']
+            projected[str_week][home_team] = home_data['projected']
 
-        proj_points = 0.0
-        for pos in game.away_lineup:
-            if pos.slot_position not in ("BE"):
-                if pos.game_played > 0:
-                    proj_points += pos.points
-                else:
-                    proj_points += pos.projected_points
-        projected[str_week][away_team] = proj_points
+        else:
+            scores[str_week][home_team] = game.home_score
+
+            # For both home and away teams, load projected total points by summing non-bench players.
+            proj_points = 0.0
+            for pos in game.home_lineup:
+                if pos.slot_position not in ("BE"):
+                    if pos.game_played > 0:
+                        proj_points += pos.points
+                    else:
+                        proj_points += pos.projected_points
+            projected[str_week][home_team] = proj_points
+
+            db_obj = {
+                home_team: {
+                    "score": scores[str_week][home_team],
+                    "projected": projected[str_week][home_team]
+                }
+            }
+            DB_DATA.db_set_game(week, db_obj, league)
+
+        away_data = DB_DATA.db_get_game(week, away_team, league)
+        if away_data:
+            scores[str_week][away_team] = away_data['score']
+            projected[str_week][away_team] = away_data['projected']
+
+        else:
+            scores[str_week][away_team] = game.away_score
+            proj_points = 0.0
+            for pos in game.away_lineup:
+                if pos.slot_position not in ("BE"):
+                    if pos.game_played > 0:
+                        proj_points += pos.points
+                    else:
+                        proj_points += pos.projected_points
+            projected[str_week][away_team] = proj_points
+
+            db_obj = {
+                away_team: {
+                    "score": scores[str_week][away_team],
+                    "projected": projected[str_week][away_team]
+                }
+            }
+            DB_DATA.db_set_game(week, db_obj, league)
 
     return scores, projected
