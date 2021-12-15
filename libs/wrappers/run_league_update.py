@@ -40,7 +40,7 @@ def run_league_update(input_path: Path, output_path: Path, config_path: Path):
     league_xlsx = create_rosters(league_xlsx, LEAGUE)
 
     DB_DATA.load_db_if_empty(LEAGUE)
-    league_xlsx = manage_playoffs(league_xlsx, config_dict['playoffs'], LEAGUE)
+    league_xlsx = manage_playoffs(league_xlsx, config_dict['playoffs'], LEAGUE, DB_DATA)
 
     save_spreadsheet_to_file(league_xlsx, output_path, config_dict['config'])
     DB_DATA.save_db()

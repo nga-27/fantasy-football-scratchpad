@@ -18,7 +18,7 @@ FORMAT = {
 BYE_ROW = 2
 
 
-def manage_playoffs(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
+def manage_playoffs(xlsx_dict: dict, playoff_data: dict, LEAGUE, DB_DATA) -> dict:
     """manage_playoffs
 
     Main function called to generate all playoff rounds (tabs) as well as the bracket itself
@@ -32,12 +32,12 @@ def manage_playoffs(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
         dict: xlsx_dict
     """
     xlsx_dict["Playoffs-Wk1"] = copy.deepcopy(FORMAT)
-    xlsx_dict = load_round_one(xlsx_dict, playoff_data, LEAGUE)
+    xlsx_dict = load_round_one(xlsx_dict, playoff_data, LEAGUE, DB_DATA)
 
     round_range = determine_remaining_rounds(playoff_data)
     for round_num in round_range:
         xlsx_dict[f"Playoffs-Wk{round_num}"] = copy.deepcopy(FORMAT)
-        xlsx_dict = load_round_X(xlsx_dict, playoff_data, round_num, LEAGUE)
+        xlsx_dict = load_round_X(xlsx_dict, playoff_data, round_num, LEAGUE, DB_DATA)
 
     playoff_data = reload_playoff_object(playoff_data, LEAGUE)
     xlsx_dict = load_bracket(xlsx_dict, playoff_data)
@@ -68,7 +68,7 @@ def determine_remaining_rounds(playoff_data: dict) -> list:
 
 
 
-def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
+def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE, DB_DATA) -> dict:
     """load_round_one
 
     Similar to the 'load_round_X' function below, but handles special cases for round 1 when
@@ -86,6 +86,7 @@ def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
     dataset = xlsx_dict['Playoffs-Wk1']
     rankings = LEAGUE.get_rankings()
     has_valid_rankings = True
+    round_one_week = LEAGUE.get_info()['regular_season']['number_of_weeks'] + 1
 
     if len(rankings.get('by_rank', [])) == 0 or not is_round_current_or_past(1, LEAGUE):
         num_teams = LEAGUE.get_info().get('number_of_teams')
@@ -116,7 +117,11 @@ def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
                 if not is_round_current_or_past(1, LEAGUE):
                     scoring = {"points": 0.0, "projected": 0.0}
                 elif 'team_id' in rankings['by_rank'][rank-1]:
-                    scoring = LEAGUE.get_current_week_scores(rankings['by_rank'][rank-1]['team_id'])
+                    scoring = DB_DATA.db_get_game(round_one_week, rankings['by_rank'][rank-1]['name'], LEAGUE)
+                    if scoring is None:
+                        scoring = {"points": 0.0, "projected": 0.0}
+                    else:
+                        scoring = {"points": scoring['score'], "projected": scoring['projected']}
                 else:
                     scoring = {"points": 0.0, "projected": 0.0}
 
@@ -142,7 +147,7 @@ def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE) -> dict:
     return xlsx_dict
 
 
-def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) -> dict:
+def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE, DB_DATA) -> dict:
     """load_round_X
 
     Similar to load_round_one, but more generic and assuming other rounds are sequential (2, 3, 4)
@@ -161,7 +166,7 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
     round_info = playoff_data[f"round{round_num}"]
     dataset = xlsx_dict[f"Playoffs-Wk{round_num}"]
     current_week = LEAGUE.get_info()['current_week']
-    regular_season = LEAGUE.get_info()['regular_season']['number_of_weeks']
+    playoff_week = current_week + round_num
 
     if len(round_info['byes']['teams']) == 0:
         obj_to_patch = {"Matchup": "(none)"}
@@ -204,8 +209,11 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE) ->
                 team_id = fetch_team_from_playoff_object(rank, LEAGUE)
                 if team_id in LEAGUE.get_teams():
                     team_name = LEAGUE.get_teams()[team_id]['name']
-                    scoring = LEAGUE.get_current_week_scores(team_id)
-                    # pprint.pprint(LEAGUE.get_week_score(team_id, current_week))
+                    scoring = DB_DATA.db_get_game(playoff_week, team_name, LEAGUE)
+                    if scoring is None:
+                        scoring = {"points": 0.0, "projected": 0.0}
+                    else:
+                        scoring = {"points": scoring['score'], "projected": scoring['projected']}
                 else:
                     team_name = team_id
                     scoring = {"points": 0.0, "projected": 0.0}

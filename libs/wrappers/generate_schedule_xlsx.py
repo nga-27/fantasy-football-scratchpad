@@ -12,6 +12,8 @@ from libs.xlsx_utils import (
 )
 from libs.config import extract_config_data
 from libs.league import FFLeague
+from libs.db import DB
+
 from ..league_functions.schedule import load_schedule
 from ..league_functions.playoffs import manage_playoffs
 
@@ -34,6 +36,7 @@ def generate_schedule_xlsx(schedule_path: Path,
     print("Generating Schedule XLSX...")
     if schedule_path.exists():
         LEAGUE = FFLeague()
+        DB_DATA = DB()
         league_xlsx = load_league_spreadsheet(league_spreadsheet_path)
 
         with schedule_path.open('r') as sch_f:
@@ -41,7 +44,7 @@ def generate_schedule_xlsx(schedule_path: Path,
 
         league_xlsx = load_schedule(league_xlsx, LEAGUE, schedule_json)
         config_dict = extract_config_data(config_path)
-        league_xlsx = manage_playoffs(league_xlsx, config_dict['playoffs'], LEAGUE)
+        league_xlsx = manage_playoffs(league_xlsx, config_dict['playoffs'], LEAGUE, DB_DATA)
 
         save_spreadsheet_to_file(league_xlsx, output_path, config_dict['config'])
 
