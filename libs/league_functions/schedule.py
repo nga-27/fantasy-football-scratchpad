@@ -7,6 +7,8 @@ import datetime
 from libs.league import LAST_UPDATED, SKIP_ROWS
 from libs.xlsx_utils import xlsx_patch_rows
 
+# pylint: disable=invalid-name
+
 
 def load_schedule(xlsx_dict: dict, LEAGUE, schedule: dict) -> dict:
     """load_schedule
@@ -78,5 +80,5 @@ def update_loaded_schedule(xlsx_dict: dict, LEAGUE) -> dict:
                     team_name = team_map[team_map["__team_names__"][team]["map_id"]]["name"]
                     if team != team_name:
                         xlsx_dict[tab]["Team"][i] = team_name
-    
+
     return xlsx_dict

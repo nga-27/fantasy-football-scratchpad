@@ -5,6 +5,7 @@ percentages. This also shows how the leagues and the overall standings map.
 """
 from libs.league import SKIP_ROWS
 
+# pylint: disable=invalid-name,too-many-locals,too-many-nested-blocks
 
 def update_standings(xlsx_dict: dict, LEAGUE) -> dict:
     """update_standings
@@ -134,7 +135,7 @@ def load_league_object_records(xlsx_dict: dict, LEAGUE):
             losses = LEAGUE.teams[team_id]["stats"]["losses"]
             ties = LEAGUE.teams[team_id]["stats"]["ties"]
             if sum([wins, losses, ties]) > 0:
-                win_sum = (1.0 * wins) + (0.5 * ties) + (0.0 * losses) 
+                win_sum = (1.0 * wins) + (0.5 * ties) + (0.0 * losses)
                 LEAGUE.teams[team_id]["stats"]["pct"] = \
                     float(win_sum) / float(sum([wins, losses, ties]))
             standings.append(

@@ -9,6 +9,8 @@ import pandas as pd
 
 from libs.config import CONFIG_SETTINGS
 
+# pylint: disable=invalid-name,too-many-branches
+
 
 POSITION_ORDER = CONFIG_SETTINGS.get('position_order')
 BENCH_ORDER = CONFIG_SETTINGS.get('bench_order')
@@ -45,7 +47,7 @@ def create_rosters(xlsx_dict: dict, LEAGUE) -> dict:
     ne_box_scores = LEAGUE.get_NE().box_scores(current_week)
     sw_box_scores = LEAGUE.get_SW().box_scores(current_week)
 
-    # Load the all roster data in order of POSITION_ORDER from both leagues 
+    # Load the all roster data in order of POSITION_ORDER from both leagues
     roster_data = {"NE": dict(), "SW": dict()}
     roster_data = generate_roster_data(ne_box_scores, roster_data, "NE")
     roster_data = generate_roster_data(sw_box_scores, roster_data, "SW")
@@ -103,9 +105,10 @@ def generate_roster_data(box_score: list, roster_data: dict, region: str) -> dic
                         [pos, name, points, proj]
             else:
                 for i in range(len(BENCH_ORDER)-1):
-                    if roster_data[region][home_team][BENCH_ORDER.index(pos)+len(POSITION_ORDER)+i][1] == "":
-                        roster_data[region][home_team][BENCH_ORDER.index(pos)+len(POSITION_ORDER)+i] = \
-                            [pos, name, points, proj]
+                    if roster_data[region][home_team][BENCH_ORDER.index(pos) + \
+                        len(POSITION_ORDER)+i][1] == "":
+                        roster_data[region][home_team][BENCH_ORDER.index(pos) + \
+                            len(POSITION_ORDER)+i] = [pos, name, points, proj]
                         break
 
         # Load the player positions based off POSITION_ORDER as lists of lists (to be mapped later).
@@ -123,9 +126,10 @@ def generate_roster_data(box_score: list, roster_data: dict, region: str) -> dic
                         [pos, name, points, proj]
             else:
                 for i in range(6):
-                    if roster_data[region][away_team][BENCH_ORDER.index(pos)+len(POSITION_ORDER)+i][1] == "":
-                        roster_data[region][away_team][BENCH_ORDER.index(pos)+len(POSITION_ORDER)+i] = \
-                            [pos, name, points, proj]
+                    if roster_data[region][away_team][BENCH_ORDER.index(pos) + \
+                        len(POSITION_ORDER)+i][1] == "":
+                        roster_data[region][away_team][BENCH_ORDER.index(pos) + \
+                            len(POSITION_ORDER)+i] = [pos, name, points, proj]
                         break
 
     return roster_data
@@ -148,7 +152,7 @@ def load_rosters(rosters: dict, roster_data: dict, region: str, team: str, LEAGU
     """
     # We need to make this check to avoid the robots getting passed to this object. Map the listed
     # data from above to a dictionary with the proper spaces in rows and correct columns to become
-    # the pandas dataframe object for the "Rosters" tab of the spreadsheet. Do this for both regions 
+    # the pandas dataframe object for the "Rosters" tab of the spreadsheet. Do this for both regions
     if team in LEAGUE.teams["__team_names__"]:
         map_id = LEAGUE.teams["__team_names__"][team]["map_id"]
         name = LEAGUE.teams[map_id]["owner"]
@@ -156,7 +160,7 @@ def load_rosters(rosters: dict, roster_data: dict, region: str, team: str, LEAGU
         rosters[f"{region} Name"].append(team)
         rosters[f"{region} Score"].append(name)
         rosters[f"{region} Projected"].append("")
-        
+
         # The "X" column is a simple column spacer between the leagues. We only want to add this
         # once, so let's just operate on them when the NE region fires.
         if region == "NE":

@@ -7,6 +7,7 @@ from pathlib import Path
 from libs.config import extract_config_data
 from libs.xlsx_utils import load_league_spreadsheet, save_spreadsheet_to_file
 from libs.league import FFLeague
+from libs.db import DB
 
 from ..league_functions.schedule import update_loaded_schedule
 from ..league_functions.roster import create_rosters
@@ -28,15 +29,20 @@ def run_league_update(input_path: Path, output_path: Path, config_path: Path):
     """
     print("Running League Update...")
     LEAGUE = FFLeague()
+    DB_DATA = DB()
+
     league_xlsx = load_league_spreadsheet(input_path)
     config_dict = extract_config_data(config_path)
 
     league_xlsx = update_loaded_schedule(league_xlsx, LEAGUE)
-    league_xlsx = update_scores(league_xlsx, LEAGUE)
+    league_xlsx = update_scores(league_xlsx, LEAGUE, DB_DATA)
     league_xlsx = update_standings(league_xlsx, LEAGUE)
     league_xlsx = create_rosters(league_xlsx, LEAGUE)
-    league_xlsx = manage_playoffs(league_xlsx, config_dict['playoffs'], LEAGUE)
+
+    DB_DATA.load_db_if_empty(LEAGUE)
+    league_xlsx = manage_playoffs(league_xlsx, config_dict['playoffs'], LEAGUE, DB_DATA)
 
     save_spreadsheet_to_file(league_xlsx, output_path, config_dict['config'])
+    DB_DATA.save_db()
 
     print("*** League Update - Complete! ***")

@@ -8,6 +8,7 @@ import pandas as pd
 from espn_api.football import League
 
 from .config import CONFIG_SETTINGS
+# from .db import initialize_db
 
 # pylint: disable=invalid-name
 
