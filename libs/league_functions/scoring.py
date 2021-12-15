@@ -4,13 +4,12 @@ Handler for updating scores and projected scores for each week. Referenced API:
 https://github.com/cwendt94/espn-api/wiki/Football-Intro#get-box-score-of-currentspecific-week
 """
 import datetime
-import pprint
 from typing import Tuple
 
-from espn_api.football.league import League
-
 from libs.league import SKIP_ROWS, LAST_UPDATED
-from libs.db import DB
+from libs.db import DB # pylint: disable=no-name-in-module,import-error
+
+# pylint: disable=invalid-name,too-many-arguments,too-many-locals,too-many-branches
 
 def update_scores(xlsx_dict: dict, LEAGUE, DB_DATA: DB) -> dict:
     """update_scores
@@ -32,7 +31,7 @@ def update_scores(xlsx_dict: dict, LEAGUE, DB_DATA: DB) -> dict:
     for week in range(1, current_week+1):
         str_week = str(week)
         scores[str_week] = dict()
-        projected[str_week] = dict()     
+        projected[str_week] = dict()
 
         # Game-by-game, load the current scores [for all weeks] and projected for applicable weeks.
         scores, projected = load_scores(LEAGUE, scores, projected, week, DB_DATA, 'NE')
@@ -60,7 +59,12 @@ def update_scores(xlsx_dict: dict, LEAGUE, DB_DATA: DB) -> dict:
     return xlsx_dict
 
 
-def load_scores(league, scores: dict, projected: dict, week, DB_DATA: DB, division: str) -> Tuple[dict,dict]:
+def load_scores(league,
+                scores: dict,
+                projected: dict,
+                week,
+                DB_DATA: DB,
+                division: str) -> Tuple[dict,dict]:
     """load_scores
 
     For each game in a given week, load current/past scores as well as applicable projected scores.
@@ -95,10 +99,11 @@ def load_scores(league, scores: dict, projected: dict, week, DB_DATA: DB, divisi
         else:
             scores[str_week][home_team] = game.home_score
 
-            # For both home and away teams, load projected total points by summing non-bench players.
+            # For both home and away teams, load projected total points by summing
+            # non-bench players.
             proj_points = 0.0
             for pos in game.home_lineup:
-                if pos.slot_position not in ("BE"):
+                if pos.slot_position != "BE":
                     if pos.game_played > 0:
                         proj_points += pos.points
                     else:
@@ -122,7 +127,7 @@ def load_scores(league, scores: dict, projected: dict, week, DB_DATA: DB, divisi
             scores[str_week][away_team] = game.away_score
             proj_points = 0.0
             for pos in game.away_lineup:
-                if pos.slot_position not in ("BE"):
+                if pos.slot_position != "BE":
                     if pos.game_played > 0:
                         proj_points += pos.points
                     else:

@@ -4,11 +4,12 @@ Functions for managing and creating playoffs
 """
 
 import copy
-import pprint
 from typing import Union
 
 from libs.xlsx_utils import xlsx_patch_rows
-from .bracket import load_bracket
+from .bracket import load_bracket # pylint:disable=import-error
+
+# pylint: disable=invalid-name,too-many-locals,too-many-branches,too-many-statements
 
 FORMAT = {
     "Matchup": ["", "", "Byes"],
@@ -117,7 +118,11 @@ def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE, DB_DATA) -> dict
                 if not is_round_current_or_past(1, LEAGUE):
                     scoring = {"points": 0.0, "projected": 0.0}
                 elif 'team_id' in rankings['by_rank'][rank-1]:
-                    scoring = DB_DATA.db_get_game(round_one_week, rankings['by_rank'][rank-1]['name'], LEAGUE)
+                    scoring = DB_DATA.db_get_game(
+                        round_one_week,
+                        rankings['by_rank'][rank-1]['name'],
+                        LEAGUE
+                    )
                     if scoring is None:
                         scoring = {"points": 0.0, "projected": 0.0}
                     else:
@@ -185,7 +190,7 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE, DB
             team_name = f"({rankings['by_team'][team_id]['rank']}) {team_name}"
         else:
             team_name = team_id
-        
+
         obj_to_patch = {
             "Matchup": team_name
         }
@@ -273,10 +278,9 @@ def fetch_team_from_playoff_object(game_object: Union[dict, int], LEAGUE) -> str
         # This case happens in round 1 and part of round 2
         if 'by_rank' not in LEAGUE.get_rankings().keys():
             return f"TEAM-RANK {game_object}"
-        elif 'team_id' not in LEAGUE.get_rankings()['by_rank'][game_object-1]:
+        if 'team_id' not in LEAGUE.get_rankings()['by_rank'][game_object-1]:
             return LEAGUE.get_rankings()['by_rank'][game_object-1]['name']
-        else:
-            return LEAGUE.get_rankings()['by_rank'][game_object-1]['team_id']
+        return LEAGUE.get_rankings()['by_rank'][game_object-1]['team_id']
 
     if LEAGUE.get_playoffs()[game_object['game']][game_object['type']] == '':
         # Case where we haven't gotten that far in the season or playoffs to have a team to move
@@ -329,8 +333,7 @@ def reload_playoff_object(playoff_data: dict, LEAGUE) -> dict:
                     if len(row_split) == 4:
                         pulled_team += f" {row_split[3]}"
                     playoff_data['bracket'][round_key][i] = pulled_team
-                    
-    # pprint.pprint(playoff_data)
+
     return playoff_data
 
 
