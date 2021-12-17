@@ -45,9 +45,13 @@ class DB():
                 if str(week) not in self.DB_DATA['teams'][team_id]['weeks'] or week == current_week:
                     self.DB_DATA['teams'][team_id]['weeks'][str(week)] = game_obj[team]
 
-    def db_get_game(self, week: Union[str,int], team: str, LEAGUE: FFLeague) -> Union[dict,None]:
-        """ return a specific game object """
-        if week == LEAGUE.get_info()['current_week']:
+    def db_get_game(self, week: Union[str,int], team: str, LEAGUE: FFLeague,
+                    fetch: bool = False) -> Union[dict,None]:
+        """ 
+            return a specific game object. 'fetch' is for playoffs (should not return None unless
+            not played yet), set to True
+        """
+        if week == LEAGUE.get_info()['current_week'] and not fetch:
             return None
         if team not in LEAGUE.get_teams()["__team_names__"]:
             return None
