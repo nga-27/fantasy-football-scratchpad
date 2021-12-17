@@ -170,8 +170,8 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE, DB
     # Assumption is that playoff rounds will go in order: first, second, ...
     round_info = playoff_data[f"round{round_num}"]
     dataset = xlsx_dict[f"Playoffs-Wk{round_num}"]
-    current_week = LEAGUE.get_info()['current_week']
-    playoff_week = current_week + round_num
+    total_reg_season_weeks = LEAGUE.get_info()['regular_season']['number_of_weeks']
+    playoff_week = total_reg_season_weeks + round_num
 
     if len(round_info['byes']['teams']) == 0:
         obj_to_patch = {"Matchup": "(none)"}
@@ -214,7 +214,7 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE, DB
                 team_id = fetch_team_from_playoff_object(rank, LEAGUE)
                 if team_id in LEAGUE.get_teams():
                     team_name = LEAGUE.get_teams()[team_id]['name']
-                    scoring = DB_DATA.db_get_game(playoff_week, team_name, LEAGUE)
+                    scoring = DB_DATA.db_get_game(playoff_week, team_name, LEAGUE, fetch=True)
                     if scoring is None:
                         scoring = {"points": 0.0, "projected": 0.0}
                     else:
