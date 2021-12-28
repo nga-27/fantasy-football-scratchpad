@@ -17,7 +17,7 @@ from ..league_functions.playoffs import manage_playoffs
 
 # pylint: disable=invalid-name
 
-def run_league_update(input_path: Path, output_path: Path, config_path: Path):
+def run_league_update(input_path: Path, output_path: Path, config_path: Path, needs_db_reset: bool):
     """run_league_update
 
     Primary script run to update the league spreadsheet using ESPN's API calls
@@ -29,7 +29,7 @@ def run_league_update(input_path: Path, output_path: Path, config_path: Path):
     """
     print("Running League Update...")
     LEAGUE = FFLeague()
-    DB_DATA = DB()
+    DB_DATA = DB(needs_db_reset)
 
     league_xlsx = load_league_spreadsheet(input_path)
     config_dict = extract_config_data(config_path)
