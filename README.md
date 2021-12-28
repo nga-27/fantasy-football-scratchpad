@@ -32,7 +32,7 @@ _If someone in your league changes their team name, then you need to ["reset"](d
 
 Normally, this wouldn't be a huge issue. However, in my first year doing this, a player loved to spite everyone they played by changing their team's name to mock their opponent. (As I write this, this person is in first place, so I _guess_ the annoyance is merited?) Anyway, it was annoying to have to continually reset the league every Tuesday or Wednesday, so I decided to make a single script to solve the league.
 
-### Running the Single Script `fantasy_football.py`
+## Running the Single Script `fantasy_football.py`
 
 This single script operates by first evaluating if the schedule json file exists. If it does, it then tries to update the league using the `run_league_update.py` wrapper function. If that fails due the situation outlined above, it re-runs the `generate_schedule_xlsx.py` script to "reset" the league before retrying `run_league_update.py`. All of this conditional updating can be run with one single script call:
 
@@ -41,3 +41,15 @@ python fantasy_football.py
 ```
 
 And that's it! You don't need to worry about running scripts in a particular order or if you need to reset the league or not first. About time this came about, right?
+
+## "DB" Functionality in 0.4.0+
+
+Starting in `0.4.0`, a pseudo-DB `db.json` file is employed to help ease the speed of regenerating the league spreadsheet. (Note, that as of 0.4.2, this is not fully realized or optimized yet, though the functionality of the db is utilized.) This is done automatically behind the scenes, so there isn't anything additional that is needed to be done.
+
+The db functionality is designed to only update scores and projected scores of weeks and games that are of the current week. In the event that a past game from a past week needs to be updated to the correct score, currently there is one option: reset the db. This is accomplished by passing the `-d` flag to the script call, as shown below:
+
+```bash
+python fantasy_football.py -d 
+```
+
+[More details and development to occur in future releases.]

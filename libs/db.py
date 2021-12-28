@@ -16,11 +16,14 @@ DB_PATH = DB_DIR / "db.json"
 class DB():
     """DB Class"""
 
-    def __init__(self):
+    def __init__(self, needs_db_reset: bool = False):
         """ init DB """
         self.DB_DATA = {}
         if DB_PATH.exists():
-            self.DB_DATA = json.load(DB_PATH.open('r'))
+            if needs_db_reset:
+                json.dump(self.DB_DATA, DB_PATH.open('w'))
+            else:
+                self.DB_DATA = json.load(DB_PATH.open('r'))
 
     def load_db_if_empty(self, LEAGUE: FFLeague, reset_db: bool = False):
         """ todo: add reset db flag """
@@ -56,6 +59,8 @@ class DB():
         if team not in LEAGUE.get_teams()["__team_names__"]:
             return None
         team_id = LEAGUE.get_teams()["__team_names__"][team]['map_id']
+        if 'teams' not in self.DB_DATA:
+            return None
         if 'weeks' not in self.DB_DATA['teams'][team_id]:
             return None
         if str(week) not in self.DB_DATA['teams'][team_id]['weeks']:
