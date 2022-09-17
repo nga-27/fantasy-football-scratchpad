@@ -75,9 +75,9 @@ if __name__ == "__main__":
     parser.add_argument("--schedule_output_path", "-s", required=False,
                         default="output/schedule.json")
     parser.add_argument("--league_spreadsheet_input_path", "-l", required=False,
-                        default="content/Mixed-14 Fantasy Football League.xlsx")
+                        default="content/Mixed-14_Fantasy_Football_League.xlsx")
     parser.add_argument("--league_spreadsheet_output_path", "-o", required=False,
-                        default="output/Mixed-14 Fantasy Football League.xlsx")
+                        default="output/Mixed-14_Fantasy_Football_League.xlsx")
     parser.add_argument("--config_path", "-c", required=False,
                         default="content/14_team_config.json")
     parser.add_argument("--db_reset", "-d", action='store_true', required=False, default=False)
