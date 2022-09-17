@@ -1,11 +1,11 @@
 #! /bin/sh
+source .env
 
 # Active time stop times (when a script should stop for the [night])
-end_time=23:45:00
-echo "Stop time: $end_time"
+echo "Stop time: $CRON_END_TIME"
 
 current=$(date +%H:%M:%S)
-while [[ $current < $end_time ]]
+while [[ $current < $CRON_END_TIME ]]
 do
     python fantasy_football.py
 
@@ -14,6 +14,6 @@ do
     
     python copier.py
     echo "Done." 
-    sleep 300
+    sleep $CRON_FREQUENCY_SEC
     current=$(date +%H:%M:%S)
 done

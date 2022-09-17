@@ -1,3 +1,7 @@
+"""copier.py
+
+So we can copy the league output to a shared drive!
+"""
 import os
 import shutil
 from dotenv import load_dotenv
@@ -11,9 +15,15 @@ if os.path.exists(DOTENV_PATH) is False:
 
 load_dotenv(DOTENV_PATH)
 
+SOURCE_PATH = os.getenv("INPUT_SOURCE_PATH", "")
+DEST_PATH = os.getenv("SHARE_DIRECTORY_PATH", "")
+
+
 def league_copier():
-    SOURCE_PATH = os.getenv("INPUT_SOURCE_PATH", "")
-    DEST_PATH = os.getenv("SHARE_DIRECTORY_PATH", "")
+    """league_copier
+
+    Since shell commands (such as "cp") are apparently terrible with paths, we'll do it in python!
+    """
     # print(SOURCE_PATH, DEST_PATH)
     shutil.copy(SOURCE_PATH, DEST_PATH)
 

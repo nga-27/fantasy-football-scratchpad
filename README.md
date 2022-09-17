@@ -17,6 +17,7 @@ You'll need a few configuration things first.
 1) Copy-paste your own copy of `.env.example` and save it as `.env`. 
 2) You'll need to fill out the keys in the `.env` file. `ESPN_SWID` and `ESPN_S2` are found by [inspecting the ESPN site](https://github.com/cwendt94/espn-api/discussions/150). You optionally will have the opportunity to set the playing and bench position your league offers.
 3) The other keys are found by one's own league sites. Note, since I'm managing two leagues simultaneously (i.e. the point of this repo), I have two keys for league IDs. I randomly named them "regions" of NE and SW. You can have w/e you want, but for this work, keep the key names as they are.
+4) **Optional**- if planning to use the `ff_job.sh` shell script to have it run every 5ish minutes until 11:45pm (local time), then you'll want to fill out `SHARE_DIRECTORY_PATH` and `INPUT_SOURCE_PATH`. ["Cron" script](#cron)
 
 Once you have these pieces, it's a good time to run `python explore_api.py`. This will ensure you have proper connection to the ESPN API.
 
@@ -51,5 +52,11 @@ The db functionality is designed to only update scores and projected scores of w
 ```bash
 python fantasy_football.py -d 
 ```
+
+## <a name="cron"></a>"Cron Job" Functionality in 0.5.0+
+
+As alluded to above, version `0.5.0+` features a script `ff_job.sh` that simulates a cron job. Essentially, every 5ish minutes, the python script that runs the league (`fantasy_football.py`) will run. An additional `copier.py` script will run to copy the output of first script to a destination of choice. This is especially handy if you share the league spreadsheet with your league mates in OneDrive or GoogleDrive. (GoogleDrive now has a desktop version that makes this pretty seamless!)
+
+Two values, `CRON_FREQUENCY_SEC` and `CRON_END_TIME`, provide default values in `.env.example`. Feel free to change these as you see fit. Default is 300 seconds and 11:45pm local time, respectively. (Sorry east-coasters... late games that track past midnight for you become complex.)
 
 [More details and development to occur in future releases.]
