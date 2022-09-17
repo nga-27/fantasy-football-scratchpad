@@ -59,4 +59,6 @@ As alluded to above, version `0.5.0+` features a script `ff_job.sh` that simulat
 
 Two values, `CRON_FREQUENCY_SEC` and `CRON_END_TIME`, provide default values in `.env.example`. Feel free to change these as you see fit. Default is 300 seconds and 11:45pm local time, respectively. (Sorry east-coasters... late games that track past midnight for you become complex.)
 
+To run this, you will probably have to allow execution of the shell script. Do this by `chmod +x ff_job.sh`. Then on game day, simply run `./ff_job.sh` and walk away! It'll stop periodically updating and copying the output file at the prescribed stop time that night.
+
 [More details and development to occur in future releases.]
