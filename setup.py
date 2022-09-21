@@ -22,7 +22,7 @@ URL = 'https://github.mmm.com/nga-27/fantasy-football-scratchpad'
 EMAIL = 'namell91@gmail.com'
 AUTHOR = 'Nick Amell'
 REQUIRES_PYTHON = '>=3.7.0'
-VERSION = '0.5.0'
+VERSION = '0.5.1'
 
 # What packages are required for this module to be executed?
 REQUIRES = [
@@ -32,7 +32,7 @@ REQUIRES = [
     "requests==2.25",
     "xlrd==1.2.0",
     "XlsxWriter==1.2.6",
-    "espn-api==0.18.0",
+    "espn-api==0.22.1",
     "argparse==1.4.0"
 ]
 

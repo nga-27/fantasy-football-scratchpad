@@ -53,6 +53,8 @@ The db functionality is designed to only update scores and projected scores of w
 python fantasy_football.py -d 
 ```
 
+***Run the above command when a "week" has ended (Tuesday morning) to correct the past weeks' scoring.***
+
 ## <a name="cron"></a>"Cron Job" Functionality in 0.5.0+
 
 As alluded to above, version `0.5.0+` features a script `ff_job.sh` that simulates a cron job. Essentially, every 5ish minutes, the python script that runs the league (`fantasy_football.py`) will run. An additional `copier.py` script will run to copy the output of first script to a destination of choice. This is especially handy if you share the league spreadsheet with your league mates in OneDrive or GoogleDrive. (GoogleDrive now has a desktop version that makes this pretty seamless!)
