@@ -121,7 +121,8 @@ def load_round_one(xlsx_dict: dict, playoff_data: dict, LEAGUE, DB_DATA) -> dict
                     scoring = DB_DATA.db_get_game(
                         round_one_week,
                         rankings['by_rank'][rank-1]['name'],
-                        LEAGUE
+                        LEAGUE,
+                        fetch=True
                     )
                     if scoring is None:
                         scoring = {"points": 0.0, "projected": 0.0}
