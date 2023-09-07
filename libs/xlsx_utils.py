@@ -85,7 +85,7 @@ def load_league_spreadsheet(spreadsheet_path: Path) -> dict:
     Returns:
         dict: league spreadsheet object
     """
-    league_xlsx = dict()
+    league_xlsx = {}
     if spreadsheet_path.exists():
         xlsx = pd.ExcelFile(spreadsheet_path)
         for sheet in xlsx.sheet_names:

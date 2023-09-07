@@ -7,7 +7,7 @@ import copy
 from typing import Union
 
 from libs.xlsx_utils import xlsx_patch_rows
-from .bracket import load_bracket # pylint:disable=import-error
+from libs.league_functions.bracket import load_bracket
 
 # pylint: disable=invalid-name,too-many-locals,too-many-branches,too-many-statements
 

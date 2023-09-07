@@ -35,9 +35,9 @@ class FFLeague():
             espn_s2=CONFIG_SETTINGS["espn_s2"],
             swid=CONFIG_SETTINGS["swid"]
         )
-        self.teams = dict()
-        self.rankings = dict()
-        self.info = dict()
+        self.teams = {}
+        self.rankings = {}
+        self.info = {}
         self.playoffs = {"games": {}}
 
     def load_teams_from_espn(self, team_data: dict = None):
@@ -93,9 +93,9 @@ class FFLeague():
                         self.teams[_id]['name'] = self.SW.teams[region_id-1].team_name
 
             # We need the reverse search to map "Team X" to the different divisions
-            temp_dict = dict()
-            for team_id in self.teams:
-                new_key = f"Team {self.teams[team_id]['team number']}"
+            temp_dict = {}
+            for team_id, team in self.teams.items():
+                new_key = f"Team {team['team number']}"
                 temp_dict[new_key] = {
                     "map_id": team_id
                 }
@@ -103,9 +103,9 @@ class FFLeague():
 
             # One more reverse search: team_name to map_id
             temp_dict = {"__team_names__": {}}
-            for team_id in self.teams:
+            for team_id, team_obj in self.teams.items():
                 if 'Team' not in team_id:
-                    new_key = self.teams[team_id]["name"]
+                    new_key = team_obj["name"]
                     temp_dict["__team_names__"][new_key] = {
                         "map_id": team_id
                     }
@@ -147,8 +147,8 @@ class FFLeague():
 
     def set_final_rankings(self, standings_data):
         """ set final rankings in league object """
-        self.rankings['by_rank'] = list()
-        self.rankings['by_team'] = dict()
+        self.rankings['by_rank'] = []
+        self.rankings['by_team'] = {}
 
         for i, team_tuple in enumerate(standings_data):
             team_id = team_tuple[0]
@@ -177,6 +177,7 @@ class FFLeague():
         return self.teams[team_id]['current_week']
 
     def get_week_score(self, team_id, week) -> dict:
+        """ get_week_score """
         team = self.teams[team_id]
         if team['region'] == 'NE':
             boxes = self.NE.box_scores(week)
@@ -185,6 +186,7 @@ class FFLeague():
         for box in boxes:
             if self.teams[team_id]['name'] == box.home_team.team_name:
                 return {"score": box.home_score, "projected": box.home_projected}
+        return {"score": 0.0, "projected": 0.0}
 
     def set_playoff_game(self, game_id: str, game_object: list):
         """ set playoff game win-loss-tie """
