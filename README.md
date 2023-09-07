@@ -53,6 +53,20 @@ The db functionality is designed to only update scores and projected scores of w
 python fantasy_football.py -d 
 ```
 
+## `0.6.0` Updates
+
+Additionally, starting with `0.6.0+`, you may pass the `-r` arg to the main script. This will force a full reset of the data structures, which includes the DB. The full restart can allow for updated match-ups and a deeper reset of the league. This can be done as below:
+
+```bash
+python fantasy_football.py -r
+```
+
+Since the list of input parameters has grown [again], another parameter `-p` has been added to print out the other parameters can be utilized to in this app. This will not actually update the fantasy football data, but it will print the other available options in the terminal window.
+
+```bash
+python fantasy_football.py -p
+```
+
 ***Run the above command when a "week" has ended (Tuesday morning) to correct the past weeks' scoring.***
 
 ## <a name="cron"></a>"Cron Job" Functionality in 0.5.0+

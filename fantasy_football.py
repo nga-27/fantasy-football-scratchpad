@@ -11,6 +11,7 @@ from libs.wrappers.generate_schedule_xlsx import generate_schedule_xlsx
 from libs.wrappers.run_league_update import run_league_update
 
 from libs.xlsx_utils import save_archive
+from libs.help_function import help_print
 
 # pylint: disable=invalid-name
 
@@ -39,6 +40,11 @@ def fantasy_football(**kwargs):
 
     DB_RESET = kwargs.get('db_reset', False)
     FORCE_RESET = kwargs.get('force_reset', False)
+    RUN_HELP = kwargs.get('help_print', False)
+
+    if RUN_HELP:
+        help_print()
+        return
 
     if not SCHEDULE_OUTPUT_PATH.exists():
         print("Generating a new 'schedule.json' file...")
@@ -85,6 +91,7 @@ if __name__ == "__main__":
     parser.add_argument("--db_reset", "-d", action='store_true', required=False, default=False)
     parser.add_argument("--force_reset", "-r", action='store_true', required=False,
                         default=False)
+    parser.add_argument("--help_print", "-p", action="store_true", required=False, default=False)
     args = parser.parse_args()
 
     fantasy_football(**vars(args))
