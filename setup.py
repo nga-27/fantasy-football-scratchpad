@@ -21,8 +21,8 @@ DESCRIPTION = 'Utilizing some ESPN fantasy football APIs to help manage a league
 URL = 'https://github.mmm.com/nga-27/fantasy-football-scratchpad'
 EMAIL = 'namell91@gmail.com'
 AUTHOR = 'Nick Amell'
-REQUIRES_PYTHON = '>=3.7.0'
-VERSION = '0.5.1'
+REQUIRES_PYTHON = '>=3.8.0'
+VERSION = '0.6.0'
 
 # What packages are required for this module to be executed?
 REQUIRES = [
@@ -32,17 +32,14 @@ REQUIRES = [
     "requests==2.25",
     "xlrd==1.2.0",
     "XlsxWriter==1.2.6",
-    "espn-api==0.22.1",
+    "espn-api==0.31.0",
     "argparse==1.4.0"
 ]
 
 REQUIRES_DEV = [
     'colorama==0.4.3',
-    'pylint==2.7.4',
+    'pylint==2.15.2',
     'pycodestyle==2.6.0',
-    'pytest==6.2.3',
-    'pytest-env==0.6.2',
-    'pytest-cov==2.11.1',
     'pylint-fail-under==0.3.0',
 ]
 
@@ -73,6 +70,6 @@ setup(
         # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ],
 )

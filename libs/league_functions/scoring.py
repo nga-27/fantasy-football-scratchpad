@@ -23,15 +23,15 @@ def update_scores(xlsx_dict: dict, LEAGUE, DB_DATA: DB) -> dict:
     Returns:
         dict: xlsx_dict object
     """
-    scores = dict()
-    projected = dict()
+    scores = {}
+    projected = {}
     current_week = LEAGUE.get_NE().current_week
 
     # Looping for each week. Lists start at 0, football starts at week 1. Add 1 / shift 1 up.
     for week in range(1, current_week+1):
         str_week = str(week)
-        scores[str_week] = dict()
-        projected[str_week] = dict()
+        scores[str_week] = {}
+        projected[str_week] = {}
 
         # Game-by-game, load the current scores [for all weeks] and projected for applicable weeks.
         scores, projected = load_scores(LEAGUE, scores, projected, week, DB_DATA, 'NE')

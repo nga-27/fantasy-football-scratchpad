@@ -21,7 +21,7 @@ You'll need a few configuration things first.
 
 Once you have these pieces, it's a good time to run `python explore_api.py`. This will ensure you have proper connection to the ESPN API.
 
-## Simplicity in Release 0.3.0+ (`fantasy_football.py`)
+## Simplicity in Release `0.3.0+` (`fantasy_football.py`)
 
 Starting in release `0.3.0`, the separate managing scripts became high-level wrapper functions. In their place, the function `fantasy_football.py` handles all repo-based functionality. (The documentation for the "old" way is still [here](documentation/release-0_2_0.md#Release2), but deprecated.) That all being said, `0.3.0` and beyond is **not backward compatible**, meaning if you want to run an individual script for reasons unknown, you have to revert your branch back to the `0.2.0` release and then run them.
 
@@ -43,7 +43,7 @@ python fantasy_football.py
 
 And that's it! You don't need to worry about running scripts in a particular order or if you need to reset the league or not first. About time this came about, right?
 
-## "DB" Functionality in 0.4.0+
+## "DB" Functionality in `0.4.0+`
 
 Starting in `0.4.0`, a pseudo-DB `db.json` file is employed to help ease the speed of regenerating the league spreadsheet. (Note, that as of 0.4.2, this is not fully realized or optimized yet, though the functionality of the db is utilized.) This is done automatically behind the scenes, so there isn't anything additional that is needed to be done.
 
@@ -53,9 +53,23 @@ The db functionality is designed to only update scores and projected scores of w
 python fantasy_football.py -d 
 ```
 
+## `0.6.0` Updates
+
+Additionally, starting with `0.6.0+`, you may pass the `-r` arg to the main script. This will force a full reset of the data structures, which includes the DB. The full restart can allow for updated match-ups and a deeper reset of the league. This can be done as below:
+
+```bash
+python fantasy_football.py -r
+```
+
+Since the list of input parameters has grown [again], another parameter `-p` has been added to print out the other parameters can be utilized to in this app. This will not actually update the fantasy football data, but it will print the other available options in the terminal window.
+
+```bash
+python fantasy_football.py -p
+```
+
 ***Run the above command when a "week" has ended (Tuesday morning) to correct the past weeks' scoring.***
 
-## <a name="cron"></a>"Cron Job" Functionality in 0.5.0+
+## <a name="cron"></a>"Cron Job" Functionality in `0.5.0+`
 
 As alluded to above, version `0.5.0+` features a script `ff_job.sh` that simulates a cron job. Essentially, every 5ish minutes, the python script that runs the league (`fantasy_football.py`) will run. An additional `copier.py` script will run to copy the output of first script to a destination of choice. This is especially handy if you share the league spreadsheet with your league mates in OneDrive or GoogleDrive. (GoogleDrive now has a desktop version that makes this pretty seamless!)
 

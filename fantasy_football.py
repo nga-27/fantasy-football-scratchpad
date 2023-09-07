@@ -5,13 +5,13 @@ Top-level script that runs conditional wrapper scripts to update the league.
 from pathlib import Path
 import argparse
 from shutil import copyfile
-from libs.db import DB
 
 from libs.wrappers.schedule_json_generator import generate_schedule
 from libs.wrappers.generate_schedule_xlsx import generate_schedule_xlsx
 from libs.wrappers.run_league_update import run_league_update
 
 from libs.xlsx_utils import save_archive
+from libs.help_function import help_print
 
 # pylint: disable=invalid-name
 
@@ -39,6 +39,12 @@ def fantasy_football(**kwargs):
     SPREADSHEET_OUTPUT_PATH = Path(kwargs.get('league_spreadsheet_output_path', '')).resolve()
 
     DB_RESET = kwargs.get('db_reset', False)
+    FORCE_RESET = kwargs.get('force_reset', False)
+    RUN_HELP = kwargs.get('help_print', False)
+
+    if RUN_HELP:
+        help_print()
+        return
 
     if not SCHEDULE_OUTPUT_PATH.exists():
         print("Generating a new 'schedule.json' file...")
@@ -48,6 +54,8 @@ def fantasy_football(**kwargs):
     save_archive(SPREADSHEET_OUTPUT_PATH)
 
     try:
+        if FORCE_RESET:
+            raise KeyError
         run_league_update(SPREADSHEET_INPUT_PATH, SPREADSHEET_OUTPUT_PATH, CONFIG_PATH, DB_RESET)
 
     except KeyError:
@@ -60,7 +68,7 @@ def fantasy_football(**kwargs):
             DB_RESET
         )
         copyfile(SPREADSHEET_OUTPUT_PATH, SPREADSHEET_INPUT_PATH)
-        # DB_RESET should always be False on this try, as the DB has already been reset above in 
+        # DB_RESET should always be False on this try, as the DB has already been reset above in
         # generate_schedule_xlsx
         run_league_update(SPREADSHEET_INPUT_PATH, SPREADSHEET_OUTPUT_PATH, CONFIG_PATH, False)
 
@@ -81,6 +89,9 @@ if __name__ == "__main__":
     parser.add_argument("--config_path", "-c", required=False,
                         default="content/14_team_config.json")
     parser.add_argument("--db_reset", "-d", action='store_true', required=False, default=False)
+    parser.add_argument("--force_reset", "-r", action='store_true', required=False,
+                        default=False)
+    parser.add_argument("--help_print", "-p", action="store_true", required=False, default=False)
     args = parser.parse_args()
 
     fantasy_football(**vars(args))

@@ -48,7 +48,7 @@ def create_rosters(xlsx_dict: dict, LEAGUE) -> dict:
     sw_box_scores = LEAGUE.get_SW().box_scores(current_week)
 
     # Load the all roster data in order of POSITION_ORDER from both leagues
-    roster_data = {"NE": dict(), "SW": dict()}
+    roster_data = {"NE": {}, "SW": {}}
     roster_data = generate_roster_data(ne_box_scores, roster_data, "NE")
     roster_data = generate_roster_data(sw_box_scores, roster_data, "SW")
 

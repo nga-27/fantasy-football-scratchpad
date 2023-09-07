@@ -50,7 +50,7 @@ class DB():
 
     def db_get_game(self, week: Union[str,int], team: str, LEAGUE: FFLeague,
                     fetch: bool = False) -> Union[dict,None]:
-        """ 
+        """
             return a specific game object. 'fetch' is for playoffs (should not return None unless
             not played yet), set to True
         """
