@@ -16,17 +16,23 @@ DB_PATH = DB_DIR / "db.json"
 class DB():
     """DB Class"""
 
-    def __init__(self, needs_db_reset: bool = False):
+    def __init__(self, needs_db_reset: bool = False, league: Union[FFLeague, None] = None):
         """ init DB """
         self.DB_DATA = {}
         if DB_PATH.exists():
-            if needs_db_reset:
-                json.dump(self.DB_DATA, DB_PATH.open('w'))
-            else:
-                self.DB_DATA = json.load(DB_PATH.open('r'))
+            if not needs_db_reset:
+                if league is not None:
+                    if 'current_week' in self.DB_DATA:
+                        if self.DB_DATA['current_week'] == league.get_info()['current_week']:
+                            self.DB_DATA = json.load(DB_PATH.open('r'))
+                            return
+            json.dump(self.DB_DATA, DB_PATH.open('w'))
+        return
 
     def load_db_if_empty(self, LEAGUE: FFLeague, reset_db: bool = False):
-        """ todo: add reset db flag """
+        """ Updates the DB with League data (or on a reset_db flag) """
+        # Always update the current week, as it's a switch to handle new week situations
+        self.DB_DATA['current_week'] = LEAGUE.get_info()['current_week']
         if 'teams' not in self.DB_DATA or reset_db:
             self.load_teams(LEAGUE)
         if 'rankings' not in self.DB_DATA or reset_db:

@@ -6,6 +6,10 @@ Answer: ESPN/NFL doesn't allow it, as far as I know.
 
 Solution: this repo. Being commissioner in both leagues, I'm using the [ESPN API](https://github.com/cwendt94/espn-api) to manage a master spreadsheet with all things fantasy football league.
 
+## Current version `0.6.1`
+
+---
+
 # How to Run
 
 ## <a name="configuration"></a>Configure the [API](https://github.com/cwendt94/espn-api/wiki/Football-Intro)
@@ -14,14 +18,21 @@ First, a huge shout out to [cwendt94](https://github.com/cwendt94) for making th
 
 You'll need a few configuration things first.
 
-1) Copy-paste your own copy of `.env.example` and save it as `.env`. 
-2) You'll need to fill out the keys in the `.env` file. `ESPN_SWID` and `ESPN_S2` are found by [inspecting the ESPN site](https://github.com/cwendt94/espn-api/discussions/150). You optionally will have the opportunity to set the playing and bench position your league offers.
-3) The other keys are found by one's own league sites. Note, since I'm managing two leagues simultaneously (i.e. the point of this repo), I have two keys for league IDs. I randomly named them "regions" of NE and SW. You can have w/e you want, but for this work, keep the key names as they are.
-4) **Optional**- if planning to use the `ff_job.sh` shell script to have it run every 5ish minutes until 11:45pm (local time), then you'll want to fill out `SHARE_DIRECTORY_PATH` and `INPUT_SOURCE_PATH`. ["Cron" script](#cron)
+1. Copy-paste your own copy of `.env.example` and save it as `.env`. 
+
+2. You'll need to fill out the keys in the `.env` file. `ESPN_SWID` and `ESPN_S2` are found by [inspecting the ESPN site](https://github.com/cwendt94/espn-api/discussions/150). You optionally will have the opportunity to set the playing and bench position your league offers.
+
+3. The other keys are found by one's own league sites. Note, since I'm managing two leagues simultaneously (i.e. the point of this repo), I have two keys for league IDs. I randomly named them "regions" of NE and SW. You can have w/e you want, but for this work, keep the key names as they are.
+
+4. **Optional**- if planning to use the `ff_job.sh` shell script to have it run every 5ish minutes until 11:45pm (local time), then you'll want to fill out `SHARE_DIRECTORY_PATH` and `INPUT_SOURCE_PATH`. ["Cron" script](#cron)
 
 Once you have these pieces, it's a good time to run `python explore_api.py`. This will ensure you have proper connection to the ESPN API.
 
-## Simplicity in Release `0.3.0+` (`fantasy_football.py`)
+---
+
+# Updates
+
+## `0.3.0+` Simplicity of a Single Script (`fantasy_football.py`)
 
 Starting in release `0.3.0`, the separate managing scripts became high-level wrapper functions. In their place, the function `fantasy_football.py` handles all repo-based functionality. (The documentation for the "old" way is still [here](documentation/release-0_2_0.md#Release2), but deprecated.) That all being said, `0.3.0` and beyond is **not backward compatible**, meaning if you want to run an individual script for reasons unknown, you have to revert your branch back to the `0.2.0` release and then run them.
 
@@ -33,7 +44,7 @@ _If someone in your league changes their team name, then you need to ["reset"](d
 
 Normally, this wouldn't be a huge issue. However, in my first year doing this, a player loved to spite everyone they played by changing their team's name to mock their opponent. (As I write this, this person is in first place, so I _guess_ the annoyance is merited?) Anyway, it was annoying to have to continually reset the league every Tuesday or Wednesday, so I decided to make a single script to solve the league.
 
-## Running the Single Script `fantasy_football.py`
+### Running the Single Script `fantasy_football.py`
 
 This single script operates by first evaluating if the schedule json file exists. If it does, it then tries to update the league using the `run_league_update.py` wrapper function. If that fails due the situation outlined above, it re-runs the `generate_schedule_xlsx.py` script to "reset" the league before retrying `run_league_update.py`. All of this conditional updating can be run with one single script call:
 
@@ -43,7 +54,7 @@ python fantasy_football.py
 
 And that's it! You don't need to worry about running scripts in a particular order or if you need to reset the league or not first. About time this came about, right?
 
-## "DB" Functionality in `0.4.0+`
+## `0.4.0+` "DB" Functionality
 
 Starting in `0.4.0`, a pseudo-DB `db.json` file is employed to help ease the speed of regenerating the league spreadsheet. (Note, that as of 0.4.2, this is not fully realized or optimized yet, though the functionality of the db is utilized.) This is done automatically behind the scenes, so there isn't anything additional that is needed to be done.
 
@@ -52,6 +63,16 @@ The db functionality is designed to only update scores and projected scores of w
 ```bash
 python fantasy_football.py -d 
 ```
+
+***Run the above command when a "week" has ended (Tuesday morning) to correct the past weeks' scoring.***
+
+## <a name="cron"></a>`0.5.0+` "Cron Job" Functionality
+
+As alluded to above, version `0.5.0+` features a script `ff_job.sh` that simulates a cron job. Essentially, every 5ish minutes, the python script that runs the league (`fantasy_football.py`) will run. An additional `copier.py` script will run to copy the output of first script to a destination of choice. This is especially handy if you share the league spreadsheet with your league mates in OneDrive or GoogleDrive. (GoogleDrive now has a desktop version that makes this pretty seamless!)
+
+Two values, `CRON_FREQUENCY_SEC` and `CRON_END_TIME`, provide default values in `.env.example`. Feel free to change these as you see fit. Default is 300 seconds and 11:45pm local time, respectively. (Sorry east-coasters... late games that track past midnight for you become complex.)
+
+To run this, you will probably have to allow execution of the shell script. Do this by `chmod +x ff_job.sh`. Then on game day, simply run `./ff_job.sh` and walk away! It'll stop periodically updating and copying the output file at the prescribed stop time that night.
 
 ## `0.6.0` Updates
 
@@ -67,14 +88,8 @@ Since the list of input parameters has grown [again], another parameter `-p` has
 python fantasy_football.py -p
 ```
 
-***Run the above command when a "week" has ended (Tuesday morning) to correct the past weeks' scoring.***
+### `0.6.1` Update
 
-## <a name="cron"></a>"Cron Job" Functionality in `0.5.0+`
+An adaptation to the `0.4.2` update of the `-d` flag. In this case, the DB itself will track the current week. If the current week stored in the DB is behind that of the actual ESPN current week, the DB logic will automatically trigger a "DB Reset", effectively giving itself a `-d` flag in the command. This will simplify things a bit for those that just use the bash script to run the entire update. (In the past, commissioners would have to manually do `python fantasy_football.py -d` before re-running the bash script so as to update the standings appropriately.)
 
-As alluded to above, version `0.5.0+` features a script `ff_job.sh` that simulates a cron job. Essentially, every 5ish minutes, the python script that runs the league (`fantasy_football.py`) will run. An additional `copier.py` script will run to copy the output of first script to a destination of choice. This is especially handy if you share the league spreadsheet with your league mates in OneDrive or GoogleDrive. (GoogleDrive now has a desktop version that makes this pretty seamless!)
-
-Two values, `CRON_FREQUENCY_SEC` and `CRON_END_TIME`, provide default values in `.env.example`. Feel free to change these as you see fit. Default is 300 seconds and 11:45pm local time, respectively. (Sorry east-coasters... late games that track past midnight for you become complex.)
-
-To run this, you will probably have to allow execution of the shell script. Do this by `chmod +x ff_job.sh`. Then on game day, simply run `./ff_job.sh` and walk away! It'll stop periodically updating and copying the output file at the prescribed stop time that night.
-
-[More details and development to occur in future releases.]
+You're still welcome to run the `python fantasy_football.py -d` command as you normally did. This is helpful for a manual reset when desired. However, for week-to-week updates, this is now done automatically.
