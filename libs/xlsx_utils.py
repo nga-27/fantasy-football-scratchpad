@@ -55,7 +55,7 @@ def save_spreadsheet_to_file(data: dict, output_file_path: Path, config_dict: di
                     value = get_data_from_cell(cell, data2)
                     worksheet.write(cell, value, cell_format)
 
-        writer.save()
+        # writer.save()
 
 
 def cleanse_import_sheets(data_sheet: pd.DataFrame) -> pd.DataFrame:
