@@ -6,7 +6,7 @@ Answer: ESPN/NFL doesn't allow it, as far as I know.
 
 Solution: this repo. Being commissioner in both leagues, I'm using the [ESPN API](https://github.com/cwendt94/espn-api) to manage a master spreadsheet with all things fantasy football league.
 
-## Current version `0.6.1`
+## Current version `0.6.2`
 
 ---
 

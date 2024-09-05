@@ -8,9 +8,10 @@ from dotenv import load_dotenv
 
 
 PWD = os.path.dirname(__file__)
-PWD_FUNC, _ = os.path.split(PWD)
+# PWD_FUNC, _ = os.path.split(PWD)
+PWD_FUNC = PWD
 DOTENV_PATH = os.path.join(PWD_FUNC, '.env')
-if os.path.exists(DOTENV_PATH) is False:
+if not os.path.exists(DOTENV_PATH):
     print(f'WARNING: NO ENVIRONMENT FILE. Current PWD: {DOTENV_PATH}')
 
 load_dotenv(DOTENV_PATH)
