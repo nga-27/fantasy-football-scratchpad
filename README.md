@@ -1,12 +1,14 @@
 # fantasy-football-scratchpad
 
+<img src="static/fantasy_football.jpeg" alt="fantasy football" width=400 />
+
 I need to manage a fantasy football league with 14 teams. Since 14-team leagues are boring with low scores and having to rely heavily on bench players and games decided by only a few points every week, why not have 2 leagues of 8 (two "robots") that can play across each other?
 
 Answer: ESPN/NFL doesn't allow it, as far as I know.
 
 Solution: this repo. Being commissioner in both leagues, I'm using the [ESPN API](https://github.com/cwendt94/espn-api) to manage a master spreadsheet with all things fantasy football league.
 
-## Current version `0.6.2`
+## Current version `0.6.3`
 
 ---
 
