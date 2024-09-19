@@ -22,7 +22,7 @@ URL = 'https://github.mmm.com/nga-27/fantasy-football-scratchpad'
 EMAIL = 'namell91@gmail.com'
 AUTHOR = 'Nick Amell'
 REQUIRES_PYTHON = '>=3.8.0'
-VERSION = '0.6.3'
+VERSION = '0.6.4'
 
 # What packages are required for this module to be executed?
 REQUIRES = [
@@ -44,6 +44,10 @@ REQUIRES_DEV = [
     'pylint-fail-under==0.3.0',
 ]
 
+REQUIRES_EXE = [
+    'pyinstaller==6.10.0'
+]
+
 setup(
     name=NAME,
     version=VERSION,
@@ -63,6 +67,7 @@ setup(
     install_requires=REQUIRES,
     extras_require={
         'dev': REQUIRES_DEV,
+        'exe': REQUIRES_EXE
     },
     include_package_data=True,
     license='UNLICENSED',
