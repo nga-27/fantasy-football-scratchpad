@@ -18,7 +18,7 @@ from setuptools import find_packages, setup
 # Package meta-data.
 NAME = 'fantasy-football-scratchpad'
 DESCRIPTION = 'Utilizing some ESPN fantasy football APIs to help manage a league or two simultaneously.'
-URL = 'https://github.mmm.com/nga-27/fantasy-football-scratchpad'
+URL = 'https://github.com/nga-27/fantasy-football-scratchpad'
 EMAIL = 'namell91@gmail.com'
 AUTHOR = 'Nick Amell'
 REQUIRES_PYTHON = '>=3.8.0'
