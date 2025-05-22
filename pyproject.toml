@@ -9,7 +9,7 @@ description = 'Utilizing some ESPN fantasy football APIs to help manage a league
 authors = [
     {name = "Nick Amell", email = "namell91@gmail.com"}
 ]
-requires-python = ">=3.9.0, <3.13.0"
+requires-python = ">=3.10.0, <3.13.0"
 license = {text = "MIT"}
 classifiers = [
     'Programming Language :: Python',
@@ -23,7 +23,7 @@ urls = {homepage = "https://github.com/nga-27/fantasy-football-scratchpad"}
 
 dependencies = [
     "python-dotenv",
-    "numpy==2.1.0",#1.20.2",
+    "numpy==2.2.6",#1.20.2",
     "pandas==2.2.2",#1.2.4",
     "requests==2.32.3",#2.25",
     "xlrd==1.2.0",
