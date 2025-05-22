@@ -23,6 +23,5 @@ jobs:
             
             - name: pylint
               run: |
-                pylint fantasy-football.py
-                pylint top_level.py
+                pylint $(git ls-files '*.py')
                 pylint $(git ls-files 'libs/**/*.py')
