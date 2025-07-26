@@ -21,8 +21,7 @@ def load_bracket(xlsx_dict: dict, playoff_data: dict) -> dict:
     for round_key, round_list in playoff_data['bracket'].items():
         # print(round_key, round_list)
         xlsx_dict["Playoff Bracket"][round_key] = round_list
-        if len(round_list) > max_len:
-            max_len = len(round_list)
+        max_len = max(max_len, len(round_list))
 
     # Because this bracket is for aesthetics, each list object will be different lengths. We need to
     # lengthen these until they are the same length.

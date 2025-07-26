@@ -108,9 +108,7 @@ def find_max_column_width(column: list, column_name: str='') -> int:
     """
     max_len = len(column_name)
     for item in column:
-        if len(str(item)) > max_len:
-            max_len = len(str(item))
-
+        max_len = max(max_len, len(str(item)))
     return max_len + 2
 
 

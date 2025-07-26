@@ -1,3 +1,4 @@
+""" print out for the app """
 # https://patorjk.com/software/taag/#p=display&h=1&v=1&f=Calvin%20S&t=Fantasy%0AFootball%0AScratchpad
 START_UP = ["""\033[32m
     ╔═╗┌─┐┌┐┌┌┬┐┌─┐┌─┐┬ ┬         

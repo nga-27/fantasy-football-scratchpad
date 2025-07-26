@@ -1,3 +1,5 @@
+""" params for help operation from terminal command """
+
 def help_print():
     """ print out the options """
     print("\r\nArgument Options:\r\n")
