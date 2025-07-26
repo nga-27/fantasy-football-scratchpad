@@ -3,11 +3,14 @@
 So we can copy the league output to a shared drive!
 """
 import os
+from pathlib import Path
 import shutil
 from dotenv import load_dotenv
 
 
-PWD = os.path.dirname(__file__)
+PWD = os.getcwd() #os.path.dirname(__file__)
+if PWD == str(Path.home()):
+    PWD = os.path.join("Repos", "fantasy-football-scratchpad")
 # PWD_FUNC, _ = os.path.split(PWD)
 PWD_FUNC = PWD
 DOTENV_PATH = os.path.join(PWD_FUNC, '.env')

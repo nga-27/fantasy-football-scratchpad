@@ -9,8 +9,11 @@ from dotenv import load_dotenv
 
 # pylint: disable=invalid-name
 
-PWD = os.path.dirname(__file__)
-PWD_FUNC, _ = os.path.split(PWD)
+PWD = os.getcwd() #os.path.dirname(__file__)
+if PWD == str(Path.home()):
+    PWD = os.path.join("Repos", "fantasy-football-scratchpad")
+# PWD_FUNC, _ = os.path.split(PWD)
+PWD_FUNC = PWD
 DOTENV_PATH = os.path.join(PWD_FUNC, '.env')
 if os.path.exists(DOTENV_PATH) is False:
     print(f'WARNING: NO ENVIRONMENT FILE. Current PWD: {DOTENV_PATH}')
