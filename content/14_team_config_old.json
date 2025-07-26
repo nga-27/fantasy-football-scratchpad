@@ -3,116 +3,129 @@
         "round1": {
             "byes": {
                 "teams": [
-                    9,
-                    10
+                    1,
+                    2
                 ],
                 "info": {}
             },
             "g1": {
                 "matchup": [
-                    1,
-                    8
+                    8,
+                    9
                 ],
                 "info": {
-                    "name": "Quarterfinals - Game 1"
+                    "name": "Game 1"
                 }
             },
             "g2": {
                 "matchup": [
-                    4,
-                    5
+                    5,
+                    12
                 ],
                 "info": {
-                    "name": "Quarterfinals - Game 2"
+                    "name": "Game 2"
                 }
             },
             "g3": {
                 "matchup": [
-                    3,
-                    6
+                    4,
+                    13
                 ],
                 "info": {
-                    "name": "Quarterfinals - Game 3"
+                    "name": "Game 3"
                 }
             },
             "g4": {
                 "matchup": [
-                    2,
-                    7
+                    6,
+                    11
                 ],
                 "info": {
-                    "name": "Quarterfinals - Game 4"
+                    "name": "Game 4"
                 }
             },
             "g5": {
                 "matchup": [
-                    12,
-                    13
+                    3,
+                    14
                 ],
                 "info": {
-                    "name": "Low Seeds - Game 1"
+                    "name": "Game 5"
                 }
             },
             "g6": {
                 "matchup": [
-                    11,
-                    14
+                    7,
+                    10
                 ],
                 "info": {
-                    "name": "Low Seeds - Game 2"
+                    "name": "Game 6"
                 }
             }
         },
         "round2": {
             "byes": {
-                "teams": [],
-                "info": {}
-            },
-            "g7": {
-                "matchup": [
+                "teams": [
                     {
                         "game": "g1",
-                        "type": "winner",
-                        "default": 1
+                        "type": "loser",
+                        "default": 9
                     },
                     {
-                        "game": "g2",
-                        "type": "winner",
-                        "default": 4
+                        "game": "g6",
+                        "type": "loser",
+                        "default": 10
                     }
                 ],
                 "info": {
-                    "name": "Semifinals - Game 1"
+                    "name": "Consolation B"
+                }
+            },
+            "g7": {
+                "matchup": [
+                    1,
+                    {
+                        "game": "g1",
+                        "type": "winner",
+                        "default": 8
+                    }
+                ],
+                "info": {
+                    "name": "Game 7"
                 }
             },
             "g8": {
                 "matchup": [
                     {
-                        "game": "g3",
+                        "game": "g2",
                         "type": "winner",
-                        "default": 3
+                        "default": 4
                     },
                     {
-                        "game": "g4",
+                        "game": "g3",
                         "type": "winner",
-                        "default": 2
+                        "default": 5
                     }
                 ],
                 "info": {
-                    "name": "Semifinals - Game 2"
+                    "name": "Game 8"
                 }
             },
             "g9": {
                 "matchup": [
-                    9,
+                    {
+                        "game": "g4",
+                        "type": "winner",
+                        "default": 6
+                    },
                     {
                         "game": "g5",
                         "type": "winner",
-                        "default": 12
+                        "default": 3
                     }
                 ],
                 "info": {
-                    "name": "Low Seeds Semis - Game 1"
+                    "name": "Game 9"
                 }
             },
             "g10": {
@@ -120,29 +133,29 @@
                     {
                         "game": "g6",
                         "type": "winner",
-                        "default": 11
+                        "default": 7
                     },
-                    10
+                    2
                 ],
                 "info": {
-                    "name": "Low Seeds Semis - Game 2"
+                    "name": "Game 10"
                 }
             },
             "g11": {
                 "matchup": [
                     {
-                        "game": "g1",
-                        "type": "loser",
-                        "default": 8
-                    },
-                    {
                         "game": "g2",
                         "type": "loser",
-                        "default": 5
+                        "default": 12
+                    },
+                    {
+                        "game": "g3",
+                        "type": "loser",
+                        "default": 13
                     }
                 ],
                 "info": {
-                    "name": "Consolation Semis - Game 1"
+                    "name": "Game 11 - Consolation B"
                 }
             },
             "g12": {
@@ -150,33 +163,16 @@
                     {
                         "game": "g4",
                         "type": "loser",
-                        "default": 6
+                        "default": 11
                     },
                     {
                         "game": "g5",
-                        "type": "loser",
-                        "default": 7
-                    }
-                ],
-                "info": {
-                    "name": "Consolation Semis - Game 2"
-                }
-            },
-            "g13": {
-                "matchup": [
-                    {
-                        "game": "g5",
-                        "type": "loser",
-                        "default": 13
-                    },
-                    {
-                        "game": "g6",
                         "type": "loser",
                         "default": 14
                     }
                 ],
                 "info": {
-                    "name": "Game 13 - Semifinals 1"
+                    "name": "Game 12 - Consolation B"
                 }
             }
         },
@@ -185,7 +181,7 @@
                 "teams": [],
                 "info": {}
             },
-            "g14": {
+            "g13": {
                 "matchup": [
                     {
                         "game": "g7",
@@ -195,96 +191,170 @@
                     {
                         "game": "g8",
                         "type": "winner",
+                        "default": 4
+                    }
+                ],
+                "info": {
+                    "name": "Game 13 - Semifinals 1"
+                }
+            },
+            "g14": {
+                "matchup": [
+                    {
+                        "game": "g9",
+                        "type": "winner",
+                        "default": 3
+                    },
+                    {
+                        "game": "g10",
+                        "type": "winner",
                         "default": 2
                     }
                 ],
                 "info": {
-                    "name": "League Championship"
+                    "name": "Game 14 - Semifinals 2"
                 }
             },
             "g15": {
                 "matchup": [
                     {
-                        "game": "g7",
-                        "type": "loser",
-                        "default": 4
+                        "game": "g11",
+                        "type": "winner",
+                        "default": 12
                     },
                     {
-                        "game": "g8",
+                        "game": "g1",
                         "type": "loser",
-                        "default": 3
+                        "default": 9
                     }
                 ],
                 "info": {
-                    "name": "Third Place"
+                    "name": "Game 15 - Consolation B"
                 }
             },
             "g16": {
                 "matchup": [
                     {
-                        "game": "g11",
-                        "type": "winner",
-                        "default": 5
-                    },
-                    {
                         "game": "g12",
                         "type": "winner",
-                        "default": 6
+                        "default": 11
+                    },
+                    {
+                        "game": "g6",
+                        "type": "loser",
+                        "default": 10
                     }
                 ],
                 "info": {
-                    "name": "Consolation Championship"
+                    "name": "Game 16 - Consolation B"
                 }
             },
             "g17": {
                 "matchup": [
                     {
-                        "game": "g9",
-                        "type": "winner",
-                        "default": 9
+                        "game": "g7",
+                        "type": "loser",
+                        "default": 8
                     },
                     {
-                        "game": "g10",
-                        "type": "winner",
-                        "default": 10
+                        "game": "g8",
+                        "type": "loser",
+                        "default": 5
                     }
                 ],
                 "info": {
-                    "name": "Low Seeds - Championship"
+                    "name": "Game 17 - Consolation A"
                 }
             },
             "g18": {
                 "matchup": [
                     {
-                        "game": "g11",
+                        "game": "g9",
                         "type": "loser",
-                        "default": 8
+                        "default": 6
                     },
                     {
-                        "game": "g12",
+                        "game": "g10",
                         "type": "loser",
                         "default": 7
                     }
                 ],
                 "info": {
-                    "name": "Consolation - Third Place"
+                    "name": "Game 18 - Consolation A"
                 }
+            }
+        },
+        "round4": {
+            "byes": {
+                "teams": [],
+                "info": {}
             },
             "g19": {
                 "matchup": [
                     {
-                        "game": "g9",
-                        "type": "loser",
-                        "default": 12
+                        "game": "g13",
+                        "type": "winner",
+                        "default": 1
                     },
                     {
-                        "game": "g10",
-                        "type": "loser",
-                        "default": 11
+                        "game": "g14",
+                        "type": "winner",
+                        "default": 2
                     }
                 ],
                 "info": {
-                    "name": "Low Seeds - Third Place"
+                    "name": "Game 19 - League Championship"
+                }
+            },
+            "g20": {
+                "matchup": [
+                    {
+                        "game": "g15",
+                        "type": "winner",
+                        "default": 9
+                    },
+                    {
+                        "game": "g16",
+                        "type": "winner",
+                        "default": 10
+                    }
+                ],
+                "info": {
+                    "name": "Game 20 - Consolation B Championship"
+                }
+            },
+            "g21": {
+                "matchup": [
+                    {
+                        "game": "g17",
+                        "type": "winner",
+                        "default": 5
+                    },
+                    {
+                        "game": "g18",
+                        "type": "winner",
+                        "default": 6
+                    }
+                ],
+                "info": {
+                    "name": "Game 21 - Consolation A Championship"
+                }
+            },
+            "g22": {
+                "matchup": [
+                    {
+                        "game": "g13",
+                        "type": "loser",
+                        "default": 4
+                    },
+                    {
+                        "game": "g14",
+                        "type": "loser",
+                        "default": 3
+                    }
+                ],
+                "info": {
+                    "name": "Game 22 - 3rd Place"
                 }
             }
         },
