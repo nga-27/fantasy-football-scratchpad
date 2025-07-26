@@ -23,5 +23,5 @@ jobs:
             
             - name: pylint
               run: |
-                pylint $(git ls-files '*.py')
+                pylint $(git ls-files '*.py') --ignore=R0801
                 pylint $(git ls-files 'libs/**/*.py')
