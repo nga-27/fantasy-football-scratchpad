@@ -98,7 +98,6 @@ def league_copier():
 
 def main_cycle():
     """ The main cycle that replaces the bash script """
-    print("helloooooooo")
     print(os.getcwd(), type(os.getcwd()))
     print(Path.home(), type(Path.home()))
     if os.getcwd() == str(Path.home()):
