@@ -8,6 +8,7 @@ from typing import Union
 
 from libs.xlsx_utils import xlsx_patch_rows
 from libs.league_functions.bracket import load_bracket
+from libs.league import FFLeague
 
 # pylint: disable=invalid-name,too-many-locals,too-many-branches,too-many-statements
 
@@ -251,14 +252,13 @@ def load_round_X(xlsx_dict: dict, playoff_data: dict, round_num: int, LEAGUE, DB
                 dataset = xlsx_patch_rows(dataset, obj_to_patch, 1)
             dataset = xlsx_patch_rows(dataset, {}, 2)
             LEAGUE.set_playoff_game(game, game_objects)
-            # pprint.pprint(game_objects)
 
     xlsx_dict[f'Playoffs-Wk{round_num}'] = dataset
 
     return xlsx_dict
 
 
-def fetch_team_from_playoff_object(game_object: Union[dict, int], LEAGUE) -> str:
+def fetch_team_from_playoff_object(game_object: Union[dict, int], LEAGUE: FFLeague) -> str:
     """fetch_team_from_playoff_object
 
     Helper function that converts between 'team_name' and 'team_id' as well as manipulates the

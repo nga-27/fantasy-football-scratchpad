@@ -57,7 +57,7 @@ class FFLeague():
             self.info['number_of_teams'] = len(map_teams)
             self.info['current_week'] = self.NE.current_week
             self.info['regular_season'] = {"number_of_weeks": len(map_teams)-1}
-            self.info['playoffs'] = {"number_of_weeks": 4}
+            self.info['playoffs'] = {"number_of_weeks": 3}
             self.info['playoffs']['current_round'] = 0 \
                 if self.info['current_week'] - self.info['regular_season']['number_of_weeks'] < 0 \
                     else self.info['current_week'] - self.info['regular_season']['number_of_weeks']
