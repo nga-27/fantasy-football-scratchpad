@@ -44,7 +44,7 @@ def update_standings(xlsx_dict: dict, LEAGUE) -> dict:
             f"{LEAGUE.teams[team_id]['stats']['wins']}-" + \
             f"{LEAGUE.teams[team_id]['stats']['losses']}-" + \
             f"{LEAGUE.teams[team_id]['stats']['ties']}"
-        xlsx_dict["Standings"]["Pct"][overall_row] = pct
+        xlsx_dict["Standings"]["Pct"][overall_row] = round(pct, 3)
         xlsx_dict["Standings"]["PF"][overall_row] = pf_
         xlsx_dict["Standings"]["PA"][overall_row] = LEAGUE.teams[team_id]['stats']['pa']
         overall_row += 1
@@ -57,7 +57,7 @@ def update_standings(xlsx_dict: dict, LEAGUE) -> dict:
                 f"{LEAGUE.teams[team_id]['stats']['wins']}-" + \
                 f"{LEAGUE.teams[team_id]['stats']['losses']}-" + \
                 f"{LEAGUE.teams[team_id]['stats']['ties']}"
-            xlsx_dict["Standings"]["Pct"][ne_row] = pct
+            xlsx_dict["Standings"]["Pct"][ne_row] = round(pct, 3)
             xlsx_dict["Standings"]["PF"][ne_row] = pf_
             xlsx_dict["Standings"]["PA"][ne_row] = LEAGUE.teams[team_id]['stats']['pa']
             ne_row += 1
@@ -68,7 +68,7 @@ def update_standings(xlsx_dict: dict, LEAGUE) -> dict:
                 f"{LEAGUE.teams[team_id]['stats']['wins']}-" + \
                 f"{LEAGUE.teams[team_id]['stats']['losses']}-" + \
                 f"{LEAGUE.teams[team_id]['stats']['ties']}"
-            xlsx_dict["Standings"]["Pct"][sw_row] = pct
+            xlsx_dict["Standings"]["Pct"][sw_row] = round(pct, 3)
             xlsx_dict["Standings"]["PF"][sw_row] = pf_
             xlsx_dict["Standings"]["PA"][sw_row] = LEAGUE.teams[team_id]['stats']['pa']
             sw_row += 1
@@ -137,7 +137,7 @@ def load_league_object_records(xlsx_dict: dict, LEAGUE):
             if sum([wins, losses, ties]) > 0:
                 win_sum = (1.0 * wins) + (0.5 * ties) + (0.0 * losses)
                 LEAGUE.teams[team_id]["stats"]["pct"] = \
-                    float(win_sum) / float(sum([wins, losses, ties]))
+                    round(float(win_sum) / float(sum([wins, losses, ties])), 3)
             standings.append(
                 (
                     team_id,

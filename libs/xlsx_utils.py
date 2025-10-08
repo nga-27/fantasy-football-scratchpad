@@ -8,6 +8,7 @@ import datetime
 import shutil
 from pathlib import Path
 from typing import Union
+from copy import deepcopy
 
 import pandas as pd
 import numpy as np
@@ -55,7 +56,27 @@ def save_spreadsheet_to_file(data: dict, output_file_path: Path, config_dict: di
                     value = get_data_from_cell(cell, data2)
                     worksheet.write(cell, value, cell_format)
 
-        # writer.save()
+
+def reorder_xlsx_with_current_week(data: dict, current_week: int) -> dict:
+    """reorder_xlsx_with_current_week
+
+    Args:
+        data (dict): league_xlsx dict
+        current_week (int): the integer of the current week
+
+    Returns:
+        dict: league_xlsx dict
+    """
+    # Maybe need to handle playoffs?
+    new_data = {}
+    new_data['Standings'] = deepcopy(data['Standings'])
+    week_key = f"Week {current_week}"
+    new_data['Current Week'] = deepcopy(data[week_key])
+    new_data['Rosters'] = deepcopy(data['Rosters'])
+    new_data['Teams'] = deepcopy(data['Teams'])
+    for i in range(1, 14):
+        new_data[f'Week {i}'] = deepcopy(data[f"Week {i}"])
+    return new_data
 
 
 def cleanse_import_sheets(data_sheet: pd.DataFrame) -> pd.DataFrame:

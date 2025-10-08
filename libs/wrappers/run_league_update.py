@@ -5,7 +5,9 @@ This will be the primary script run to update all scores, rosters, etc. for the 
 from pathlib import Path
 
 from libs.config import extract_config_data
-from libs.xlsx_utils import load_league_spreadsheet, save_spreadsheet_to_file
+from libs.xlsx_utils import (
+    load_league_spreadsheet, save_spreadsheet_to_file, reorder_xlsx_with_current_week
+)
 from libs.league import FFLeague
 from libs.db import DB
 
@@ -42,6 +44,7 @@ def run_league_update(input_path: Path, output_path: Path, config_path: Path, ne
     DB_DATA.load_db_if_empty(LEAGUE)
     league_xlsx = manage_playoffs(league_xlsx, config_dict['playoffs'], LEAGUE, DB_DATA)
 
+    league_xlsx = reorder_xlsx_with_current_week(league_xlsx, LEAGUE.info['current_week'])
     save_spreadsheet_to_file(league_xlsx, output_path, config_dict['config'])
     DB_DATA.save_db()
 
