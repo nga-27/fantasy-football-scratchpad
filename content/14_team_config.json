@@ -586,27 +586,35 @@
                 }
             },
             "Playoff Bracket": {
-                "A8": {
+                "A3": {
+                    "bold": true,
+                    "font_color": "green"
+                },
+                "A5": {
                     "bold": true,
                     "font_color": "blue"
                 },
-                "A13": {
+                "A10": {
                     "bold": true,
                     "font_color": "blue"
                 },
-                "A18": {
+                "A15": {
                     "bold": true,
                     "font_color": "blue"
                 },
-                "A23": {
+                "A20": {
                     "bold": true,
                     "font_color": "blue"
                 },
-                "A28": {
+                "A25": {
+                    "bold": true,
+                    "font_color": "green"
+                },
+                "A30": {
                     "bold": true,
                     "font_color": "blue"
                 },
-                "A33": {
+                "A35": {
                     "bold": true,
                     "font_color": "blue"
                 },
@@ -618,7 +626,11 @@
                     "bold": true,
                     "font_color": "blue"
                 },
-                "B25": {
+                "B24": {
+                    "bold": true,
+                    "font_color": "black"
+                },
+                "B26": {
                     "bold": true,
                     "font_color": "blue"
                 },
@@ -626,15 +638,19 @@
                     "bold": true,
                     "font_color": "blue"
                 },
-                "B41": {
-                    "bold": true,
-                    "font_color": "black"
-                },
-                "B46": {
+                "B36": {
                     "bold": true,
                     "font_color": "blue"
                 },
-                "B51": {
+                "B42": {
+                    "bold": true,
+                    "font_color": "black"
+                },
+                "B44": {
+                    "bold": true,
+                    "font_color": "blue"
+                },
+                "B49": {
                     "bold": true,
                     "font_color": "blue"
                 },

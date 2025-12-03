@@ -71,11 +71,18 @@ def reorder_xlsx_with_current_week(data: dict, current_week: int) -> dict:
     new_data = {}
     new_data['Standings'] = deepcopy(data['Standings'])
     week_key = f"Week {current_week}"
-    new_data['Current Week'] = deepcopy(data[week_key])
+    if current_week < 14:
+        new_data['Current Week'] = deepcopy(data[week_key])
+    else:
+        key = f"Playoffs-Wk{current_week - 13}"
+        new_data['Current Week'] = deepcopy(data[key])
     new_data['Rosters'] = deepcopy(data['Rosters'])
     new_data['Teams'] = deepcopy(data['Teams'])
     for i in range(1, 14):
         new_data[f'Week {i}'] = deepcopy(data[f"Week {i}"])
+    for i in range(1, 4):
+        new_data[f'Playoffs-Wk{i}'] = deepcopy(data[f"Playoffs-Wk{i}"])
+    new_data['Playoff Bracket'] = deepcopy(data['Playoff Bracket'])
     return new_data
 
 
