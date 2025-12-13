@@ -148,12 +148,12 @@
             "g12": {
                 "matchup": [
                     {
-                        "game": "g4",
+                        "game": "g3",
                         "type": "loser",
                         "default": 6
                     },
                     {
-                        "game": "g5",
+                        "game": "g4",
                         "type": "loser",
                         "default": 7
                     }
