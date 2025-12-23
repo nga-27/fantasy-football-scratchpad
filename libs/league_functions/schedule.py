@@ -4,13 +4,13 @@ Handles scheduling functionality
 """
 import datetime
 
-from libs.league import LAST_UPDATED, SKIP_ROWS
+from libs.league import LAST_UPDATED, SKIP_ROWS, FFLeague
 from libs.xlsx_utils import xlsx_patch_rows
 
 # pylint: disable=invalid-name
 
 
-def load_schedule(xlsx_dict: dict, LEAGUE, schedule: dict) -> dict:
+def load_schedule(xlsx_dict: dict, LEAGUE: FFLeague, schedule: dict) -> dict:
     """load_schedule
 
     Primarily utilized when calling 'generate_schedule_xlsx.py' as it converts the schedule json

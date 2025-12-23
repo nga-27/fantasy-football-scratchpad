@@ -57,7 +57,7 @@ class FFLeague():
             self.info['number_of_teams'] = len(map_teams)
             self.info['current_week'] = self.NE.current_week
             self.info['regular_season'] = {"number_of_weeks": len(map_teams)-1}
-            self.info['playoffs'] = {"number_of_weeks": 4}
+            self.info['playoffs'] = {"number_of_weeks": 3}
             self.info['playoffs']['current_round'] = 0 \
                 if self.info['current_week'] - self.info['regular_season']['number_of_weeks'] < 0 \
                     else self.info['current_week'] - self.info['regular_season']['number_of_weeks']
@@ -88,9 +88,17 @@ class FFLeague():
                 if self.teams[_id]["region"] == 'NE':
                     if self.teams[_id]['name'] != self.NE.teams[region_id-1].team_name:
                         self.teams[_id]['name'] = self.NE.teams[region_id-1].team_name
+                    owner_match = self.NE.teams[region_id-1].owners[0]['firstName'] + " " + \
+                        self.NE.teams[region_id-1].owners[0]['lastName']
+                    if self.teams[_id]['owner'] != owner_match:
+                        self.teams[_id]['owner'] = owner_match
                 else:
                     if self.teams[_id]['name'] != self.SW.teams[region_id-1].team_name:
                         self.teams[_id]['name'] = self.SW.teams[region_id-1].team_name
+                    owner_match = self.SW.teams[region_id-1].owners[0]['firstName'] + " " + \
+                        self.SW.teams[region_id-1].owners[0]['lastName']
+                    if self.teams[_id]['owner'] != owner_match:
+                        self.teams[_id]['owner'] = owner_match
 
             # We need the reverse search to map "Team X" to the different divisions
             temp_dict = {}
@@ -127,6 +135,8 @@ class FFLeague():
                 continue
             team_name = self.teams[team_id]["name"]
             team_data["Team Name"][i] = team_name
+            team_owner = self.teams[team_id]["owner"]
+            team_data["Owner"][i] = team_owner
         return team_data
 
     def get_teams(self):

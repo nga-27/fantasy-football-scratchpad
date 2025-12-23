@@ -98,13 +98,9 @@ def league_copier():
 
 def main_cycle():
     """ The main cycle that replaces the bash script """
-    print("helloooooooo")
-    print(os.getcwd(), type(os.getcwd()))
-    print(Path.home(), type(Path.home()))
     if os.getcwd() == str(Path.home()):
         print("changing...")
         os.chdir(Path.home() / "Repos" / "fantasy-football-scratchpad")
-    print(os.getcwd())
     load_dotenv()
 
     END_TIME = os.getenv('CRON_END_TIME', "23:40:00")
