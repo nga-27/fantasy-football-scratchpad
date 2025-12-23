@@ -21,7 +21,6 @@ jobs:
                 python -m pip install --upgrade pip
                 pip install .[dev]
             
-            - name: pylint
+            - name: Run Pylint and Tests
               run: |
-                pylint $(git ls-files '*.py') --disable=R0801
-                pylint $(git ls-files 'libs/**/*.py')
+                python gha_tests.py
